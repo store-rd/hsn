@@ -331,24 +331,34 @@
         let darkMode = localStorage.getItem('darkMode') === 'true';
 
         async function loadMessages() {
-            const snapshot = await db.collection('messages').get();
-            messages = snapshot.docs.map(doc => doc.data().text);
-            renderMessages();
-            updateMessageCounter();
+            try {
+                const snapshot = await db.collection('messages').get();
+                messages = snapshot.docs.map(doc => ({ id: doc.id, text: doc.data().text }));
+                renderMessages();
+                updateMessageCounter();
+            } catch (error) {
+                console.error("Error loading messages:", error);
+                alert("حدث خطأ أثناء تحميل الرسائل. يرجى المحاولة لاحقًا.");
+            }
         }
 
         function renderMessages() {
             const container = document.getElementById('messagesContainer');
             container.innerHTML = messages.map((msg, index) => 
                 `<div class="message-item" style="animation-delay: ${index * 0.1}s">
-                    ${msg}
-                    <span class="delete-btn" onclick="deleteMessage(${index})">×</span>
+                    ${msg.text}
+                    <span class="delete-btn" onclick="deleteMessage('${msg.id}')">×</span>
                 </div>`
             ).join('');
         }
 
         async function saveMessageToFirebase(message) {
-            await db.collection('messages').add({ text: message });
+            try {
+                await db.collection('messages').add({ text: message });
+            } catch (error) {
+                console.error("Error saving message:", error);
+                alert("حدث خطأ أثناء حفظ الرسالة. يرجى المحاولة لاحقًا.");
+            }
         }
 
         function checkPassword() {
@@ -385,24 +395,32 @@
         async function saveMessage() {
             const message = document.getElementById('userMessage').value;
             if (message.trim()) {
-                messages.push(message);
-                await saveMessageToFirebase(message);
-                document.getElementById('userMessage').value = '';
-                renderMessages();
-                updateMessageCounter();
-                toggleConfetti();
-                closeModal();
+                try {
+                    await saveMessageToFirebase(message);
+                    messages.push({ id: Date.now(), text: message }); // Temporary ID for rendering
+                    document.getElementById('userMessage').value = '';
+                    renderMessages();
+                    updateMessageCounter();
+                    toggleConfetti();
+                    closeModal();
+                } catch (error) {
+                    console.error("Error saving message:", error);
+                    alert("حدث خطأ أثناء حفظ الرسالة. يرجى المحاولة لاحقًا.");
+                }
             }
         }
 
-        async function deleteMessage(index) {
-            const msgToDelete = messages[index];
-            messages.splice(index, 1);
-            const querySnapshot = await db.collection('messages').where('text', '==', msgToDelete).get();
-            querySnapshot.forEach(doc => doc.ref.delete());
-            renderMessages();
-            updateMessageCounter();
-            confetti({ particleCount: 50, spread: 80, origin: { y: 0.5 } });
+        async function deleteMessage(id) {
+            try {
+                await db.collection('messages').doc(id).delete();
+                messages = messages.filter(msg => msg.id !== id);
+                renderMessages();
+                updateMessageCounter();
+                confetti({ particleCount: 50, spread: 80, origin: { y: 0.5 } });
+            } catch (error) {
+                console.error("Error deleting message:", error);
+                alert("حدث خطأ أثناء حذف الرسالة. يرجى المحاولة لاحقًا.");
+            }
         }
 
         function closeModal() {
