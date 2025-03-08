@@ -312,19 +312,36 @@
     <audio id="bg-music" loop>
         <source src="https://assets.codepen.io/1700775/hbd-song.mp3" type="audio/mpeg">
     </audio>
-    <script>
-        const correctPassword = "hsnanord1997";
-        let messages = JSON.parse(localStorage.getItem('messages')) || [];
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBia26tkTpn9nFZGJyP91VR06MRSlTqY40",
+            authDomain: "anord-9bc18.firebaseapp.com",
+            projectId: "anord-9bc18",
+            storageBucket: "anord-9bc18.firebasestorage.app",
+            messagingSenderId: "937344759300",
+            appId: "1:937344759300:web:29191f6f363d19fa4ce751"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Variables
         let darkMode = localStorage.getItem('darkMode') === 'true';
 
         function checkPassword() {
             const password = document.getElementById('password').value;
-            if (password === correctPassword) {
+            if (password === "hsnanord1997") {
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('mainScene').style.opacity = 1;
                 loadMessages();
                 updateMessageCounter();
-                if(darkMode) toggleDarkMode();
+                if (darkMode) toggleDarkMode();
             } else {
                 alert('غلطان حبيبي تذكر زين!');
             }
@@ -349,43 +366,57 @@
             modal.style.display = 'flex';
         }
 
-        function saveMessage() {
+        async function saveMessage() {
             const message = document.getElementById('userMessage').value;
             if (message.trim()) {
-                messages.push(message);
-                localStorage.setItem('messages', JSON.stringify(messages));
-                document.getElementById('userMessage').value = '';
-                loadMessages();
-                updateMessageCounter();
-                toggleConfetti();
-                closeModal();
+                try {
+                    await addDoc(collection(db, "messages"), { text: message });
+                    document.getElementById('userMessage').value = '';
+                    loadMessages();
+                    toggleConfetti();
+                    closeModal();
+                } catch (error) {
+                    console.error("Error saving message:", error);
+                }
             }
         }
 
-        function loadMessages() {
+        async function loadMessages() {
             const container = document.getElementById('messagesContainer');
-            container.innerHTML = messages.map((msg, index) => 
-                `<div class="message-item" style="animation-delay: ${index * 0.1}s">
-                    ${msg}
-                    <span class="delete-btn" onclick="deleteMessage(${index})">×</span>
-                </div>`
-            ).join('');
+            container.innerHTML = "";
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "messages"));
+                querySnapshot.forEach((doc, index) => {
+                    const msg = doc.data();
+                    container.innerHTML += `
+                        <div class="message-item" style="animation-delay: ${index * 0.1}s">
+                            ${msg.text}
+                            <span class="delete-btn" onclick="deleteMessage('${doc.id}')">×</span>
+                        </div>`;
+                });
+                updateMessageCounter(querySnapshot.size);
+            } catch (error) {
+                console.error("Error loading messages:", error);
+            }
         }
 
-        function deleteMessage(index) {
-            messages.splice(index, 1);
-            localStorage.setItem('messages', JSON.stringify(messages));
-            loadMessages();
-            updateMessageCounter();
-            confetti({ particleCount: 50, spread: 80, origin: { y: 0.5 } });
+        async function deleteMessage(id) {
+            try {
+                await deleteDoc(doc(db, "messages", id));
+                loadMessages();
+                confetti({ particleCount: 50, spread: 80, origin: { y: 0.5 } });
+            } catch (error) {
+                console.error("Error deleting message:", error);
+            }
         }
 
         function closeModal() {
             document.getElementById('messageModal').style.display = 'none';
         }
 
-        function updateMessageCounter() {
-            document.getElementById('messageCounter').textContent = `${messages.length} رسائل`;
+        function updateMessageCounter(count) {
+            document.getElementById('messageCounter').textContent = `${count} رسائل`;
         }
 
         function toggleFireworks() {
@@ -412,12 +443,10 @@
                 ['#98fb98', '#e6f5d0'],
                 ['#ffb6c1', '#ffe6ee']
             ];
-            
             document.querySelectorAll('.balloon').forEach(balloon => {
                 const randomColor = colors[Math.floor(Math.random() * colors.length)];
                 balloon.style.background = `radial-gradient(circle at 50% 120%, ${randomColor[0]}, ${randomColor[1]})`;
             });
-            
             confetti({
                 particleCount: 150,
                 spread: 100,
@@ -439,7 +468,7 @@
 
         // Add random stars
         function createStars() {
-            for(let i = 0; i < 50; i++) {
+            for (let i = 0; i < 50; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 star.style.left = Math.random() * 100 + 'vw';
@@ -451,8 +480,9 @@
         createStars();
 
         // Initialize
-        loadMessages();
-        updateMessageCounter();
+        document.addEventListener("DOMContentLoaded", () => {
+            loadMessages();
+        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
