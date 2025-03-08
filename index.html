@@ -1,164 +1,459 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>    <html class="ie lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>    <html class="ie lt-ie9"> <![endif]-->
-<!--[if gt IE 8]> <html> <![endif]-->
-<!--[if !IE]><!--><html lang="en"><!-- <![endif]-->
+<html lang="ar" class="no-js">
 <head>
-	<title>TO_HSN</title>
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">  
-	<meta charset="UTF-8" />
-	<meta name="description" content="Happy Birthday">
-	<meta name="robots" content="index, follow" />
-	<meta name="keywords" content="Birthday, Happy">
-	<!-- Strat of Facebook Meta -->
-	<meta property="og:type" content="E-Greeting" />
-	<meta property="og:image" content="favicon.ico" />
-	<meta property="og:description" content="Wish you a very Happy Birthday">
-	<!-- End of Facebook Meta Tags -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="stylesheet.css">
-	<link rel="stylesheet" type="text/css" href="loading.css">
-	<link href='http://fonts.googleapis.com/css?family=Signika' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet/less" href="cake.less">
-	<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.1.0/less.min.js"></script>
+    <meta charset="UTF-8">
+    <title>عيد ميلاد حسونتي</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>✨</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Changa:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #ffdb99;
+            --dark: #2d3436;
+            --light: #fff5e6;
+        }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #ffe6e6, #fff5e6);
+            font-family: 'Changa', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 300px;
+        }
+        .scene {
+            position: relative;
+            perspective: 1000px;
+            height: 100vh;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        .balloon-group {
+            position: absolute;
+            animation: float 8s linear infinite;
+        }
+        .balloon {
+            width: 120px;
+            height: 150px;
+            background: radial-gradient(circle at 50% 120%, #fff, #f0f0f0);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            margin: 15px;
+            transform-origin: bottom;
+            animation: sway 3s infinite alternate;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            cursor: pointer;
+        }
+        .cake-3d {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            transform-style: preserve-3d;
+            animation: rotate 20s linear infinite;
+        }
+        .message-wall {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            width: 350px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .control-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 999;
+        }
+        .btn-magic {
+            background: var(--primary);
+            border: 0;
+            padding: 15px 30px;
+            border-radius: 30px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .default-message {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            max-width: 500px;
+            text-align: center;
+            animation: float 5s infinite alternate;
+        }
+        .message-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+            transition: transform 0.3s;
+            animation: slideIn 0.5s;
+        }
+        .message-item:hover {
+            transform: translateX(10px);
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 1.5em;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        @keyframes rotate {
+            from { transform: translateX(-50%) rotateY(0deg); }
+            to { transform: translateX(-50%) rotateY(360deg); }
+        }
+        .emoji-rain {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .fireworks {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" fill="%23ff6b6b"/><path fill="%234ecdc4" d="M50 10L60 30H70L50 50L30 30H40L50 10Z"/><path fill="%2345b7d1" d="M50 90L60 70H70L50 50L30 70H40L50 90Z"/></svg>');
+            background-repeat: repeat;
+            opacity: 0;
+            animation: fireworks 1s infinite;
+        }
+        @keyframes fireworks {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.5); }
+        }
+        .message-counter {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .star {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: gold;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        /* تعديلات جديدة */
+        .delete-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: red;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .delete-btn:hover {
+            color: darkred;
+            transform: translateY(-50%) rotate(180deg);
+        }
+        .btn-colors {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            background-size: 200% auto;
+            animation: gradient 3s linear infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
 </head>
-
 <body>
-	<div class="loading"></div>
-	<audio class="song" controls loop>
-        <source src="hbd.mp3"></source>
-	   Your browser isn't invited for super fun audio time.
+    <div class="login-modal" id="loginModal">
+        <div class="login-box">
+            <h2 style="font-family: 'Great Vibes', cursive; color: var(--primary); font-size: 2em;">قريبة علئ اسمك </h2>
+            <input type="password" id="password" placeholder="كلمة السر" autocomplete="off">
+            <button class="btn-magic" onclick="checkPassword()">دخول</button>
+        </div>
+    </div>
+    <div class="scene" id="mainScene">
+        <div class="balloon-group" style="left: 10%; top: 5%;">
+            <div class="balloon" style="background: radial-gradient(circle at 50% 120%, #ff9a9e, #fad0c4);"></div>
+            <div class="balloon" style="background: radial-gradient(circle at 50% 120%, #a8edea, #fed6e3);"></div>
+        </div>
+        <div class="cake-3d">
+            <div class="cake-layer" style="width: 300px; height: 60px;"></div>
+            <div class="cake-layer" style="width: 270px; height: 50px; margin: 20px auto;"></div>
+            <div class="cake-layer" style="width: 240px; height: 40px; margin: 25px auto;"></div>
+        </div>
+        <div class="default-message">
+            <h1 style="font-family: 'Great Vibes', cursive; color: var(--primary); font-size: 2.5em;">كل رمضان وانت بخير </h1>
+            <p class="lead" style="font-size: 1.2em; color: var(--dark);">
+                🎉 في هذا اليوم المميز 🌙 <br>
+                أدعو الله أن يملأ حياتك بالفرح والسعادة<br>
+                وأن يحقق لك كل أحلامك<br><br>
+                🌹 أنت النور الذي يضيء أيامي<br>
+                والحب الذي يدوم إلى الأبد<br><br>
+                 مع كل شمعة تُضاء<br>
+                تُجدد أمنياتي لك بالخير والبركة<br><br>
+                <strong>كل عام وأنت حبيب القلب 💖</strong>
+            </p>
+        </div>
+        <div class="message-wall" id="messageWall">
+            <h3 style="color: var(--primary);">رسائلك الخاصة</h3>
+            <div id="messagesContainer"></div>
+        </div>
+        <div class="control-panel">
+            <button class="btn-magic" onclick="toggleMusic()">🎵 موسيقى</button>
+            <button class="btn-magic" onclick="showMessageForm()">💌 أرسل رسالة</button>
+            <button class="btn-magic" onclick="toggleConfetti()">🎉 مفاجأة</button>
+            <button class="btn-magic" onclick="toggleFireworks()">شنو يعني هذا سر ؟</button>
+            <button class="btn-magic btn-colors" onclick="changeBalloonColors()">تغير الون</button>
+        </div>
+        <div class="modal" id="messageModal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <textarea id="userMessage" placeholder="اكتب رسالتك هنا..." rows="5" 
+                    style="width: 100%; padding: 15px; border: 2px solid var(--primary); border-radius: 15px; margin: 15px 0;"></textarea>
+                <button class="btn-magic" onclick="saveMessage()">إرسال</button>
+            </div>
+        </div>
+        <div class="fireworks" id="fireworks"></div>
+        <div class="message-counter" id="messageCounter">0 رسائل</div>
+        <div class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 الوضع الليلي</div>
+    </div>
+    <audio id="bg-music" loop>
+        <source src="https://assets.codepen.io/1700775/hbd-song.mp3" type="audio/mpeg">
     </audio>
-    <div class="balloons text-center" id="b1">
-    	<h4 style="color:#F2B300;">حسن</h4>
-    </div>
-    <div class="balloons text-center" id="b2">
-    	<h4 style="color:#0719D4;">كل</h4>
-    </div>
-	<div class="balloons text-center" id="b3">
-    	<h4 style="color:#D14D39;">عام</h4>
-    </div>
-	<div class="balloons text-center" id="b4">
-    	<h4 style="color:#8FAD00;">وانت</h4>
-    </div>
-	<div class="balloons text-center" id="b5">
-    	<h4 style="color:#8377E4;">بالف</h4>
-    </div>
-    <div class="balloons text-center" id="b6">
-    	<h4 style="color:#99C96A;">خير</h4>
-    </div>
-    <div class="balloons text-center" id="b7">
-    	<h4 style="color:#20CFB4;">حبيبي</h4>
-    </div>
+    <script>
+        const correctPassword = "hsnano";
+        let messages = JSON.parse(localStorage.getItem('messages')) || [];
+        let darkMode = localStorage.getItem('darkMode') === 'true';
 
-    <img src="Balloon-Border.png" width="100%" class="balloon-border">
- 
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            if (password === correctPassword) {
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('mainScene').style.opacity = 1;
+                loadMessages();
+                updateMessageCounter();
+                if(darkMode) toggleDarkMode();
+            } else {
+                alert('غلطان حبيبي تذكر زين!');
+            }
+        }
 
-	<div class="container">
-		
-		<div class="row">
-			<div class="col-md-2 col-xs-2 bulb-holder">
-				<div class="bulb" id="bulb_yellow"></div>
-			</div>
-			<div class="col-md-2 col-xs-2 bulb-holder">
-				<div class="bulb" id="bulb_red"></div>
-			</div>
-			<div class="col-md-2 col-xs-2 bulb-holder">
-				<div class="bulb" id="bulb_blue"></div>
-			</div>
-			<div class="col-md-2 col-xs-2 bulb-holder">
-				<div class="bulb" id="bulb_green"></div>
-			</div>
-			<div class="col-md-2 col-xs-2 bulb-holder">
-				<div class="bulb" id="bulb_pink"></div>
-			</div>
-			<div class="col-md-2 col-xs-2 bulb-holder">
-				<div class="bulb" id="bulb_orange"></div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12 text-center">
-				<img src="banner.png" class="bannar">
-			</div>
-		</div>
-		<div class="row cake-cover">
-			<div class="col-md-12 texr-center">
-				<div class="cake">
-				  <div class="velas">
-				    <div class="fuego"></div>
-				    <div class="fuego"></div>
-				    <div class="fuego"></div>
-				    <div class="fuego"></div>
-				    <div class="fuego"></div>
-				  </div>
-				  <div class="cobertura"></div>
-				  <div class="bizcocho"></div>
-				</div>
-			</div>
-		</div>
-		<div class="row message">
-			<div class="col-md-12">
-				<p>اليوم هو اجمل واحلئ يوم عندي</p>
-				<p>لان راح اشوفك سعيد ومبتسم بعيد ميلادك</p>
-				<p>اتمنئ من الله هاي ابتسامة وسعادة تبقئ دائما وياك</p>
-				<p>دائما جنت ادعيلك بل خير وسعادة بكل وقت</p>
-				<p>ما شفت شخص عزني وحبني مثلك</p>
-				<p><strong>وبكد معزتك الي اني معزتي الك متبادلة</strong></p>
-				<p>اكو هواية مشاعر و كلام ما جنت اكدر اكولة الك</p>
-				<p>بس حاليا اكدر واثق انو اكدر احجي</p>
-				<p>حسن اني احبك حبيبي واموت عليك هم</p>
-				<p>انت روحي وكل شي بحياتي</p>
-				<p>و اوعدك هاي محبة ومعزة مراح تنقص بيوم</p>
-				<p>وراح نبقئ سند البعض</p>
-				<p>اي وقت واي شهر واي مكان</p>
-				<p>وما يغرينة شي مهما حصل</p>
-				<p>وحاليا اريد اسئلك سوال انت مستعد ؟</p>
-				<p>نحط ايدنة بعض ونرجع ل صلاتنة وايمانة سوة ؟</p>
-				<p>واثق بيك انت مستعد واني هم مستعد</p>
-				<p>بعد من يوم ما نتهاون بل صلاة واحد يذكر ثاني</p>
-				<p>ونبقئ علئ طريق واحد حتئ دنية واخرئ احنة علئ طريق واحد</p>
-				<p>وربك يوفقنا بحياتنة ويحمينا من كل شر</p>
-				<p>دقيقة , اخذتني مشاعر هواية خلي ارجع اتمنالك امنيات</p>
-				<p>اتمنئ بحق محمد واله وبحق اسمه الاعظم</p>
-				<p>ان يحفظك من كل شر وعين وحسد</p>
-				<p>ويبعد عنك كل شخص يأذيك وما يريدلك خير</p>
-				<p>ويقوي ايمناك وينقي كلبك ويثبتك علئ دينك</p>
-				<p>ويبقينة اعز اخو ل اخو</p>
-				<p>ويوفقنة بطريقنا</p>
-				<p>كول امين بليز</p>
-				<p>قبل نهاية رسالتي</p>
-				<p>احب اكلك :)</p>
-				<p>تبقئ اعز وافضل شخص واقرب شخص الي</p>
-				<p>كل عام وانت بالف الف الف خير</p>
-				<p>وسنعة سعيدة عليك</p>
-				<p>وهاي بوسة لخدودك الحلوة يا حلو</p>
-				<p>مححححححححححححححححححححححححححححح</p>
-				<p>love you all the time</p>
-			</div>
-		</div>
-		<div class="navbar navbar-fixed-bottom">
-			<div class="row">
-				<div class="col-md-6 text-center col-md-offset-3">
-					<button class="btn btn-primary" id="turn_on">يلة نشغل ضوء ؟</</button>
-					<button class="btn btn-primary" id="play">!شنو رئيك نشغل موسيقئ هم</button>
-					<button class="btn btn-primary" id="bannar_coming">تسمحلي ازينلك الغرفة, طبعا مخليتلك خيار ثاني حتئ توافق وافق بليز :)</button>
-					<button class="btn btn-primary" id="balloons_flying">ممكن اضيفلك شي علئ ذوقي :)</button>
-					<button class="btn btn-primary" id="cake_fadein">راح اشوفك اطيب كيكة بطن امك ما ماكلها</button>
-					<button class="btn btn-primary" id="light_candle"> شمعة حلوة ولطيفة مثلك ؟</button>
-					<button class="btn btn-primary" id="wish_message">كل عام وانت بخير </button>
-					<button class="btn btn-primary" id="story">هاي رسالة الي تحبها روح شوفها يا سرسري</button>
-					<!-- <button class="btn btn-primary" id="cake_cut">Lrt's Cut the Cake</button> -->
-				</div>
-			</div>
-		</div>
-	</div>
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            music.paused ? music.play() : music.pause();
+        }
+
+        function toggleConfetti() {
+            confetti({
+                particleCount: 200,
+                spread: 120,
+                origin: { y: 0.6 },
+                colors: ['#ff6b6b', '#4ecdc4', '#45b7d1']
+            });
+        }
+
+        function showMessageForm() {
+            const modal = document.getElementById('messageModal');
+            modal.style.display = 'flex';
+        }
+
+        function saveMessage() {
+            const message = document.getElementById('userMessage').value;
+            if (message.trim()) {
+                messages.push(message);
+                localStorage.setItem('messages', JSON.stringify(messages));
+                document.getElementById('userMessage').value = '';
+                loadMessages();
+                updateMessageCounter();
+                toggleConfetti();
+                closeModal();
+            }
+        }
+
+        function loadMessages() {
+            const container = document.getElementById('messagesContainer');
+            container.innerHTML = messages.map((msg, index) => 
+                `<div class="message-item" style="animation-delay: ${index * 0.1}s">
+                    ${msg}
+                    <span class="delete-btn" onclick="deleteMessage(${index})">×</span>
+                </div>`
+            ).join('');
+        }
+
+        function deleteMessage(index) {
+            messages.splice(index, 1);
+            localStorage.setItem('messages', JSON.stringify(messages));
+            loadMessages();
+            updateMessageCounter();
+            confetti({ particleCount: 50, spread: 80, origin: { y: 0.5 } });
+        }
+
+        function closeModal() {
+            document.getElementById('messageModal').style.display = 'none';
+        }
+
+        function updateMessageCounter() {
+            document.getElementById('messageCounter').textContent = `${messages.length} رسائل`;
+        }
+
+        function toggleFireworks() {
+            const fireworks = document.getElementById('fireworks');
+            fireworks.style.display = fireworks.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            document.body.style.backgroundColor = darkMode ? '#1a1a1a' : '#fff5e6';
+            document.querySelectorAll('.message-item, .default-message, .message-wall')
+                .forEach(el => el.style.backgroundColor = darkMode ? '#333' : 'white');
+            document.querySelectorAll('p, h3')
+                .forEach(el => el.style.color = darkMode ? 'white' : 'var(--dark)');
+            document.getElementById('messageCounter').style.backgroundColor = darkMode ? '#444' : 'var(--primary)';
+            localStorage.setItem('darkMode', darkMode);
+        }
+
+        function changeBalloonColors() {
+            const colors = [
+                ['#ff9a9e', '#fad0c4'],
+                ['#a8edea', '#fed6e3'],
+                ['#ffd700', '#ffeadb'],
+                ['#98fb98', '#e6f5d0'],
+                ['#ffb6c1', '#ffe6ee']
+            ];
+            
+            document.querySelectorAll('.balloon').forEach(balloon => {
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.background = `radial-gradient(circle at 50% 120%, ${randomColor[0]}, ${randomColor[1]})`;
+            });
+            
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                colors: colors.map(c => c[0])
+            });
+        }
+
+        // Add sparkles on click
+        document.querySelectorAll('.balloon').forEach(balloon => {
+            balloon.addEventListener('click', () => {
+                confetti({
+                    particleCount: 50,
+                    spread: 80,
+                    origin: { y: 0.5 },
+                    colors: ['#ffd700', '#ff69b4', '#8a2be2']
+                });
+            });
+        });
+
+        // Add random stars
+        function createStars() {
+            for(let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(star);
+            }
+        }
+        createStars();
+
+        // Initialize
+        loadMessages();
+        updateMessageCounter();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-<script src="effect.js"></script>
 </html>
