@@ -321,27 +321,34 @@
             projectId: "anord-9bc18",
             storageBucket: "anord-9bc18.firebasestorage.app",
             messagingSenderId: "937344759300",
-            appId: "1:937344759300:web:29191f6f363d19fa4ce751"
+            appId: "1:937344759300:web:161e1df9a09c36b94ce751"
         };
 
+        // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore(app);
 
         let messages = [];
         let darkMode = localStorage.getItem('darkMode') === 'true';
 
+        // تحميل الرسائل عند بدء الصفحة
         async function loadMessages() {
             try {
-                const snapshot = await db.collection('messages').get();
-                messages = snapshot.docs.map(doc => ({ id: doc.id, text: doc.data().text }));
+                const querySnapshot = await db.collection('messages').orderBy('timestamp', 'desc').get();
+                messages = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    text: doc.data().text,
+                    timestamp: doc.data().timestamp
+                }));
                 renderMessages();
                 updateMessageCounter();
             } catch (error) {
-                console.error("Error loading messages:", error);
-                alert("حدث خطأ أثناء تحميل الرسائل. يرجى المحاولة لاحقًا.");
+                console.error("خطأ في تحميل الرسائل:", error);
+                alert("حدث خطأ أثناء تحميل الرسائل. تأكد من اتصالك بالإنترنت");
             }
         }
 
+        // عرض الرسائل في الواجهة
         function renderMessages() {
             const container = document.getElementById('messagesContainer');
             container.innerHTML = messages.map((msg, index) => 
@@ -352,15 +359,53 @@
             ).join('');
         }
 
-        async function saveMessageToFirebase(message) {
+        // حفظ رسالة جديدة في Firebase
+        async function saveMessage() {
+            const messageInput = document.getElementById('userMessage');
+            const message = messageInput.value.trim();
+            
+            if (!message) return;
+
             try {
-                await db.collection('messages').add({ text: message });
+                // إضافة الرسالة مع وقت الإنشاء
+                const docRef = await db.collection('messages').add({
+                    text: message,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // تحديث القائمة المحلية بالرسالة الجديدة
+                messages.push({
+                    id: docRef.id,
+                    text: message,
+                    timestamp: new Date()
+                });
+                
+                messageInput.value = '';
+                renderMessages();
+                updateMessageCounter();
+                toggleConfetti();
+                closeModal();
             } catch (error) {
-                console.error("Error saving message:", error);
-                alert("حدث خطأ أثناء حفظ الرسالة. يرجى المحاولة لاحقًا.");
+                console.error("خطأ في حفظ الرسالة:", error);
+                alert("حدث خطأ أثناء حفظ الرسالة. تأكد من اتصالك بالإنترنت");
             }
         }
 
+        // حذف رسالة من Firebase
+        async function deleteMessage(id) {
+            try {
+                await db.collection('messages').doc(id).delete();
+                messages = messages.filter(msg => msg.id !== id);
+                renderMessages();
+                updateMessageCounter();
+                confetti({ particleCount: 50, spread: 80, origin: { y: 0.5 } });
+            } catch (error) {
+                console.error("خطأ في حذف الرسالة:", error);
+                alert("حدث خطأ أثناء حذف الرسالة. تأكد من اتصالك بالإنترنت");
+            }
+        }
+
+        // التحقق من كلمة المرور
         function checkPassword() {
             const password = document.getElementById('password').value;
             if (password === "hsnanord1997") {
@@ -373,11 +418,19 @@
             }
         }
 
+        // التحكم في الموسيقى
         function toggleMusic() {
             const music = document.getElementById('bg-music');
-            music.paused ? music.play() : music.pause();
+            if (music.paused) {
+                music.play().catch(error => {
+                    alert("يجب النقر على الصفحة قبل تشغيل الموسيقى");
+                });
+            } else {
+                music.pause();
+            }
         }
 
+        // تأثير الألعاب النارية
         function toggleConfetti() {
             confetti({
                 particleCount: 200,
@@ -387,55 +440,28 @@
             });
         }
 
+        // إظهار نموذج إرسال الرسالة
         function showMessageForm() {
-            const modal = document.getElementById('messageModal');
-            modal.style.display = 'flex';
+            document.getElementById('messageModal').style.display = 'flex';
         }
 
-        async function saveMessage() {
-            const message = document.getElementById('userMessage').value;
-            if (message.trim()) {
-                try {
-                    await saveMessageToFirebase(message);
-                    messages.push({ id: Date.now(), text: message }); // Temporary ID for rendering
-                    document.getElementById('userMessage').value = '';
-                    renderMessages();
-                    updateMessageCounter();
-                    toggleConfetti();
-                    closeModal();
-                } catch (error) {
-                    console.error("Error saving message:", error);
-                    alert("حدث خطأ أثناء حفظ الرسالة. يرجى المحاولة لاحقًا.");
-                }
-            }
-        }
-
-        async function deleteMessage(id) {
-            try {
-                await db.collection('messages').doc(id).delete();
-                messages = messages.filter(msg => msg.id !== id);
-                renderMessages();
-                updateMessageCounter();
-                confetti({ particleCount: 50, spread: 80, origin: { y: 0.5 } });
-            } catch (error) {
-                console.error("Error deleting message:", error);
-                alert("حدث خطأ أثناء حذف الرسالة. يرجى المحاولة لاحقًا.");
-            }
-        }
-
+        // إغلاق النموذج
         function closeModal() {
             document.getElementById('messageModal').style.display = 'none';
         }
 
+        // تحديث عداد الرسائل
         function updateMessageCounter() {
             document.getElementById('messageCounter').textContent = `${messages.length} رسائل`;
         }
 
+        // تفعيل/تعطيل الألعاب النارية في الخلفية
         function toggleFireworks() {
             const fireworks = document.getElementById('fireworks');
             fireworks.style.display = fireworks.style.display === 'none' ? 'block' : 'none';
         }
 
+        // تفعيل الوضع الليلي
         function toggleDarkMode() {
             darkMode = !darkMode;
             document.body.style.backgroundColor = darkMode ? '#1a1a1a' : '#fff5e6';
@@ -447,6 +473,7 @@
             localStorage.setItem('darkMode', darkMode);
         }
 
+        // تغيير ألوان البالونات عشوائيًا
         function changeBalloonColors() {
             const colors = [
                 ['#ff9a9e', '#fad0c4'],
@@ -466,17 +493,7 @@
             });
         }
 
-        document.querySelectorAll('.balloon').forEach(balloon => {
-            balloon.addEventListener('click', () => {
-                confetti({
-                    particleCount: 50,
-                    spread: 80,
-                    origin: { y: 0.5 },
-                    colors: ['#ffd700', '#ff69b4', '#8a2be2']
-                });
-            });
-        });
-
+        // إضافة النجوم في الخلفية
         function createStars() {
             for(let i = 0; i < 50; i++) {
                 const star = document.createElement('div');
@@ -488,6 +505,19 @@
             }
         }
 
+        // تأثير عند النقر على البالونات
+        document.querySelectorAll('.balloon').forEach(balloon => {
+            balloon.addEventListener('click', () => {
+                confetti({
+                    particleCount: 50,
+                    spread: 80,
+                    origin: { y: 0.5 },
+                    colors: ['#ffd700', '#ff69b4', '#8a2be2']
+                });
+            });
+        });
+
+        // بدء التأثيرات
         createStars();
         loadMessages();
     </script>
