@@ -6,8 +6,8 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>✨</text></svg>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Changa:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
@@ -308,9 +308,8 @@
         <source src="https://assets.codepen.io/1700775/hbd-song.mp3" type="audio/mpeg">
     </audio>
     <script>
-        // تكوين Firebase الصحيح
         const firebaseConfig = {
-            apiKey: "AIzaSyAY8dXedbQNQ1dqkyXnEuymtvBRbQXa648",
+            apiKey: "AIzaSyBia26tkTpn9nFZGJyP91VR06MRSlTqY40",
             authDomain: "anord-9bc18.firebaseapp.com",
             projectId: "anord-9bc18",
             storageBucket: "anord-9bc18.firebasestorage.app",
@@ -318,22 +317,22 @@
             appId: "1:937344759300:web:161e1df9a09c36b94ce751"
         };
 
-        // تهيئة Firebase بشكل صحيح باستخدام SDK v9
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        // تهيئة Firebase باستخدام SDK القديم (compat)
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
         let messages = [];
         let darkMode = localStorage.getItem('darkMode') === 'true';
 
         async function loadMessages() {
             try {
-                const querySnapshot = await getDocs(collection(db, 'messages'));
-                messages = querySnapshot.docs.map(doc => ({ id: doc.id, text: doc.data().text }));
+                const snapshot = await db.collection('messages').get();
+                messages = snapshot.docs.map(doc => ({ id: doc.id, text: doc.data().text }));
                 renderMessages();
                 updateMessageCounter();
             } catch (error) {
                 console.error("Error loading messages:", error);
-                alert("حدث خطأ أثناء تحميل الرسائل. تأكد من اتصالك بالإنترنت");
+                alert("حدث خطأ أثناء تحميل الرسائل. يرجى المحاولة لاحقًا.");
             }
         }
 
@@ -349,17 +348,16 @@
 
         async function saveMessageToFirebase(message) {
             try {
-                const docRef = await addDoc(collection(db, 'messages'), { text: message });
-                return docRef.id;
+                await db.collection('messages').add({ text: message });
             } catch (error) {
                 console.error("Error saving message:", error);
-                throw error;
+                alert("حدث خطأ أثناء حفظ الرسالة. يرجى المحاولة لاحقًا.");
             }
         }
 
         function checkPassword() {
             const password = document.getElementById('password').value;
-            if (password === "hsnanord1997@@ss22aa") {
+            if (password === "hsnanord1997") {
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('mainScene').style.opacity = 1;
                 loadMessages();
@@ -371,13 +369,7 @@
 
         function toggleMusic() {
             const music = document.getElementById('bg-music');
-            if (music.paused) {
-                music.play().catch(err => {
-                    alert("يجب النقر على الصفحة قبل تشغيل الموسيقى");
-                });
-            } else {
-                music.pause();
-            }
+            music.paused ? music.play() : music.pause();
         }
 
         function toggleConfetti() {
@@ -398,8 +390,8 @@
             if (!message) return;
 
             try {
-                const messageId = await saveMessageToFirebase(message);
-                messages.push({ id: messageId, text: message });
+                await saveMessageToFirebase(message);
+                messages.push({ id: Date.now(), text: message }); // تحديث القائمة المحلية
                 document.getElementById('userMessage').value = '';
                 renderMessages();
                 updateMessageCounter();
@@ -412,7 +404,7 @@
 
         async function deleteMessage(id) {
             try {
-                await deleteDoc(doc(db, 'messages', id));
+                await db.collection('messages').doc(id).delete();
                 messages = messages.filter(msg => msg.id !== id);
                 renderMessages();
                 updateMessageCounter();
