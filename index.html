@@ -10,6 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="manifest" href="/manifest.json">
     <style>
         :root {
             --primary: #ff6b6b;
@@ -17,7 +18,6 @@
             --dark: #2d3436;
             --light: #fff5e6;
         }
-
         body {
             margin: 0;
             min-height: 100vh;
@@ -26,7 +26,6 @@
             overflow-x: hidden;
             position: relative;
         }
-
         .login-modal {
             position: fixed;
             top: 0;
@@ -39,7 +38,6 @@
             align-items: center;
             z-index: 9999;
         }
-
         .login-box {
             background: white;
             padding: 40px;
@@ -49,40 +47,35 @@
             width: 90%;
             max-width: 400px;
         }
-
-            .login-box h2 {
-                font-family: 'Great Vibes', cursive;
-                color: var(--primary);
-                font-size: 2em;
-                margin-bottom: 20px;
-            }
-
-            .login-box input[type="password"] {
-                width: 100%;
-                padding: 15px;
-                border: 2px solid var(--primary);
-                border-radius: 15px;
-                margin-bottom: 20px;
-                font-size: 1em;
-            }
-
-            .login-box button {
-                width: 100%;
-                padding: 15px;
-                border: 0;
-                background: var(--primary);
-                color: white;
-                font-weight: bold;
-                cursor: pointer;
-                border-radius: 15px;
-                transition: background 0.3s;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            }
-
-                .login-box button:hover {
-                    background: #ff4d4d;
-                }
-
+        .login-box h2 {
+            font-family: 'Great Vibes', cursive;
+            color: var(--primary);
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .login-box input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+        .login-box button {
+            width: 100%;
+            padding: 15px;
+            border: 0;
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 15px;
+            transition: background 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .login-box button:hover {
+            background: #ff4d4d;
+        }
         .scene {
             position: relative;
             perspective: 1000px;
@@ -91,12 +84,10 @@
             opacity: 0;
             transition: opacity 1s;
         }
-
         .balloon-group {
             position: absolute;
             animation: float 8s linear infinite;
         }
-
         .balloon {
             width: 120px;
             height: 150px;
@@ -109,7 +100,6 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.08);
             cursor: pointer;
         }
-
         .cake-3d {
             position: absolute;
             bottom: 5%;
@@ -118,7 +108,6 @@
             transform-style: preserve-3d;
             animation: rotate 20s linear infinite;
         }
-
         .message-wall {
             position: fixed;
             right: 20px;
@@ -132,7 +121,6 @@
             max-height: 80vh;
             overflow-y: auto;
         }
-
         .control-panel {
             position: fixed;
             bottom: 20px;
@@ -142,7 +130,6 @@
             gap: 15px;
             z-index: 999;
         }
-
         .btn-magic {
             background: var(--primary);
             border: 0;
@@ -154,11 +141,9 @@
             transition: 0.3s;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-
-            .btn-magic:hover {
-                background: #ff4d4d;
-            }
-
+        .btn-magic:hover {
+            background: #ff4d4d;
+        }
         .default-message {
             position: absolute;
             top: 25%;
@@ -172,7 +157,6 @@
             text-align: center;
             animation: float 5s infinite alternate;
         }
-
         .message-item {
             background: white;
             padding: 15px;
@@ -183,11 +167,9 @@
             transition: transform 0.3s;
             animation: slideIn 0.5s;
         }
-
-            .message-item:hover {
-                transform: translateX(10px);
-            }
-
+        .message-item:hover {
+            transform: translateX(10px);
+        }
         .modal {
             position: fixed;
             top: 0;
@@ -200,7 +182,6 @@
             align-items: center;
             z-index: 9999;
         }
-
         .modal-content {
             background: white;
             padding: 40px;
@@ -209,7 +190,6 @@
             max-width: 400px;
             position: relative;
         }
-
         .close {
             position: absolute;
             top: 10px;
@@ -217,7 +197,6 @@
             cursor: pointer;
             font-size: 1.5em;
         }
-
         .notification {
             position: fixed;
             bottom: 20px;
@@ -231,42 +210,22 @@
             display: none;
             transition: opacity 0.5s;
         }
-
-            .notification.show {
-                display: block;
-                opacity: 1;
-            }
-
+        .notification.show {
+            display: block;
+            opacity: 1;
+        }
         @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-20px);
-            }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
-
         @keyframes sway {
-            0%, 100% {
-                transform: rotate(-5deg);
-            }
-
-            50% {
-                transform: rotate(5deg);
-            }
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
         }
-
         @keyframes rotate {
-            from {
-                transform: translateX(-50%) rotateY(0deg);
-            }
-
-            to {
-                transform: translateX(-50%) rotateY(360deg);
-            }
+            from { transform: translateX(-50%) rotateY(0deg); }
+            to { transform: translateX(-50%) rotateY(360deg); }
         }
-
         .fireworks {
             position: fixed;
             width: 100%;
@@ -276,24 +235,11 @@
             opacity: 0;
             animation: fireworks 1s infinite;
         }
-
         @keyframes fireworks {
-            0% {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            100% {
-                opacity: 0;
-                transform: scale(1.5);
-            }
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.5); }
         }
-
         .message-counter {
             position: fixed;
             bottom: 80px;
@@ -305,7 +251,6 @@
             border-radius: 20px;
             font-weight: bold;
         }
-
         .dark-mode-toggle {
             position: fixed;
             top: 20px;
@@ -316,7 +261,6 @@
             border-radius: 20px;
             cursor: pointer;
         }
-
         .star {
             position: absolute;
             width: 5px;
@@ -325,17 +269,10 @@
             border-radius: 50%;
             animation: twinkle 2s infinite;
         }
-
         @keyframes twinkle {
-            0%, 100% {
-                opacity: 0.3;
-            }
-
-            50% {
-                opacity: 1;
-            }
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
-
         .delete-btn {
             position: absolute;
             right: 10px;
@@ -346,90 +283,64 @@
             font-weight: bold;
             transition: 0.3s;
         }
-
-            .delete-btn:hover {
-                color: darkred;
-                transform: translateY(-50%) rotate(180deg);
-            }
-
+        .delete-btn:hover {
+            color: darkred;
+            transform: translateY(-50%) rotate(180deg);
+        }
         .btn-colors {
             background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
             background-size: 200% auto;
             animation: gradient 3s linear infinite;
         }
-
         @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-
         @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
-
         @media (max-width: 600px) {
             .control-panel {
                 flex-direction: column;
                 gap: 10px;
+                width: 90%;
+                max-width: 350px;
+                left: 50%;
+                transform: translateX(-50%);
             }
-
             .btn-magic {
                 padding: 10px 20px;
             }
-
             .message-wall {
                 right: 10px;
                 top: 10px;
                 width: 90%;
                 max-width: 350px;
             }
-
             .dark-mode-toggle {
                 top: 10px;
                 left: 10px;
             }
-
             .message-counter {
                 bottom: 70px;
             }
-
             .login-box {
                 padding: 30px;
             }
-
             .default-message {
                 padding: 30px;
             }
-
             .modal-content {
                 padding: 30px;
             }
-
             .scene {
                 height: 80vh;
             }
-
             .balloon-group {
                 transform: scale(0.8);
             }
-
             .cake-3d {
                 transform: translateX(-50%) scale(0.8);
             }
@@ -462,7 +373,7 @@
                 وأن يحقق لك كل أحلامك<br><br>
                 🌹 أنت النور الذي يضيء أيامي<br>
                 والحب الذي يدوم إلى الأبد<br><br>
-                مع كل شمعة تُضاء<br>
+                 مع كل شمعة تُضاء<br>
                 تُجدد أمنياتي لك بالخير والبركة<br><br>
                 <strong>كل عام وأنت حبيب القلب 💖</strong>
             </p>
@@ -481,8 +392,8 @@
         <div class="modal" id="messageModal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
-                <textarea id="userMessage" placeholder="اكتب رسالتك هنا..." rows="5"
-                          style="width: 100%; padding: 15px; border: 2px solid var(--primary); border-radius: 15px; margin: 15px 0;"></textarea>
+                <textarea id="userMessage" placeholder="اكتب رسالتك هنا..." rows="5" 
+                    style="width: 100%; padding: 15px; border: 2px solid var(--primary); border-radius: 15px; margin: 15px 0;"></textarea>
                 <button class="btn-magic" onclick="saveMessage()">إرسال</button>
             </div>
         </div>
@@ -524,9 +435,16 @@
         async function subscribeToTopic() {
             try {
                 const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-                const token = await messaging.getToken({ vapidKey: 'BKagOny0KF_2pCJQ3m....moL0ewzQ8rZu' });
+                const token = await messaging.getToken({ vapidKey: 'YOUR_PUBLIC_VAPID_KEY_HERE' });
                 console.log('FCM token:', token);
                 // Send the token to your server to subscribe to a topic
+                await fetch('/subscribe', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token })
+                });
             } catch (error) {
                 console.error("Error getting FCM token:", error);
             }
@@ -555,11 +473,11 @@
 
         function renderMessages() {
             const container = document.getElementById('messagesContainer');
-            container.innerHTML = messages.map((msg, index) =>
+            container.innerHTML = messages.map((msg, index) => 
                 `<div class="message-item" style="animation-delay: ${index * 0.1}s">
-                        ${msg.text}
-                        <span class="delete-btn" onclick="deleteMessage('${msg.id}')">×</span>
-                    </div>`
+                    ${msg.text}
+                    <span class="delete-btn" onclick="deleteMessage('${msg.id}')">×</span>
+                </div>`
             ).join('');
         }
 
@@ -578,7 +496,7 @@
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('mainScene').style.opacity = 1;
                 loadMessages();
-                if (darkMode) toggleDarkMode();
+                if(darkMode) toggleDarkMode();
                 requestNotificationPermission();
             } else {
                 alert('غلطان حبيبي تذكر زين!');
@@ -689,7 +607,7 @@
         });
 
         function createStars() {
-            for (let i = 0; i < 50; i++) {
+            for(let i = 0; i < 50; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 star.style.left = Math.random() * 100 + 'vw';
@@ -728,6 +646,19 @@
             } catch (error) {
                 console.error("Error sending notification:", error);
             }
+        }
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/firebase-messaging-sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
         }
 
         createStars();
