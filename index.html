@@ -1,668 +1,1771 @@
 <!DOCTYPE html>
-<html lang="ar" class="no-js">
+<html lang="ar" class="no-js" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>عيد ميلاد حسونتي</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>✨</text></svg>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>عيد ميلاد حسونتي الغالي 🎉</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎂</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Changa:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <link rel="manifest" href="/manifest.json">
     <style>
         :root {
-            --primary: #ff6b6b;
-            --secondary: #ffdb99;
-            --dark: #2d3436;
-            --light: #fff5e6;
+            --primary: #ff6b6b; /* Romantic Red */
+            --secondary: #ffeaa7; /* Soft Yellow */
+            --accent: #4ecdc4;  /* Teal */
+            --dark: #2d3436;    /* Dark Grey */
+            --light: #fffaf0;   /* Floral White */
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --shadow-color-darker: rgba(0, 0, 0, 0.15);
+            --shadow-color-light: rgba(0, 0, 0, 0.05);
+            /* --vh variable for potential iOS vh fix */
+            --vh: 1vh;
         }
-        body {
+
+        /* Basic Reset & Body Styling */
+        *, *::before, *::after {
+            box-sizing: border-box;
             margin: 0;
-            min-height: 100vh;
-            background: linear-gradient(45deg, #ffe6e6, #fff5e6);
+            padding: 0;
+            /* Improve performance on iOS */
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            /* Smooth scrolling */
+            scroll-behavior: smooth;
+        }
+
+        body {
+            /* Use --vh for height potentially */
+            min-height: calc(var(--vh, 1vh) * 100);
+            background: linear-gradient(135deg, #ffdde1, var(--light));
             font-family: 'Changa', sans-serif;
             overflow-x: hidden;
             position: relative;
+            color: var(--dark);
+            transition: background-color 0.5s, color 0.5s;
+            touch-action: manipulation; /* Improve touch responsiveness */
+            /* Ensure text rendering is smooth */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+
+        /* --- Dark Mode Styles --- */
+        body.dark-mode {
+            background: linear-gradient(135deg, #2c3e50, #1a1a1a);
+            color: var(--light);
+            --shadow-color: rgba(255, 255, 255, 0.08);
+            --shadow-color-darker: rgba(255, 255, 255, 0.12);
+            --shadow-color-light: rgba(255, 255, 255, 0.04);
+        }
+        body.dark-mode .login-box,
+        body.dark-mode .message-wall,
+        body.dark-mode .default-message,
+        body.dark-mode .message-item,
+        body.dark-mode .modal-content,
+        body.dark-mode .quiz-modal-content {
+            background: #3b3b3b;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode p, body.dark-mode label {
+            color: var(--light);
+        }
+        body.dark-mode .default-message h1 span:hover {
+            color: var(--accent);
+        }
+        body.dark-mode .login-box input[type="password"],
+        body.dark-mode .modal-content textarea,
+        body.dark-mode .quiz-modal-content input[type="text"] {
+            background-color: #4f4f4f;
+            color: var(--light);
+            border-color: var(--accent);
+             /* iOS input appearance */
+             -webkit-appearance: none;
+             appearance: none;
+        }
+        body.dark-mode .btn-magic {
+            background: var(--accent);
+            color: #1e1e1e;
+        }
+        body.dark-mode .btn-magic:hover {
+            background: #3dbbb3;
+        }
+        body.dark-mode .message-counter {
+            background: #4f4f4f;
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode .star {
+            box-shadow: 0 0 8px gold;
+        }
+        body.dark-mode .balloon::after {
+            background: rgba(255,255,255,0.2);
+        }
+        body.dark-mode .cake-3d {
+            filter: brightness(0.9) drop-shadow(5px 15px 10px rgba(255,255,255,0.08));
+        }
+        body.dark-mode #hiddenMessage.final-reward-message {
+             background: linear-gradient(135deg, var(--accent), #3dbbb3);
+             color: #1e1e1e;
+             text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.3);
+        }
+
+        /* --- Login Modal --- */
         .login-modal {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.95);
+            inset: 0;
+            background: rgba(255, 255, 255, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
+            z-index: 10000;
+            /* Safari backdrop-filter */
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+        }
+        body.dark-mode .login-modal {
+            background: rgba(10, 10, 10, 0.85);
         }
         .login-box {
             background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            padding: clamp(30px, 5vw, 40px) clamp(35px, 6vw, 50px);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px var(--shadow-color-darker);
             text-align: center;
             width: 90%;
             max-width: 400px;
+            transform: scale(0.9) translateY(20px) translateZ(0); /* Start slightly smaller and lower + promote layer */
+            opacity: 0;
+            animation: popInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes popInUp {
+             0% { transform: scale(0.9) translateY(20px) translateZ(0); opacity: 0; }
+             100% { transform: scale(1) translateY(0) translateZ(0); opacity: 1; }
+        }
+        @keyframes shake {
+             0%, 100% { transform: translateX(0); }
+             10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+             20%, 40%, 60%, 80% { transform: translateX(8px); }
+        }
+        .login-box.shake-error {
+            animation: shake 0.5s ease-in-out;
         }
         .login-box h2 {
             font-family: 'Great Vibes', cursive;
             color: var(--primary);
-            font-size: 2em;
-            margin-bottom: 20px;
+            font-size: clamp(1.8em, 5vw, 2.2em);
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
         }
         .login-box input[type="password"] {
             width: 100%;
-            padding: 15px;
+            padding: 15px 20px;
             border: 2px solid var(--primary);
-            border-radius: 15px;
-            margin-bottom: 20px;
-            font-size: 1em;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+            font-family: 'Changa', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .login-box input[type="password"]:focus {
+             border-color: var(--accent);
+             box-shadow: 0 0 10px rgba(78, 205, 196, 0.6);
+             outline: none;
         }
         .login-box button {
-            width: 100%;
-            padding: 15px;
-            border: 0;
-            background: var(--primary);
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 15px;
-            transition: background 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+             margin-top: 10px;
+             width: 100%;
+             padding: 15px;
         }
-        .login-box button:hover {
-            background: #ff4d4d;
-        }
+
+        /* --- Main Scene --- */
         .scene {
             position: relative;
-            perspective: 1000px;
-            height: 100vh;
+            perspective: 1500px;
+            /* Use --vh for min-height */
+            min-height: calc(var(--vh, 1vh) * 100);
             overflow: hidden;
             opacity: 0;
-            transition: opacity 1s;
+            transition: opacity 1s ease-in-out;
+            display: none;
+             /* Helps with positioning fixed elements within on iOS */
+            transform: translateZ(0);
         }
+        body:not(.dark-mode) .scene {
+            background: linear-gradient(135deg, #ffdde1, var(--light));
+        }
+        body.dark-mode .scene {
+            background: linear-gradient(135deg, #2c3e50, #1a1a1a);
+        }
+
+        /* --- Balloons --- */
         .balloon-group {
             position: absolute;
-            animation: float 8s linear infinite;
+            animation: float 10s ease-in-out infinite alternate;
+            transform-style: preserve-3d;
+            z-index: 10;
         }
         .balloon {
-            width: 120px;
-            height: 150px;
-            background: radial-gradient(circle at 50% 120%, #fff, #f0f0f0);
+            width: clamp(80px, 10vw, 100px);
+            height: clamp(105px, 13vw, 130px);
+            background: radial-gradient(circle at 50% 120%, #ff9a9e, #fad0c4);
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
             position: relative;
-            margin: 15px;
-            transform-origin: bottom;
-            animation: sway 3s infinite alternate;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            margin: 10px;
+            transform-origin: bottom center;
+            animation: sway 3.5s ease-in-out infinite alternate;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.05), 0 10px 25px var(--shadow-color);
             cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateZ(0); /* Promote layer */
         }
+        .balloon:hover {
+             transform: scale(1.15) translateZ(20px);
+         }
+        .balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 50px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 0 0 2px 2px;
+         }
+
+        /* --- Cake --- */
         .cake-3d {
             position: absolute;
             bottom: 5%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: rotateY(0deg) translateX(-50%); /* Explicit centering */
             transform-style: preserve-3d;
-            animation: rotate 20s linear infinite;
+            animation: rotateCake 25s linear infinite;
+            z-index: 5;
+             width: clamp(150px, 20vw, 200px);
+             height: clamp(190px, 25vw, 250px);
+             /* Inline SVG for cake - smaller & less requests */
+             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120"><path fill="%23f8cdda" d="M10 40 Q 50 20 90 40 L 90 90 Q 50 110 10 90 Z" /><path fill="%23efb7c9" d="M10 40 Q 50 60 90 40 V 20 Q 50 0 10 20 Z" /><ellipse cx="50" cy="20" rx="40" ry="10" fill="%23f8cdda" /><text x="50" y="75" font-size="15" text-anchor="middle" fill="%23c13584">HBD</text><path fill="%23fce4ec" d="M50,5 L52,15 L60,15 L54,22 L56,30 L50,25 L44,30 L46,22 L40,15 L48,15 Z" /></svg>') center/contain no-repeat;
+             cursor: pointer;
+             transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
+             filter: drop-shadow(5px 15px 10px var(--shadow-color));
+             /* Ensure centering works well with rotations */
+             transform-origin: center bottom;
         }
+         .cake-3d:hover {
+             /* Adjusted hover transform */
+             transform: translateX(-50%) rotateY(25deg) scale(1.1) translateZ(30px);
+             box-shadow: 0 20px 40px var(--shadow-color-darker);
+             filter: drop-shadow(8px 20px 15px var(--shadow-color-darker));
+         }
+        @keyframes rotateCake {
+             from { transform: translateX(-50%) rotateY(0deg); }
+             to { transform: translateX(-50%) rotateY(360deg); }
+         }
+
+        /* --- Default Welcome Message --- */
+        .default-message {
+            position: absolute;
+            top: clamp(15%, 10vh, 20%);
+            left: 50%;
+            transform: translateX(-50%) translateZ(0); /* Center + promote layer */
+            background: rgba(255, 255, 255, 0.97);
+            padding: clamp(20px, 4vw, 30px) clamp(25px, 5vw, 40px);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px var(--shadow-color-darker);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            animation: gentleFloat 7s ease-in-out infinite alternate;
+            z-index: 20;
+            /* Safari backdrop-filter */
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
+        }
+        .default-message h1 {
+            font-family: 'Great Vibes', cursive;
+            color: var(--primary);
+            font-size: clamp(2.5em, 8vw, 3.5em);
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+             letter-spacing: 2px;
+             /* Prevent text selection issues */
+             -webkit-user-select: none;
+             -moz-user-select: none;
+             -ms-user-select: none;
+             user-select: none;
+        }
+         .default-message h1 span {
+             display: inline-block;
+             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s, text-shadow 0.3s;
+             text-shadow: 1px 1px 0px rgba(0,0,0,0.1),
+                          2px 2px 0px rgba(0,0,0,0.08),
+                          3px 3px 0px rgba(0,0,0,0.06);
+         }
+         .default-message h1:hover span {
+             color: var(--accent);
+             transform: translateY(-3px) translateZ(10px) rotateX(10deg);
+             text-shadow: 1px 1px 0px rgba(0,0,0,0.2),
+                          2px 3px 0px rgba(0,0,0,0.15),
+                          3px 5px 0px rgba(0,0,0,0.1);
+         }
+         .default-message h1.clicked span {
+             animation: jump 0.5s ease-in-out;
+         }
+         @keyframes jump {
+             0%, 100% { transform: translateY(0) scale(1); }
+             50% { transform: translateY(-15px) scale(1.1) rotate(5deg); }
+         }
+        .default-message p {
+            font-size: clamp(1em, 2.5vw, 1.15em);
+            line-height: 1.8;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+        .default-message strong {
+             color: var(--primary);
+             font-weight: 700;
+         }
+
+        /* --- Message Wall --- */
         .message-wall {
             position: fixed;
             right: 20px;
-            top: 20px;
-            width: 90%;
-            max-width: 350px;
-            background: rgba(255,255,255,0.9);
+            top: clamp(80px, 10vh, 100px);
+            width: clamp(300px, 80vw, 360px);
+            max-width: 90%;
+            background: rgba(255, 255, 255, 0.92);
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            max-height: 80vh;
+            box-shadow: 0 10px 30px var(--shadow-color-darker);
+             /* Use --vh for max-height calculation */
+            max-height: calc( (var(--vh, 1vh) * 100) - 260px );
             overflow-y: auto;
+            z-index: 50;
+             /* Safari backdrop-filter */
+             -webkit-backdrop-filter: blur(5px);
+             backdrop-filter: blur(5px);
+             scrollbar-width: thin;
+             scrollbar-color: var(--primary) rgba(0,0,0,0.05);
+              /* iOS momentum scrolling */
+             -webkit-overflow-scrolling: touch;
         }
-        .control-panel {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            z-index: 999;
-        }
-        .btn-magic {
-            background: var(--primary);
-            border: 0;
-            padding: 15px 30px;
-            border-radius: 30px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .btn-magic:hover {
-            background: #ff4d4d;
-        }
-        .default-message {
-            position: absolute;
-            top: 25%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255,255,255,0.95);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            max-width: 500px;
-            text-align: center;
-            animation: float 5s infinite alternate;
-        }
+         .message-wall::-webkit-scrollbar { width: 8px; }
+         .message-wall::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
+         .message-wall::-webkit-scrollbar-thumb { background-color: var(--primary); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
+         .message-wall::-webkit-scrollbar-thumb:hover { background-color: #ff4d4d; }
+         .message-wall h3 {
+             color: var(--primary);
+             text-align: center;
+             margin-bottom: 15px;
+             font-size: 1.4em;
+         }
         .message-item {
             background: white;
-            padding: 15px;
+            padding: 15px 20px;
             border-radius: 10px;
-            margin: 10px 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 12px;
+            box-shadow: 0 5px 15px var(--shadow-color-light);
             position: relative;
-            transition: transform 0.3s;
-            animation: slideIn 0.5s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease;
+            animation: slideInRight 0.5s ease-out forwards;
+            opacity: 0;
+            word-wrap: break-word; /* Ensure long words break */
+            overflow-wrap: break-word; /* Modern property for word breaking */
+            transform-style: preserve-3d;
+            transform: translateZ(0); /* Promote layer */
         }
         .message-item:hover {
-            transform: translateX(10px);
-        }
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-        .modal-content {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            position: relative;
-        }
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-            font-size: 1.5em;
-        }
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255,255,255,0.9);
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            z-index: 9999;
-            display: none;
-            transition: opacity 0.5s;
-        }
-        .notification.show {
-            display: block;
-            opacity: 1;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-        @keyframes sway {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-        }
-        @keyframes rotate {
-            from { transform: translateX(-50%) rotateY(0deg); }
-            to { transform: translateX(-50%) rotateY(360deg); }
-        }
-        .fireworks {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" fill="%23ff6b6b"/><path fill="%234ecdc4" d="M50 10L60 30H70L50 50L30 30H40L50 10Z"/><path fill="%2345b7d1" d="M50 90L60 70H70L50 50L30 70H40L50 90Z"/></svg>');
-            background-repeat: repeat;
-            opacity: 0;
-            animation: fireworks 1s infinite;
-        }
-        @keyframes fireworks {
-            0% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(1.5); }
-        }
-        .message-counter {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-        .dark-mode-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: var(--primary);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-        }
-        .star {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background: gold;
-            border-radius: 50%;
-            animation: twinkle 2s infinite;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+            transform: translateX(-5px) scale(1.03) translateZ(15px);
+            box-shadow: 0 8px 25px var(--shadow-color);
         }
         .delete-btn {
             position: absolute;
-            right: 10px;
+            left: 10px; /* Changed from right to left for RTL */
             top: 50%;
             transform: translateY(-50%);
-            color: red;
+            color: #ff6b6b;
             cursor: pointer;
             font-weight: bold;
-            transition: 0.3s;
+            font-size: 1.2em;
+            transition: color 0.3s, transform 0.3s;
+            padding: 5px;
+            z-index: 2;
+         }
+         .delete-btn:hover {
+             color: #e74c3c;
+             transform: translateY(-50%) rotate(180deg) scale(1.1);
+         }
+        @keyframes highlightNewMessage {
+             0% { background-color: rgba(78, 205, 196, 0.3); }
+             100% { background-color: white; }
         }
-        .delete-btn:hover {
-            color: darkred;
-            transform: translateY(-50%) rotate(180deg);
+        @keyframes highlightNewMessageDark {
+             0% { background-color: rgba(78, 205, 196, 0.4); }
+             100% { background-color: #3b3b3b; }
+         }
+        .message-item.new-message-highlight {
+            animation: highlightNewMessage 1.5s ease-out forwards;
         }
+        body.dark-mode .message-item.new-message-highlight {
+             background-color: #3b3b3b; /* Ensure base color is correct */
+             animation-name: highlightNewMessageDark;
+         }
+
+        /* --- Control Panel & Buttons --- */
+        .control-panel {
+            position: fixed;
+            bottom: 0; /* Anchor to bottom for safe area inset */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: clamp(10px, 2vw, 15px);
+            z-index: 100;
+            padding: 10px clamp(10px, 3vw, 15px);
+             background: rgba(255, 255, 255, 0.85);
+             border-radius: 50px 50px 0 0; /* Adjust radius if needed with safe area */
+             /* Safari backdrop-filter */
+             -webkit-backdrop-filter: blur(8px);
+             backdrop-filter: blur(8px);
+             box-shadow: 0 -5px 20px var(--shadow-color); /* Adjust shadow slightly */
+             width: max-content;
+             max-width: 100%; /* Allow full width if needed */
+             /* Add safe area padding for iOS bottom bar */
+             padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
+             box-sizing: border-box; /* Ensure padding is included in width */
+        }
+        body.dark-mode .control-panel {
+             background: rgba(50, 50, 50, 0.8);
+             box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
+        }
+        .btn-magic {
+            background: var(--primary);
+            border: none;
+            padding: clamp(10px, 2vw, 12px) clamp(18px, 4vw, 25px);
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            font-family: 'Changa', sans-serif;
+            font-size: clamp(0.85em, 2.2vw, 0.95em);
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+             white-space: nowrap;
+             /* iOS button appearance */
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .btn-magic:hover {
+            background: #ff4d4d;
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 7px 18px rgba(0,0,0,0.18);
+        }
+         .btn-magic:active {
+             transform: translateY(-1px) scale(1);
+             box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+         }
+         body.dark-mode .btn-magic {
+             background: var(--accent);
+             color: #1e1e1e;
+         }
+         body.dark-mode .btn-magic:hover {
+             background: #3dbbb3;
+             box-shadow: 0 7px 18px rgba(255,255,255,0.1);
+         }
         .btn-colors {
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
-            background-size: 200% auto;
-            animation: gradient 3s linear infinite;
+             background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff6b6b);
+             background-size: 300% 300%;
+             animation: gradientShift 4s ease infinite;
         }
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes gradientShift {
+             0% {background-position: 0% 50%;}
+             50% {background-position: 100% 50%;}
+             100% {background-position: 0% 50%;}
         }
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+
+        /* --- Modals (General Styling) --- */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            /* Safari backdrop-filter */
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+            animation: fadeIn 0.4s ease-out forwards; /* Fade in background */
         }
-        @media (max-width: 600px) {
-            .control-panel {
-                flex-direction: column;
-                gap: 10px;
-                width: 90%;
-                max-width: 350px;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-            .btn-magic {
-                padding: 10px 20px;
-            }
-            .message-wall {
-                right: 10px;
-                top: 10px;
-                width: 90%;
-                max-width: 350px;
-            }
-            .dark-mode-toggle {
-                top: 10px;
-                left: 10px;
-            }
-            .message-counter {
-                bottom: 70px;
-            }
-            .login-box {
-                padding: 30px;
-            }
-            .default-message {
-                padding: 30px;
-            }
-            .modal-content {
-                padding: 30px;
-            }
-            .scene {
-                height: 80vh;
-            }
-            .balloon-group {
-                transform: scale(0.8);
-            }
-            .cake-3d {
-                transform: translateX(-50%) scale(0.8);
-            }
+        body.dark-mode .modal {
+            background: rgba(20, 20, 20, 0.75);
         }
+        .modal-content, .quiz-modal-content {
+            background: white;
+            padding: clamp(25px, 5vw, 30px) clamp(30px, 6vw, 40px);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 480px;
+            position: relative;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            transform: translateY(-25px) scale(0.95) translateZ(0); /* Initial state for animation + promote */
+            opacity: 0;
+            animation: slideDownFadeInScale 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform-style: preserve-3d;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 15px; /* Adjusted for RTL */
+            left: auto; /* Reset left */
+            cursor: pointer;
+            font-size: 1.8em;
+            color: #aaa;
+            transition: color 0.3s, transform 0.3s;
+            line-height: 1;
+            z-index: 10;
+        }
+        .close:hover {
+            color: var(--primary);
+            transform: rotate(90deg) scale(1.1);
+        }
+        body.dark-mode .close {
+            color: #ccc;
+        }
+         body.dark-mode .close:hover {
+             color: var(--accent);
+         }
+
+        /* --- Message Modal Specifics --- */
+        #messageModal textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--secondary);
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Changa', sans-serif;
+            font-size: 1em;
+            min-height: 100px;
+             resize: vertical;
+             /* iOS input appearance */
+             -webkit-appearance: none;
+             appearance: none;
+        }
+         #messageModal textarea:focus {
+             border-color: var(--primary);
+             box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
+             outline: none;
+         }
+         #messageModal button {
+             width: 100%;
+             padding: 15px;
+         }
+
+        /* --- Quiz Modal Specifics --- */
+        .quiz-modal-content h3 {
+            color: var(--primary);
+            margin-bottom: 5px; /* Reduced margin */
+            text-align: center;
+            font-size: 1.5em;
+        }
+        #quizProgress {
+            text-align: center;
+            font-size: 0.9em;
+            opacity: 0.7;
+            margin-bottom: 15px;
+        }
+        .quiz-modal-content label {
+             display: block;
+             margin-bottom: 10px;
+             font-weight: bold;
+        }
+        .quiz-modal-content input[type="text"] {
+             width: 100%;
+             padding: 12px 15px;
+             border: 2px solid var(--secondary);
+             border-radius: 10px;
+             margin-bottom: 20px;
+             font-size: 1em;
+             font-family: 'Changa', sans-serif;
+              /* iOS input appearance */
+             -webkit-appearance: none;
+             appearance: none;
+        }
+         .quiz-modal-content input[type="text"]:focus {
+             border-color: var(--primary);
+             box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
+             outline: none;
+         }
+        .quiz-modal-content button {
+            width: 100%;
+            padding: 15px;
+        }
+        #quizFeedback {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: bold;
+            min-height: 1.2em; /* Reserve space */
+        }
+        #quizFeedback.success { color: #2ecc71; }
+        #quizFeedback.error { color: #e74c3c; }
+
+        /* --- Utility & Decorative Elements --- */
+        .message-counter {
+            position: fixed;
+            /* Position top-left respecting safe area for RTL */
+            top: calc(env(safe-area-inset-top, 0px) + 18px);
+            left: 15px;
+            right: auto; /* Reset right */
+            bottom: auto;
+            transform: none; /* Reset transform */
+            background: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8em;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            z-index: 90;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        .star {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: gold;
+            border-radius: 50%;
+            box-shadow: 0 0 6px gold;
+            animation: twinkle 2s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 1;
+             transition: transform 0.2s linear;
+             transform: translateZ(0); /* Promote layer */
+        }
+        /* Hidden Message Div */
+         #hiddenMessage {
+             position: fixed;
+             left: 50%;
+             background: rgba(0,0,0,0.75);
+             color: white;
+             padding: 20px 30px; /* Slightly larger padding */
+             border-radius: 15px;
+             z-index: 101; /* Above control panel */
+             opacity: 0; /* Start hidden */
+             pointer-events: none; /* Start non-interactive */
+             text-align: center;
+             font-size: 1.2em; /* Slightly larger font */
+             font-weight: bold;
+             bottom: calc(env(safe-area-inset-bottom, 0px) + 100px);
+             max-width: 90%; /* Ensure it fits on screen */
+             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+             /* Apply initial transform and transition for standard messages */
+             transform: translateX(-50%) scale(0) translateZ(0);
+             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s;
+             transform-style: preserve-3d;
+         }
+        /* --- Final Reward Message Style --- */
+         #hiddenMessage.final-reward-message {
+             background: linear-gradient(135deg, var(--primary), #ff8a8a);
+             font-size: 1.5em;
+             font-family: 'Great Vibes', cursive; /* Using elegant font */
+             padding: 30px 40px;
+             border-radius: 20px;
+             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+             /* Override initial transform and transition for the final message */
+             transform: translateX(-50%) scale(0) rotateX(-30deg) translateZ(0); /* Initial 3D state */
+             transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.7s;
+             /* transform-style is already on base #hiddenMessage */
+         }
+
+         /* --- REMOVED THE .show CLASS RULE --- */
+         /*
+         #hiddenMessage.final-reward-message.show { /* State when showing */
+            /* opacity: 1; */ /* Handled by JS */
+            /* transform: translateX(-50%) scale(1) rotateX(0deg) translateZ(0); */ /* Handled by JS */
+         /* }
+         */
+
+
+        /* --- Animations --- */
+        @keyframes float {
+            0% { transform: translateY(0px) translateZ(0); }
+            50% { transform: translateY(-25px) translateZ(0); }
+            100% { transform: translateY(0px) translateZ(0); }
+        }
+        @keyframes gentleFloat {
+            0% { transform: translateX(-50%) translateY(0px) translateZ(0); }
+            50% { transform: translateX(-50%) translateY(-12px) translateZ(0); }
+            100% { transform: translateX(-50%) translateY(0px) translateZ(0); }
+        }
+        @keyframes sway {
+            0% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+            100% { transform: rotate(-5deg); }
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.1; transform: scale(0.7); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        @keyframes slideInRight {
+             from { transform: translateX(120%) translateZ(0); opacity: 0; } /* Start from right for RTL */
+             to { transform: translateX(0) translateZ(0); opacity: 1; }
+         }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideDownFadeInScale {
+             from { opacity: 0; transform: translateY(-25px) scale(0.95) translateZ(0); }
+             to { opacity: 1; transform: translateY(0) scale(1) translateZ(0); }
+         }
+
+        /* --- Responsive Design Adjustments --- */
+        @media (max-width: 768px) {
+             .message-wall {
+                  max-width: 90%;
+                  right: 5%; /* Center horizontally */
+                  left: 5%; /* Center horizontally */
+                  top: 15px; /* Move higher */
+                  max-height: 30vh; /* Keep relative height */
+                  padding: 15px;
+                   /* Respect safe area top */
+                  top: calc(env(safe-area-inset-top, 0px) + 15px);
+                  /* Adjust max-height considering top safe area */
+                  max-height: calc(30vh - env(safe-area-inset-top, 0px));
+             }
+              .message-wall h3 { font-size: 1.2em; margin-bottom: 10px;}
+              .message-item { padding: 10px 15px; margin-bottom: 10px; }
+              .delete-btn { font-size: 1.1em; left: 8px; }
+
+             .control-panel {
+                  width: 95%; /* Slightly wider on mobile */
+                  max-width: 95%;
+                  gap: 8px;
+                  padding: 8px 10px;
+                  /* Bottom already handles safe area */
+                  bottom: 0;
+                  border-radius: 30px 30px 0 0; /* Adjusted radius */
+                  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+             }
+              .btn-magic {
+                  padding: 8px 15px;
+                  font-size: 0.85em;
+                  gap: 5px;
+              }
+             .default-message {
+                  width: 90%;
+                  padding: 15px 20px;
+                  top: auto; /* Remove fixed top */
+                  bottom: 45%; /* Position relative to bottom */
+                  transform: translate(-50%, 50%) translateZ(0); /* Center X, position Y */
+                  animation: none; /* Disable gentle float */
+                  max-width: 90%;
+             }
+              .default-message h1 { font-size: 2em; letter-spacing: 1px;}
+              .default-message p { font-size: 0.95em; line-height: 1.7;}
+
+              .message-counter {
+                  /* Position top-left respecting safe area for RTL */
+                   top: calc(env(safe-area-inset-top, 0px) + 15px);
+                  left: 10px;
+                  right: auto;
+                  font-size: 0.8em; padding: 6px 12px;
+              }
+
+              .login-box { padding: 30px 25px; }
+              .modal-content, .quiz-modal-content { padding: 20px 25px; max-width: 90%; }
+              .cake-3d {
+                  width: 140px; height: 180px; top: 55%; /* Adjust position */
+                  animation-duration: 35s;
+                  transform: translateX(-50%) rotateY(0deg); /* Reset transform for simpler positioning */
+              }
+               .cake-3d:hover {
+                  transform: translateX(-50%) rotateY(15deg) scale(1.05) translateZ(15px);
+               }
+
+              .balloon-group { transform: scale(0.9); }
+              .balloon { width: 80px; height: 105px; }
+              .star { width: 2px; height: 2px; }
+              #hiddenMessage {
+                  bottom: calc(env(safe-area-inset-bottom, 0px) + 90px); /* Adjust position */
+                  font-size: 1em;
+                  padding: 15px 20px;
+              }
+              #hiddenMessage.final-reward-message {
+                  font-size: 1.2em;
+                  padding: 20px 30px;
+              }
+        }
+         @media (max-width: 480px) {
+              .default-message h1 { font-size: 1.8em; }
+              .default-message p { font-size: 0.9em; line-height: 1.6;}
+              .control-panel { gap: 5px; border-radius: 25px 25px 0 0; }
+              .btn-magic { padding: 7px 12px; font-size: 0.8em; }
+              .cake-3d { width: 120px; height: 160px; top: 60%; }
+               .cake-3d:hover {
+                  transform: translateX(-50%) rotateY(10deg) scale(1.03) translateZ(10px);
+               }
+              .message-counter {
+                  font-size: 0.75em; padding: 5px 10px;
+                  top: calc(env(safe-area-inset-top, 0px) + 12px);
+                  left: 8px;
+              }
+              .message-wall { max-height: 25vh; }
+              #hiddenMessage {
+                  bottom: calc(env(safe-area-inset-bottom, 0px) + 80px);
+              }
+         }
+         /* Specific overrides for landscape on small heights (like iPhone SE landscape) */
+         @media (max-height: 450px) and (orientation: landscape) {
+             .default-message {
+                  position: relative; /* Change from absolute */
+                  top: auto;
+                  bottom: auto;
+                  transform: translateX(-50%); /* Only center horizontally */
+                  margin: 20px auto; /* Add some margin */
+                  width: 80%;
+                  padding: 10px 15px;
+                  animation: none; /* Disable float */
+              }
+               .default-message h1 { font-size: 1.5em; }
+               .default-message p { font-size: 0.8em; line-height: 1.5; margin-bottom: 10px;}
+
+              .cake-3d {
+                  position: relative; /* Change from absolute */
+                  margin: 0 auto 20px auto; /* Center and add margin */
+                  bottom: auto; top: auto; /* Reset positioning */
+                  left: auto; transform: none; /* Reset transform */
+                  width: 100px; height: 130px;
+                  animation: none; /* Stop rotation in small landscape */
+              }
+              .message-wall {
+                  position: relative; /* Change from fixed */
+                  width: 90%;
+                  max-width: 90%;
+                  margin: 10px auto;
+                  max-height: 150px; /* Fixed height */
+                  top: auto; right: auto; left: auto; /* Reset positioning */
+               }
+              .control-panel {
+                  position: relative; /* Change from fixed */
+                  bottom: auto; left: auto; transform: none; /* Reset positioning */
+                  width: 90%; max-width: 90%;
+                  margin: 10px auto;
+                  padding: 5px; padding-bottom: 5px; /* Reset padding */
+                  border-radius: 20px; /* Full radius */
+              }
+              .btn-magic { font-size: 0.75em; padding: 5px 10px; }
+              .message-counter { display: none; } /* Hide counter */
+              #hiddenMessage { display: none; } /* Hide popup message */
+         }
+
     </style>
 </head>
 <body>
     <div class="login-modal" id="loginModal">
         <div class="login-box">
-            <h2>قريبة علئ اسمك</h2>
-            <input type="password" id="password" placeholder="كلمة السر" autocomplete="off">
-            <button class="btn-magic" onclick="checkPassword()">دخول</button>
+            <h2 id="loginModalTitle">مين الحلو؟ 😉 (كلمة السر قريبة من اسمك)</h2>
+            <input type="password" id="password" placeholder="اكتب كلمة السر (h)..." autocomplete="off" autofocus>
+            <button class="btn-magic" onclick="checkPassword()">🔑 دخول</button>
         </div>
     </div>
+
     <div class="scene" id="mainScene">
-        <div class="balloon-group" style="left: 10%; top: 5%;">
-            <div class="balloon" style="background: radial-gradient(circle at 50% 120%, #ff9a9e, #fad0c4);"></div>
-            <div class="balloon" style="background: radial-gradient(circle at 50% 120%, #a8edea, #fed6e3);"></div>
+
+        <div class="balloon-group" style="left: 8%; top: 5%;">
+            <div class="balloon" style="background: radial-gradient(circle at 50% 120%, #ff9a9e, #fad0c4);" onclick="popBalloon(this)"></div>
+            <div class="balloon" style="background: radial-gradient(circle at 50% 120%, #a8edea, #fed6e3); animation-delay: 1.2s;" onclick="popBalloon(this)"></div>
         </div>
-        <div class="cake-3d">
-            <div class="cake-layer" style="width: 300px; height: 60px;"></div>
-            <div class="cake-layer" style="width: 270px; height: 50px; margin: 20px auto;"></div>
-            <div class="cake-layer" style="width: 240px; height: 40px; margin: 25px auto;"></div>
+        <div class="balloon-group" style="right: 8%; top: 12%; animation-duration: 12s;">
+            <div class="balloon" style="background: radial-gradient(circle at 50% 120%, #ffeaa7, #fdcb6e); animation-delay: 0.6s;" onclick="popBalloon(this)"></div>
         </div>
+        <div class="balloon-group" style="left: 30%; top: 20%; animation-duration: 9s;">
+            <div class="balloon" style="background: radial-gradient(circle at 50% 120%, #55efc4, #a29bfe); animation-delay: 0.3s;" onclick="popBalloon(this)"></div>
+        </div>
+
+        <div class="cake-3d" id="cakeElement" onclick="cakeSurprise()"></div>
+
         <div class="default-message">
-            <h1 style="font-family: 'Great Vibes', cursive; color: var(--primary); font-size: 2.5em;">كل رمضان وانت بخير</h1>
-            <p class="lead" style="font-size: 1.2em; color: var(--dark);">
-                🎉 في هذا اليوم المميز 🌙 <br>
-                أدعو الله أن يملأ حياتك بالفرح والسعادة<br>
-                وأن يحقق لك كل أحلامك<br><br>
-                🌹 أنت النور الذي يضيء أيامي<br>
-                والحب الذي يدوم إلى الأبد<br><br>
-                 مع كل شمعة تُضاء<br>
-                تُجدد أمنياتي لك بالخير والبركة<br><br>
-                <strong>كل عام وأنت حبيب القلب 💖</strong>
+            <h1 id="mainTitle" onclick="titleSurprise(this)">كل عيد وانت بألف خير</h1>
+            <p>
+                 🎉 في يومك المميز هذا 🌟<br>
+                 أتمنى لك عاماً مليئاً بالضحكات التي لا تنتهي، والمفاجآت السعيدة، وكل الحب الذي يستحقه قلبك الطيب.<br>
+                 أنت لست فقط صديقي، أنت نجم يضيء حياتي ✨<br><br>
+                 كل لحظة معك هي ذكرى ثمينة.<br>
+                 كل عام وأنت الأجمل والأقرب إلى قلبي 💖<br><br>
+                 <strong style="font-size: 1.1em;">بحبك infinito! 🥳</strong>
             </p>
         </div>
+
         <div class="message-wall" id="messageWall">
-            <h3 style="color: var(--primary);">رسائلك الخاصة</h3>
-            <div id="messagesContainer"></div>
-        </div>
-        <div class="control-panel">
-            <button class="btn-magic" onclick="toggleMusic()">🎵 موسيقى</button>
-            <button class="btn-magic" onclick="showMessageForm()">💌 أرسل رسالة</button>
-            <button class="btn-magic" onclick="toggleConfetti()">🎉 مفاجأة</button>
-            <button class="btn-magic" onclick="toggleFireworks()">شنو يعني هذا سر ؟</button>
-            <button class="btn-magic btn-colors" onclick="changeBalloonColors()">تغير الون</button>
-        </div>
-        <div class="modal" id="messageModal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <textarea id="userMessage" placeholder="اكتب رسالتك هنا..." rows="5" 
-                    style="width: 100%; padding: 15px; border: 2px solid var(--primary); border-radius: 15px; margin: 15px 0;"></textarea>
-                <button class="btn-magic" onclick="saveMessage()">إرسال</button>
+            <h3>💌 ركن الرسائل السرية 💌</h3>
+            <div id="messagesContainer">
+                <p style="text-align:center; padding: 20px; opacity: 0.7;">جاري تحميل الرسائل...</p>
             </div>
         </div>
-        <div class="fireworks" id="fireworks"></div>
+
+        <div class="control-panel">
+            <button class="btn-magic" onclick="toggleMusic()" id="musicBtn" title="تشغيل/كتم الموسيقى">🎵</button>
+            <button class="btn-magic" onclick="showMessageForm()" title="اكتب رسالة">✍️</button>
+            <button class="btn-magic" onclick="launchConfetti()" title="احتفل!">🎉</button>
+            <button class="btn-magic" onclick="startQuiz()" id="quizButton" title="تحدي الأسئلة!">🎁</button>
+            <button class="btn-magic btn-colors" onclick="changeBalloonColors()" title="غير ألوان البالونات">🎨</button>
+            <button class="btn-magic" onclick="showKnowledge()" id="knowledgeBtn" title="لمحة معرفة">💡</button>
+            <button class="btn-magic" onclick="toggleDarkMode()" id="darkModeToggle" title="الوضع الليلي/النهاري">🌙</button>
+        </div>
+
+        <div class="modal" id="messageModal" role="dialog" aria-modal="true" aria-labelledby="messageModalTitle" aria-hidden="true">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('messageModal')" aria-label="إغلاق">&times;</span>
+                <h3 id="messageModalTitle">اكتب رسالة لحسونتي</h3>
+                <textarea id="userMessage" placeholder="عبر عن مشاعرك هنا..." rows="5"></textarea>
+                <button class="btn-magic" onclick="saveMessage()">🚀 إرسال</button>
+            </div>
+        </div>
+
+        <div class="modal" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizModalTitle" aria-hidden="true">
+            <div class="quiz-modal-content">
+                <span class="close" onclick="closeModal('quizModal')" aria-label="إغلاق">&times;</span>
+                <h3 id="quizModalTitle">🕵️‍♂️ انت تعرفني زين؟خلينا نشوف 🕵️‍♂️</h3>
+                <div id="quizProgress"></div>
+                <label id="quizQuestionLabel" for="quizAnswer">السؤال:</label>
+                <p id="quizQuestionText" style="margin-bottom: 15px; font-weight:bold;"></p>
+                <input type="text" id="quizAnswer" placeholder="اكتب إجابتك هنا...">
+                <button class="btn-magic" onclick="checkQuizAnswer()">التالي</button>
+                <div id="quizFeedback"></div>
+            </div>
+        </div>
+
         <div class="message-counter" id="messageCounter">0 رسائل</div>
-        <div class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 الوضع الليلي</div>
-    </div>
-    <audio id="bg-music" loop>
-        <source src="https://assets.codepen.io/1700775/hbd-song.mp3" type="audio/mpeg">
+
+        <div id="hiddenMessage" role="alert" aria-live="polite">
+             رسالة سرية! ✨
+        </div>
+
+    </div> <audio id="bg-music" loop>
+        <source src="https://cdn.jsdelivr.net/gh/store-rd/hsn@main/hbd.mp3" type="audio/mpeg">
+        عذراً، متصفحك لا يدعم تشغيل الصوت.
     </audio>
+
     <script>
+        // --- Firebase Configuration ---
         const firebaseConfig = {
-            apiKey: "AIzaSyBia26tkTpn9nFZGJyP91VR06MRSlTqY40",
+            apiKey: "AIzaSyBia26tkTpn9nFZGJyP91VR06MRSlTqY40", // Keep secure using Firestore rules
             authDomain: "anord-9bc18.firebaseapp.com",
             projectId: "anord-9bc18",
-            storageBucket: "anord-9bc18.firebasestorage.app",
+            storageBucket: "anord-9bc18.appspot.com", // Ensure this matches your Firebase Storage bucket name
             messagingSenderId: "937344759300",
             appId: "1:937344759300:web:161e1df9a09c36b94ce751"
         };
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const messaging = firebase.messaging();
 
-        // Request notification permission and subscribe to FCM
-        async function requestNotificationPermission() {
-            if ("Notification" in window) {
-                const permission = await Notification.requestPermission();
-                if (permission === "granted") {
-                    console.log("Notification permission granted.");
-                    subscribeToTopic();
-                } else {
-                    console.log("Notification permission denied.");
-                }
-            }
+        // --- Initialize Firebase ---
+        let db;
+        let messaging; // Declare messaging variable
+        try {
+             firebase.initializeApp(firebaseConfig);
+             db = firebase.firestore(); // Use compat firestore
+             console.log("Firebase Initialized Successfully (Compat Mode)");
+
+             // Initialize Firebase Messaging if supported
+             if (firebase.messaging.isSupported()) {
+                 messaging = firebase.messaging();
+                 console.log("Firebase Messaging Initialized.");
+                 // Listener for messages received while the app is in the foreground
+                 messaging.onMessage((payload) => {
+                    console.log('Foreground Message received. ', payload);
+                    // Display the notification using our existing function
+                    if (payload.notification) {
+                        showLocalNotification(payload.notification.title, payload.notification.body);
+                    } else {
+                        console.warn("Received FCM message without notification payload:", payload);
+                    }
+                 });
+             } else {
+                 console.warn("Firebase Messaging is not supported in this browser.");
+                 messaging = null; // Set to null if not supported
+             }
+
+        } catch (error) {
+             console.error("Firebase Initialization Error:", error);
+             const loginModalTitle = document.getElementById('loginModalTitle');
+             if (loginModalTitle) {
+                 loginModalTitle.innerHTML += '<br><small style="color:red;">خطأ بالاتصال بقاعدة البيانات!</small>';
+             } else {
+                 alert("حدث خطأ فادح في الاتصال بقاعدة البيانات. قد لا يعمل الموقع بشكل صحيح.");
+             }
         }
 
-        // Subscribe to a topic for receiving notifications
-        async function subscribeToTopic() {
-            try {
-                const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-                const token = await messaging.getToken({ vapidKey: 'YOUR_PUBLIC_VAPID_KEY_HERE' });
-                console.log('FCM token:', token);
-                // Send the token to your server to subscribe to a topic
-                await fetch('/subscribe', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ token })
-                });
-            } catch (error) {
-                console.error("Error getting FCM token:", error);
-            }
-        }
-
-        // Handle incoming messages
-        messaging.onMessage((payload) => {
-            console.log('Message received. ', payload);
-            showNotification(payload.notification.title, payload.notification.body);
-        });
-
+        // --- Global Variables ---
         let messages = [];
         let darkMode = localStorage.getItem('darkMode') === 'true';
+        const stars = [];
+        const parallaxFactor = 0.05;
+        let quizIndex = 0;
+        let shuffledQuizzes = [];
+        let quizInProgress = false;
 
+        // --- Quiz Questions (Original List) ---
+        const originalQuizzes = [
+             { question: "شنو هو لوني المفضل ؟", answer: "اسود", reward: "🖤 بالضبط!" },
+             { question: "شوكت عيد ميلادي ؟ (فقط الشهر)", answer: "ابريل", reward: "🎂 صحيح!" },
+             { question: "شنو اكثر لعبة احبها هاي فترة ؟", answer: "سي اس كو", reward: "🎮 ذكي!" },
+             { question: "شنو اسم دلع مالتك عندي ؟", answer: "حسونتي", reward: "💖 أكيد!" },
+             { question: "مكان سفري مفضل حاليا؟", answer: "كربلاء", reward: "🙏 جواب حلو!" }
+        ];
+
+        // --- DOM Element References ---
+        let loginModal, mainScene, passwordInput, messagesContainer, messageModal, quizModal,
+            userMessageInput, messageCounter, music, musicBtn, darkModeToggleBtn, quizModalTitle,
+            quizProgress, quizQuestionText, quizAnswerInput, quizFeedback, quizSubmitButton,
+            mainTitle, cakeElement, hiddenMessageDiv, loginBox;
+
+        // Function to get references to DOM elements after DOM is loaded
+        function initializeDOMReferences() {
+            loginModal = document.getElementById('loginModal');
+            mainScene = document.getElementById('mainScene');
+            passwordInput = document.getElementById('password');
+            messagesContainer = document.getElementById('messagesContainer');
+            messageModal = document.getElementById('messageModal');
+            quizModal = document.getElementById('quizModal');
+            userMessageInput = document.getElementById('userMessage');
+            messageCounter = document.getElementById('messageCounter');
+            music = document.getElementById('bg-music');
+            musicBtn = document.getElementById('musicBtn');
+            darkModeToggleBtn = document.getElementById('darkModeToggle');
+            quizModalTitle = document.getElementById('quizModalTitle');
+            quizProgress = document.getElementById('quizProgress');
+            quizQuestionText = document.getElementById('quizQuestionText');
+            quizAnswerInput = document.getElementById('quizAnswer');
+            quizFeedback = document.getElementById('quizFeedback');
+            quizSubmitButton = quizModal?.querySelector('button.btn-magic');
+            mainTitle = document.getElementById('mainTitle');
+            cakeElement = document.getElementById('cakeElement');
+            hiddenMessageDiv = document.getElementById('hiddenMessage');
+            loginBox = loginModal?.querySelector('.login-box');
+
+            // Simple check, add more specific checks if needed
+            if (!loginModal || !mainScene || !passwordInput || !hiddenMessageDiv) {
+                console.error("Critical DOM elements (login, scene, password, hiddenMessage) are missing!");
+            }
+        }
+
+
+        // --- Core Functions ---
+
+        function checkPassword() {
+            if (!passwordInput || !loginModal || !mainScene || !loginBox) {
+                 console.error("Password check failed: Missing required elements.");
+                 return;
+            }
+
+            const enteredPassword = passwordInput.value;
+            const correctPassword = "hsnhsn";
+
+            if (enteredPassword === correctPassword) {
+                console.log("Password correct!");
+                loginModal.style.display = 'none';
+                mainScene.style.display = 'block';
+                requestAnimationFrame(() => {
+                    if (mainScene) mainScene.style.opacity = 1;
+                    initializeScene();
+                });
+            } else {
+                console.log("Password incorrect.");
+                alert('كلمة السر غلط! تأكد منها (تلميح: h) وحاول مرة ثانية 😉');
+                passwordInput.value = '';
+                passwordInput.focus();
+                loginBox.classList.add('shake-error');
+                setTimeout(() => { loginBox.classList.remove('shake-error'); }, 500);
+            }
+        }
+
+        function initializeScene() {
+             if (db) {
+                 loadMessages();
+             } else {
+                 if(messagesContainer) messagesContainer.innerHTML = '<p style="color: orange; text-align:center;">لا يمكن تحميل الرسائل (خطأ في الاتصال بقاعدة البيانات).</p>';
+                 if(messageCounter) messageCounter.textContent = "0 رسائل";
+             }
+             createStars(60);
+             setupParallax();
+             splitTitleIntoSpans();
+             if (darkMode) {
+                 document.body.classList.add('dark-mode');
+                 updateDarkModeToggleText();
+             }
+             // Call the updated permission request function
+             setupNotifications();
+             setVhVariable();
+             console.log("Scene initialized");
+         }
+
+        // --- Message Handling (Firestore - Using the robust version) ---
         async function loadMessages() {
-            try {
-                const snapshot = await db.collection('messages').get();
-                messages = snapshot.docs.map(doc => ({ id: doc.id, text: doc.data().text }));
-                renderMessages();
+            if (!db || !messagesContainer) {
+                console.error("Firestore DB or messagesContainer not available for loading messages.");
+                if(messagesContainer) messagesContainer.innerHTML = '<p style="color: red; text-align:center;">خطأ: لا يمكن تهيئة تحميل الرسائل.</p>';
                 updateMessageCounter();
+                return;
+            }
+            messagesContainer.innerHTML = '<p style="text-align:center; padding: 20px; opacity: 0.7;">⏳ جاري تحميل الرسائل...</p>';
+            try {
+                const snapshot = await db.collection('messages').orderBy('timestamp', 'desc').get();
+                messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                console.log(`Loaded ${messages.length} messages.`);
+                renderMessages();
             } catch (error) {
-                console.error("Error loading messages:", error);
-                alert("حدث خطأ أثناء تحميل الرسائل. يرجى المحاولة لاحقًا.");
+                console.error("Error loading messages from Firestore:", error);
+                 messagesContainer.innerHTML = `<p style="color: red; text-align:center;">فشل تحميل الرسائل. تحقق من الاتصال أو قواعد الأمان (${error.code || 'Unknown Error'}).</p>`;
+            } finally {
+                 updateMessageCounter();
             }
         }
 
         function renderMessages() {
-            const container = document.getElementById('messagesContainer');
-            container.innerHTML = messages.map((msg, index) => 
-                `<div class="message-item" style="animation-delay: ${index * 0.1}s">
-                    ${msg.text}
-                    <span class="delete-btn" onclick="deleteMessage('${msg.id}')">×</span>
-                </div>`
-            ).join('');
-        }
-
-        async function saveMessageToFirebase(message) {
-            try {
-                await db.collection('messages').add({ text: message });
-            } catch (error) {
-                console.error("Error saving message:", error);
-                alert("حدث خطأ أثناء حفظ الرسالة. يرجى المحاولة لاحقًا.");
-            }
-        }
-
-        function checkPassword() {
-            const password = document.getElementById('password').value;
-            if (password === "hsnnsh") {
-                document.getElementById('loginModal').style.display = 'none';
-                document.getElementById('mainScene').style.opacity = 1;
-                loadMessages();
-                if(darkMode) toggleDarkMode();
-                requestNotificationPermission();
-            } else {
-                alert('غلطان حبيبي تذكر زين!');
-            }
-        }
-
-        function toggleMusic() {
-            const music = document.getElementById('bg-music');
-            music.paused ? music.play() : music.pause();
-        }
-
-        function toggleConfetti() {
-            confetti({
-                particleCount: 200,
-                spread: 120,
-                origin: { y: 0.6 },
-                colors: ['#ff6b6b', '#4ecdc4', '#45b7d1']
-            });
-        }
-
-        function showMessageForm() {
-            document.getElementById('messageModal').style.display = 'flex';
-        }
+            if (!messagesContainer) return;
+             if (!messages || messages.length === 0) {
+                 messagesContainer.innerHTML = '<p style="text-align:center; padding: 20px; opacity: 0.7;">لا توجد رسائل بعد. كن أول من يكتب! ✨</p>';
+                 return;
+             }
+             const fragment = document.createDocumentFragment();
+             messages.forEach((msg, index) => {
+                 const div = document.createElement('div');
+                 div.className = 'message-item';
+                 div.style.animationDelay = `${index * 0.05}s`;
+                 const p = document.createElement('p');
+                 p.innerHTML = escapeHTML(msg.text);
+                 div.appendChild(p);
+                 if (msg.timestamp && typeof msg.timestamp.toDate === 'function') {
+                     const small = document.createElement('small');
+                     small.style.cssText = "opacity:0.6; font-size: 0.75em; display:block; margin-top: 5px; text-align: left;";
+                     try {
+                         small.textContent = new Date(msg.timestamp.toDate()).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short'});
+                     } catch (e) {
+                         console.warn("Error formatting date:", msg.timestamp, e);
+                         small.textContent = "تاريخ غير معروف";
+                     }
+                     div.appendChild(small);
+                 }
+                 const span = document.createElement('span');
+                 span.className = 'delete-btn';
+                 span.title = 'حذف الرسالة';
+                 span.textContent = '×';
+                 // IMPORTANT: Ensure msg.id is the actual Firestore document ID
+                 span.onclick = () => confirmDeleteMessage(msg.id);
+                 div.appendChild(span);
+                 fragment.appendChild(div);
+             });
+             messagesContainer.innerHTML = '';
+             messagesContainer.appendChild(fragment);
+             requestAnimationFrame(() => {
+                 messagesContainer.querySelectorAll('.message-item').forEach(item => {
+                     item.style.animation = 'none';
+                     void item.offsetHeight;
+                     item.style.animation = `slideInRight 0.5s ease-out ${item.style.animationDelay || '0s'} forwards`;
+                     item.style.opacity = '1';
+                 });
+             });
+         }
 
         async function saveMessage() {
-            const message = document.getElementById('userMessage').value.trim();
-            if (!message) return;
-            try {
-                await saveMessageToFirebase(message);
-                messages.push({ id: Date.now(), text: message }); // تحديث القائمة المحلية
-                document.getElementById('userMessage').value = '';
-                renderMessages();
-                updateMessageCounter();
-                toggleConfetti();
-                closeModal();
-                showNotification("تم إرسال رسالتك بنجاح!", message);
-                sendNotificationToSubscribers(message);
-            } catch (error) {
-                alert("حدث خطأ أثناء حفظ الرسالة. تأكد من اتصالك بالإنترنت");
+             if (!db || !userMessageInput || !messageModal) {
+                 alert("خطأ: لا يمكن حفظ الرسالة (فشل تهيئة المكونات).");
+                 return;
+             }
+             const messageText = userMessageInput.value.trim();
+             if (!messageText) { alert("لا يمكنك إرسال رسالة فارغة!"); return; }
+             const sendButton = messageModal.querySelector('button.btn-magic');
+             if (sendButton) sendButton.disabled = true;
+
+             try {
+                 const docRef = await db.collection('messages').add({
+                     text: messageText,
+                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                 });
+                 console.log("Message saved with ID:", docRef.id);
+                 // Optimistic UI update (using Firestore ID implicitly via reload/realtime listener if implemented)
+                 // For simplicity here, we'll just reload messages after saving
+                 // (A more advanced approach would use Firestore real-time listeners)
+                 loadMessages(); // Reload messages to show the new one
+                 userMessageInput.value = '';
+                 closeModal('messageModal'); // Corrected: Pass modal ID
+                 launchConfetti(0.8, 0.9);
+                 showLocalNotification("💌 تم الإرسال!", `رسالتك في طريقها!`);
+             } catch (error) {
+                 console.error("Error saving message to Firestore:", error);
+                 alert(`حدث خطأ أثناء حفظ الرسالة: ${error.message || error.code}.`);
+             } finally {
+                 if (sendButton) sendButton.disabled = false;
+             }
+         }
+
+        function confirmDeleteMessage(id) {
+            if (!id) { console.error("Delete failed: No ID provided."); return; }
+            // Use the Firestore document ID provided by loadMessages
+            if (confirm("هل أنت متأكد أنك تريد حذف هذه الرسالة؟ هذا الإجراء لا يمكن التراجع عنه.")) {
+                deleteMessage(id);
             }
         }
 
         async function deleteMessage(id) {
-            try {
-                await db.collection('messages').doc(id).delete();
-                messages = messages.filter(msg => msg.id !== id);
-                renderMessages();
-                updateMessageCounter();
-                confetti({ particleCount: 50, spread: 80, origin: { y: 0.5 } });
-            } catch (error) {
-                console.error("Error deleting message:", error);
-                alert("حدث خطأ أثناء حذف الرسالة. تأكد من اتصالك بالإنترنت");
+            if (!db || !id) {
+                 alert("خطأ: لا يمكن حذف الرسالة (فشل الاتصال أو لا يوجد معرف).");
+                 return;
             }
-        }
-
-        function closeModal() {
-            document.getElementById('messageModal').style.display = 'none';
+             try {
+                 // Use the actual Firestore document ID
+                 await db.collection('messages').doc(id).delete();
+                 console.log("Message deleted:", id);
+                 // Update local state and UI
+                 messages = messages.filter(msg => msg.id !== id);
+                 renderMessages();
+                 updateMessageCounter();
+                 launchConfetti(0.5, Math.random() * 0.5 + 0.2, { particleCount: 50, spread: 70, colors: ['#e74c3c', '#c0392b'] });
+             } catch (error) {
+                 console.error("Error deleting message from Firestore:", error);
+                 alert(`حدث خطأ أثناء حذف الرسالة: ${error.message || error.code}.`);
+             }
         }
 
         function updateMessageCounter() {
-            document.getElementById('messageCounter').textContent = `${messages.length} رسائل`;
+             if(messageCounter) {
+                 messageCounter.textContent = `${messages?.length ?? '...'} رسائل`;
+             }
+         }
+
+        // --- UI Interaction Functions ---
+        function toggleMusic() {
+            if (!music || !musicBtn) return;
+             try {
+                 if (music.paused) {
+                     music.play().catch(e => console.warn("Audio play failed:", e));
+                     musicBtn.innerHTML = "🔇";
+                     musicBtn.title = "كتم الموسيقى";
+                 } else {
+                     music.pause();
+                     musicBtn.innerHTML = "🎵";
+                     musicBtn.title = "تشغيل الموسيقى";
+                 }
+             } catch (e) { console.error("Error toggling music:", e); }
         }
 
-        function toggleFireworks() {
-            const fireworks = document.getElementById('fireworks');
-            fireworks.style.display = fireworks.style.display === 'none' ? 'block' : 'none';
+        function showMessageForm() {
+            if (!messageModal || !userMessageInput) return;
+             messageModal.style.display = 'flex';
+             messageModal.setAttribute('aria-hidden', 'false');
+             setTimeout(() => userMessageInput.focus(), 100);
         }
 
-        function toggleDarkMode() {
-            darkMode = !darkMode;
-            document.body.style.backgroundColor = darkMode ? '#1a1a1a' : '#fff5e6';
-            document.querySelectorAll('.message-item, .default-message, .message-wall')
-                .forEach(el => el.style.backgroundColor = darkMode ? '#333' : 'white');
-            document.querySelectorAll('p, h3')
-                .forEach(el => el.style.color = darkMode ? 'white' : 'var(--dark)');
-            document.getElementById('messageCounter').style.backgroundColor = darkMode ? '#444' : 'var(--primary)';
-            localStorage.setItem('darkMode', darkMode);
-        }
+        // Corrected: Added modalId parameter
+        function closeModal(modalId) {
+             const modalToClose = document.getElementById(modalId);
+             if(modalToClose) {
+                 modalToClose.style.display = 'none';
+                 modalToClose.setAttribute('aria-hidden', 'true');
+                 if (modalId === 'quizModal' && quizInProgress) {
+                     quizInProgress = false;
+                     quizIndex = 0;
+                     console.log("Quiz aborted manually.");
+                 }
+             } else {
+                 console.error(`Modal with ID "${modalId}" not found for closing.`);
+             }
+         }
+
+        function launchConfetti(x = 0.5, y = 0.5, options = {}) {
+             if (typeof confetti === 'function') {
+                 confetti({
+                     particleCount: options.particleCount || 180,
+                     spread: options.spread || 100,
+                     origin: { x: x, y: y },
+                     colors: options.colors || ['#ff6b6b', '#4ecdc4', '#ffeaa7', '#fd79a8', '#74b9ff', '#ffffff'],
+                     scalar: options.scalar || 1.1,
+                     angle: options.angle,
+                     gravity: options.gravity,
+                     disableForReducedMotion: true
+                 });
+             } else { console.warn("Confetti function not found."); }
+         }
+
+        function popBalloon(balloonElement) {
+            if (!balloonElement || balloonElement.style.opacity === '0') return;
+            const rect = balloonElement.getBoundingClientRect();
+             const originX = (rect.left + rect.width / 2) / window.innerWidth;
+             const originY = (rect.top + rect.height / 2) / window.innerHeight;
+             launchConfetti(originX, originY, { particleCount: 60, spread: 80, colors: ['#ffffff', '#f1f2f6', '#dfe4ea'] });
+             balloonElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+             balloonElement.style.transform = 'scale(0) rotate(30deg)';
+             balloonElement.style.opacity = '0';
+             setTimeout(() => {
+                 if (document.body.contains(balloonElement)) {
+                     balloonElement.style.transition = 'none';
+                     balloonElement.style.transform = 'scale(1) rotate(0deg)';
+                     balloonElement.style.opacity = '1';
+                 }
+             }, 2000 + Math.random() * 1000);
+         }
 
         function changeBalloonColors() {
             const colors = [
-                ['#ff9a9e', '#fad0c4'],
-                ['#a8edea', '#fed6e3'],
-                ['#ffd700', '#ffeadb'],
-                ['#98fb98', '#e6f5d0'],
-                ['#ffb6c1', '#ffe6ee']
+                 ['#ff9a9e', '#fad0c4'], ['#a8edea', '#fed6e3'], ['#ffeaa7', '#fdcb6e'],
+                 ['#55efc4', '#a29bfe'], ['#ff7675', '#d63031'], ['#74b9ff', '#0984e3'],
+                 ['#fd79a8', '#e84393'], ['#e0c3fc', '#8ec5fc'], ['#f093fb', '#f5576c']
             ];
             document.querySelectorAll('.balloon').forEach(balloon => {
                 const randomColor = colors[Math.floor(Math.random() * colors.length)];
                 balloon.style.background = `radial-gradient(circle at 50% 120%, ${randomColor[0]}, ${randomColor[1]})`;
             });
-            confetti({
-                particleCount: 150,
-                spread: 100,
-                colors: colors.map(c => c[0])
-            });
+             launchConfetti();
         }
 
-        document.querySelectorAll('.balloon').forEach(balloon => {
-            balloon.addEventListener('click', () => {
-                confetti({
-                    particleCount: 50,
-                    spread: 80,
-                    origin: { y: 0.5 },
-                    colors: ['#ffd700', '#ff69b4', '#8a2be2']
-                });
-            });
-        });
+        // --- Dark Mode ---
+        function toggleDarkMode() {
+            if(!darkModeToggleBtn) return;
+            darkMode = !darkMode;
+            document.body.classList.toggle('dark-mode', darkMode);
+            localStorage.setItem('darkMode', darkMode);
+            updateDarkModeToggleText();
+            console.log("Dark Mode Toggled:", darkMode);
+        }
+        function updateDarkModeToggleText() {
+            if(!darkModeToggleBtn) return;
+            darkModeToggleBtn.innerHTML = darkMode ? '☀️' : '🌙';
+            darkModeToggleBtn.title = darkMode ? 'الوضع النهاري' : 'الوضع الليلي';
+        }
 
-        function createStars() {
-            for(let i = 0; i < 50; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + 'vw';
-                star.style.top = Math.random() * 100 + 'vh';
-                star.style.animationDelay = Math.random() * 2 + 's';
-                document.body.appendChild(star);
+        // --- Star Creation & Parallax ---
+        function createStars(numberOfStars = 60) {
+            stars.length = 0;
+             document.querySelectorAll('.star').forEach(star => star.remove());
+             const container = document.body;
+             for (let i = 0; i < numberOfStars; i++) {
+                 const star = document.createElement('div');
+                 star.className = 'star';
+                 const x = Math.random() * 100;
+                 const y = Math.random() * 100;
+                 star.style.left = `${x}vw`;
+                 star.style.top = `${y}vh`;
+                 star.dataset.depth = Math.random() * 0.5 + 0.5;
+                 star.dataset.startX = x;
+                 star.dataset.startY = y;
+                 star.style.animationDelay = Math.random() * 5 + 's';
+                 star.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+                 star.style.transform = 'translateZ(0)';
+                 container.appendChild(star);
+                 stars.push(star);
+             }
+         }
+        function setupParallax() {
+             window.addEventListener('mousemove', handleMouseMove, { passive: true });
+             window.addEventListener('touchmove', handleTouchMove, { passive: true });
+         }
+        let parallaxRAFId = null;
+        function handleMouseMove(event) {
+             const { clientX, clientY } = event;
+             const centerX = window.innerWidth / 2;
+             const centerY = window.innerHeight / 2;
+             const offsetX = (clientX - centerX) / centerX;
+             const offsetY = (clientY - centerY) / centerY;
+             cancelAnimationFrame(parallaxRAFId);
+             parallaxRAFId = requestAnimationFrame(() => moveStars(offsetX, offsetY));
+         }
+        function handleTouchMove(event) {
+             if (event.touches.length === 0) return;
+             const { clientX, clientY } = event.touches[0];
+             const centerX = window.innerWidth / 2;
+             const centerY = window.innerHeight / 2;
+             const offsetX = ((clientX - centerX) / centerX) * 0.5;
+             const offsetY = ((clientY - centerY) / centerY) * 0.5;
+             cancelAnimationFrame(parallaxRAFId);
+             parallaxRAFId = requestAnimationFrame(() => moveStars(offsetX, offsetY));
+         }
+        function moveStars(offsetX, offsetY) {
+             stars.forEach(star => {
+                 if (!document.body.contains(star)) return;
+                 const depth = parseFloat(star.dataset.depth);
+                 const moveX = -(offsetX * depth * parallaxFactor * 100);
+                 const moveY = -(offsetY * depth * parallaxFactor * 100);
+                 star.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+             });
+         }
+
+        // --- Sequential Quiz Functions ---
+        function startQuiz() {
+            if (quizInProgress) {
+                console.log("Quiz already in progress.");
+                showHiddenMessage("⏳ الاختبار قيد التقدم بالفعل!", null, 2000);
+                return;
+            }
+            if (!quizModal || !quizAnswerInput) {
+                alert("خطأ: لا يمكن بدء الاختبار (فشل تحميل العناصر).");
+                return;
+            }
+            console.log("Starting quiz..."); // DEBUG
+            quizInProgress = true;
+            quizIndex = 0;
+            shuffledQuizzes = [...originalQuizzes].sort(() => Math.random() - 0.5);
+            displayCurrentQuestion();
+            quizModal.style.display = 'flex';
+            quizModal.setAttribute('aria-hidden', 'false');
+            setTimeout(() => quizAnswerInput.focus(), 100);
+        }
+
+        function displayCurrentQuestion() {
+            if (!quizInProgress || !quizModalTitle || !quizProgress || !quizQuestionText || !quizAnswerInput || !quizSubmitButton) {
+                console.error("Quiz elements missing in displayCurrentQuestion.");
+                quizInProgress = false;
+                closeModal('quizModal');
+                return;
+            }
+            if (quizIndex < shuffledQuizzes.length) {
+                const currentQ = shuffledQuizzes[quizIndex];
+                console.log(`Displaying question ${quizIndex + 1}: ${currentQ.question}`); // DEBUG
+                quizModalTitle.textContent = `🕵️‍♂️ تحدي الأسئلة! 🕵️‍♂️`;
+                quizProgress.textContent = `السؤال ${quizIndex + 1} من ${shuffledQuizzes.length}`;
+                quizQuestionText.textContent = currentQ.question;
+                quizAnswerInput.value = '';
+                quizFeedback.textContent = '';
+                quizFeedback.className = '';
+                quizSubmitButton.textContent = (quizIndex === shuffledQuizzes.length - 1) ? 'التحقق النهائي ✨' : 'التالي 👈';
+                quizAnswerInput.disabled = false;
+                quizSubmitButton.disabled = false;
+                setTimeout(() => quizAnswerInput.focus(), 100);
+            } else {
+                console.warn("displayCurrentQuestion called unexpectedly after quiz finished.");
+                closeModal('quizModal');
+                quizInProgress = false;
             }
         }
 
-        function showNotification(title, body) {
-            if ("Notification" in window) {
-                if (Notification.permission === "granted") {
-                    new Notification(title, { body });
-                } else if (Notification.permission !== "denied") {
-                    Notification.requestPermission().then(permission => {
-                        if (permission === "granted") {
-                            new Notification(title, { body });
-                        }
-                    });
+        function checkQuizAnswer() {
+            if (!quizInProgress || !quizAnswerInput || !quizFeedback || !quizSubmitButton) {
+                console.error("Quiz elements missing in checkQuizAnswer.");
+                return;
+            }
+            if (quizIndex >= shuffledQuizzes.length) {
+                console.warn("checkQuizAnswer called when quiz is already finished.");
+                return;
+            }
+
+            const currentQ = shuffledQuizzes[quizIndex];
+            const userAnswer = quizAnswerInput.value.trim().toLowerCase();
+            const correctAnswer = currentQ.answer.toLowerCase();
+            console.log(`Checking answer for question ${quizIndex + 1}. User: "${userAnswer}", Correct: "${correctAnswer}"`); // DEBUG
+
+            quizAnswerInput.disabled = true;
+            quizSubmitButton.disabled = true;
+
+            if (userAnswer === correctAnswer) {
+                console.log("Answer correct."); // DEBUG
+                quizFeedback.textContent = `✅ ${currentQ.reward || 'إجابة صحيحة!'}`;
+                quizFeedback.className = 'success';
+                quizIndex++;
+
+                setTimeout(() => {
+                    if (quizIndex < shuffledQuizzes.length) {
+                        console.log("Moving to next question."); // DEBUG
+                        displayCurrentQuestion();
+                    } else {
+                        // *** THIS IS WHERE THE FINAL REWARD IS TRIGGERED ***
+                        console.log("Quiz finished! Closing modal and calling showFinalQuizReward..."); // DEBUG
+                        closeModal('quizModal'); // Close the quiz modal first
+                        showFinalQuizReward();    // Then show the reward
+                    }
+                }, 1500);
+
+            } else {
+                console.log("Answer incorrect."); // DEBUG
+                quizFeedback.textContent = '❌ إجابة خاطئة. حاول مرة أخرى! 🤔';
+                quizFeedback.className = 'error';
+                const modalContent = quizModal.querySelector('.quiz-modal-content');
+                if (modalContent) {
+                    modalContent.style.animation = 'shake 0.4s ease-in-out';
+                    setTimeout(() => {
+                        modalContent.style.animation = '';
+                        quizAnswerInput.disabled = false;
+                        quizSubmitButton.disabled = false;
+                        quizAnswerInput.focus();
+                        quizAnswerInput.select();
+                    }, 400);
+                } else {
+                    quizAnswerInput.disabled = false;
+                    quizSubmitButton.disabled = false;
+                    quizAnswerInput.focus();
+                    quizAnswerInput.select();
                 }
             }
         }
 
-        // Function to send notification to subscribers
-        async function sendNotificationToSubscribers(message) {
-            try {
-                const response = await fetch('/send-notification', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ title: "رسالة جديدة", body: message })
-                });
-                const data = await response.json();
-                console.log('Notification sent:', data);
-            } catch (error) {
-                console.error("Error sending notification:", error);
+        function showFinalQuizReward() {
+            console.log("Inside showFinalQuizReward()"); // DEBUG
+            const finalMessage = `عاشت ايدك , باقي باذن الله 30 يوم هذا مو لغز بس يمكن لغز ! `;
+
+            // Ensure hiddenMessageDiv is available before calling
+            if (!hiddenMessageDiv) {
+                console.error("Cannot show final reward: hiddenMessageDiv element not found!");
+                return;
             }
+
+            console.log("Calling showHiddenMessage for final reward."); // DEBUG
+            showHiddenMessage(finalMessage, 'final-reward-message', 6000);
+
+            console.log("Launching final confetti."); // DEBUG
+            launchConfetti(0.5, 0.3, { particleCount: 300, spread: 150, scalar: 1.3 });
+            setTimeout(() => launchConfetti(0.2, 0.5, { particleCount: 100, spread: 60, angle: 60, scalar: 1.1 }), 200);
+            setTimeout(() => launchConfetti(0.8, 0.5, { particleCount: 100, spread: 60, angle: 120, scalar: 1.1 }), 400);
+
+            quizInProgress = false; // Mark quiz as finished *after* showing reward
+            quizIndex = 0;
+            console.log("Quiz Completed Successfully! State reset.");
         }
 
-        // Register Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/firebase-messaging-sw.js')
-                    .then(registration => {
-                        console.log('Service Worker registered with scope:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.error('Service Worker registration failed:', error);
-                    });
+
+        // --- Hidden / Fun Features ---
+        function splitTitleIntoSpans() {
+            if (!mainTitle) return;
+             try {
+                 const text = mainTitle.innerText;
+                 mainTitle.innerHTML = '';
+                 text.split('').forEach(char => {
+                     const span = document.createElement('span');
+                     span.textContent = char === ' ' ? '\u00A0' : char;
+                     mainTitle.appendChild(span);
+                 });
+             } catch (e) {
+                 console.error("Error splitting title:", e);
+                 mainTitle.textContent = "كل عيد وانت بالف خير";
+             }
+         }
+        function titleSurprise(element) {
+            if (!element) return;
+            element.classList.add('clicked');
+            setTimeout(() => { element.classList.remove('clicked'); }, 500);
+            showHiddenMessage("يا كبدي انت اكيد مراح يكون هيج سهل");
+        }
+        function cakeSurprise() {
+            if (!cakeElement) return;
+             const rect = cakeElement.getBoundingClientRect();
+             const originX = (rect.left + rect.width / 2) / window.innerWidth;
+             const originY = (rect.top + rect.height / 2) / window.innerHeight;
+             launchConfetti(originX, originY, {
+                 particleCount: 200, spread: 80,
+                 colors: ['#f8cdda', '#efb7c9', '#ff6b6b', '#ffffff', '#ffeaa7'],
+                 angle: 90, gravity: 0.6, scalar: 1.3
+             });
+             showHiddenMessage("يمي! 🎂");
+         }
+        function showKnowledge() {
+            const facts = [
+                 "بالونات مهمة ترة",
+                 "ليش بالون يختف بعد ما تضغط عليهم ويظهر بشكل تسلسلي",
+                 "اويلي مشتهي كيك!",
+                 "سهم فوك سهم جوة",
+                 "يمين يسار فوك تحت",
+                 " اويلي ترة سهل شبيك ؟!",
+                 "بعدك ما مقرب للغز! 😊"
+            ];
+            const randomFact = facts[Math.floor(Math.random() * facts.length)];
+            showHiddenMessage(`💡 معلومة سريعة: ${randomFact}`);
+            const knowledgeBtn = document.getElementById('knowledgeBtn');
+            if (knowledgeBtn) {
+                 const btnRect = knowledgeBtn.getBoundingClientRect();
+                 const originX = (btnRect.left + btnRect.width / 2) / window.innerWidth;
+                 const originY = (btnRect.top + btnRect.height / 2) / window.innerHeight;
+                 launchConfetti(originX, originY, { particleCount: 70, spread: 60 });
+            }
+         }
+
+        // --- MODIFIED showHiddenMessage Function ---
+        function showHiddenMessage(message, cssClass = null, duration = 90000) {
+            // ** Crucial Check ** Ensure the element exists before trying to use it
+            if (!hiddenMessageDiv) {
+                console.error("Cannot show hidden message: hiddenMessageDiv element not found!");
+                return;
+            }
+            console.log(`Showing hidden message: "${message}", Class: ${cssClass}, Duration: ${duration}`); // DEBUG
+
+            hiddenMessageDiv.innerHTML = message;
+            hiddenMessageDiv.className = ''; // Reset class first
+            hiddenMessageDiv.style.opacity = '0'; // Ensure opacity starts at 0
+            hiddenMessageDiv.style.pointerEvents = 'none'; // Ensure starts non-interactive
+
+            // Determine initial transform based on class
+            const initialTransform = (cssClass === 'final-reward-message')
+                ? 'translateX(-50%) scale(0) rotateX(-30deg) translateZ(0)' // Use 3D initial state
+                : 'translateX(-50%) scale(0) translateZ(0)'; // Standard initial state
+            hiddenMessageDiv.style.transform = initialTransform; // Apply initial transform
+
+            // Add the specific class if provided (for styling like background, font etc.)
+            if (cssClass) {
+                hiddenMessageDiv.classList.add(cssClass);
+            }
+
+            // Use requestAnimationFrame to apply final state styles for transition
+            requestAnimationFrame(() => {
+                if (!hiddenMessageDiv) return;
+                console.log("Applying 'show' state styles via requestAnimationFrame");
+                hiddenMessageDiv.style.opacity = '1'; // Make visible
+                hiddenMessageDiv.style.pointerEvents = 'auto'; // Make interactive
+
+                // Explicitly set the final transform, including the 0deg rotation for the final message
+                const finalTransform = 'translateX(-50%) scale(1) rotateX(0deg) translateZ(0)';
+                hiddenMessageDiv.style.transform = finalTransform; // Apply final transform directly
+
+                // Logging for debug
+                console.log("DEBUG showHiddenMessage: Opacity after set:", hiddenMessageDiv.style.opacity);
+                console.log("DEBUG showHiddenMessage: Transform after set:", hiddenMessageDiv.style.transform);
+                console.log("DEBUG showHiddenMessage: Class list after set:", hiddenMessageDiv.classList);
             });
+
+            // Set timer to hide the message
+            setTimeout(() => {
+                if (!hiddenMessageDiv) return;
+                console.log("Hiding hidden message after duration");
+                hiddenMessageDiv.style.opacity = '0'; // Fade out
+                hiddenMessageDiv.style.pointerEvents = 'none'; // Disable interaction again
+
+                // Use a delay matching the CSS transition duration before resetting transform
+                // This allows the fade-out transition to complete smoothly
+                const transitionDuration = (cssClass === 'final-reward-message') ? 700 : 500; // Match CSS
+                setTimeout(() => {
+                    if (hiddenMessageDiv) {
+                        hiddenMessageDiv.style.transform = initialTransform; // Reset transform back to initial state
+                         // Optional: remove class if added, though not strictly necessary if base styles are correct
+                         if (cssClass) {
+                           // hiddenMessageDiv.classList.remove(cssClass); // Can remove if needed
+                         }
+                    }
+                }, transitionDuration);
+
+            }, duration);
         }
 
-        createStars();
-        loadMessages();
+        // --- Notifications (Combined Logic) ---
+        async function setupNotifications() {
+             if (!('Notification' in window)) {
+                 console.log("Browser does not support Notifications.");
+                 return;
+             }
+             try {
+                 const permission = await Notification.requestPermission();
+                 console.log('Notification permission status:', permission);
+                 if (permission === 'granted') {
+                     console.log("Notification permission granted.");
+                 } else {
+                     console.log("Notification permission denied.");
+                 }
+             } catch (error) {
+                 console.error('Error during notification setup:', error);
+             }
+         }
+
+        function showLocalNotification(title, body) {
+            if (!('Notification' in window) || Notification.permission !== 'granted') {
+                console.log("Cannot show local notification (Unsupported or permission denied).");
+                return;
+            }
+            const options = {
+                 body: body,
+                 icon: 'data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🎉</text></svg>',
+                 tag: 'birthday-notification-' + Date.now() // More unique tag
+            };
+            try {
+                 navigator.serviceWorker?.ready.then(registration => {
+                     registration.showNotification(title, options);
+                 }).catch((err) => {
+                     console.warn("Service worker registration not ready, falling back to new Notification(). Error:", err);
+                     new Notification(title, options); // Fallback
+                 });
+            } catch (error) { console.error("Error showing local notification:", error); }
+        }
+
+        // --- Utility Functions ---
+        function escapeHTML(str) {
+            if (!str) return '';
+            const p = document.createElement('p');
+            p.textContent = str;
+            return p.innerHTML;
+        }
+
+        // --- iOS Viewport Height Fix ---
+        function setVhVariable() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+
+        // --- Initial Setup on Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM Loaded. Initializing...");
+            initializeDOMReferences(); // Get references *after* DOM is ready
+
+            if (localStorage.getItem('darkMode') === 'true') {
+                darkMode = true;
+                document.body.classList.add('dark-mode');
+                updateDarkModeToggleText();
+            }
+
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        checkPassword();
+                    }
+                });
+                 // Ensure focus on load if login modal is displayed
+                 if (loginModal && loginModal.style.display !== 'none') {
+                     passwordInput.focus();
+                 }
+            } else {
+                console.error("Password input not found on DOMContentLoaded.");
+            }
+
+             if (quizAnswerInput) {
+                 quizAnswerInput.addEventListener('keypress', function(event) {
+                     if (event.key === 'Enter') {
+                         event.preventDefault();
+                         if (quizModal && quizModal.style.display === 'flex' && quizInProgress) {
+                             checkQuizAnswer();
+                         }
+                     }
+                 });
+             } else {
+                  console.error("Quiz answer input not found on DOMContentLoaded.");
+             }
+
+             setVhVariable();
+             window.addEventListener('resize', setVhVariable);
+             window.addEventListener('orientationchange', setVhVariable);
+             setTimeout(setVhVariable, 100);
+
+             console.log("Initialization complete. Ready for login.");
+        });
+
+        // --- Service Worker Registration ---
+         if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Ensure the path is correct relative to your HTML file's location
+                navigator.serviceWorker.register('/firebase-messaging-sw.js') // Or './firebase-messaging-sw.js' if in the same folder
+                    .then(registration => {
+                        console.log('Service Worker registered:', registration.scope);
+                        // Optional: You might need to ensure messaging uses this registration
+                        // if (messaging) { messaging.useServiceWorker(registration); }
+                    })
+                    .catch(error => console.error('Service Worker registration failed:', error));
+            });
+         }
+
     </script>
-</body>
+    </body>
 </html>
