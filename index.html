@@ -2,7 +2,7 @@
 <html lang="ar" class="no-js" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>XXXX🎉</title>
+    <title>عيد ميلاد سعيد يا حسن! 🎉</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎂</text></svg>">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Changa:wght@400;700&display=swap" rel="stylesheet">
@@ -20,26 +20,145 @@
             --shadow-color: rgba(0, 0, 0, 0.1);
             --shadow-color-darker: rgba(0, 0, 0, 0.15);
             --shadow-color-light: rgba(0, 0, 0, 0.05);
-            /* --vh variable for potential iOS vh fix */
             --vh: 1vh;
         }
 
+        /* --- New Feature: Memories Modal Styles --- */
+        .memories-modal-content {
+            background: white;
+            padding: clamp(20px, 4vw, 25px);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            text-align: center;
+            transform: translateY(-25px) scale(0.95) translateZ(0);
+            opacity: 0;
+            animation: slideDownFadeInScale 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform-style: preserve-3d;
+        }
+        body.dark-mode .memories-modal-content {
+            background: #3b3b3b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .memories-modal-content h3 {
+            font-family: 'Great Vibes', cursive;
+            color: var(--primary);
+            font-size: clamp(1.8em, 5vw, 2.5em);
+            margin-bottom: 15px;
+        }
+        body.dark-mode .memories-modal-content h3 {
+            color: var(--accent);
+        }
+        .memory-image-container {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            background: #eee;
+        }
+        .memory-image-container img {
+            width: 100%;
+            height: auto;
+            max-height: 60vh;
+            object-fit: contain;
+            display: block;
+            border-radius: 15px;
+        }
+        .memory-caption {
+            font-size: clamp(1em, 2.5vw, 1.1em);
+            padding: 10px;
+            min-height: 40px;
+            color: var(--dark);
+        }
+        body.dark-mode .memory-caption {
+            color: var(--light);
+        }
+        .memory-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            border: none;
+            font-size: 1.8em;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            z-index: 10;
+        }
+        body.dark-mode .memory-nav {
+            background: rgba(30, 30, 30, 0.7);
+            color: white;
+        }
+        .memory-nav:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+        #prevMemory { left: 10px; }
+        #nextMemory { right: 10px; }
+
+        /* Final Surprise Modal */
+        .final-surprise-modal-content {
+            background: linear-gradient(135deg, #232526, #414345);
+            color: white;
+            text-align: center;
+            padding: clamp(30px, 6vw, 50px);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+            border: 2px solid gold;
+        }
+        .final-surprise-modal-content h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2.5em, 7vw, 3.5em);
+            color: gold;
+            text-shadow: 0 0 15px gold;
+            margin-bottom: 20px;
+        }
+        .final-surprise-modal-content p {
+            font-size: clamp(1.1em, 3vw, 1.3em);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        /* --- NEW: Coupon Book Modal Styles --- */
+        .coupon-modal-content h3 { color: var(--primary); margin-bottom: 20px; font-size: clamp(1.6em, 5vw, 2em); }
+        body.dark-mode .coupon-modal-content h3 { color: var(--accent); }
+        #couponContainer { display: grid; gap: 15px; max-height: 60vh; overflow-y: auto; padding-right: 10px; margin-bottom: 20px;}
+        .coupon-item { background: #fffcf2; border: 2px dashed var(--primary); border-radius: 10px; padding: 15px; text-align: center; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s, background 0.3s; position: relative; overflow: hidden; }
+        body.dark-mode .coupon-item { background: #4a4a4a; border-color: var(--accent); }
+        .coupon-item::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; background: var(--light); border-radius: 50%; border: 2px dashed var(--primary); margin-left: -12px; }
+        body.dark-mode .coupon-item::before { background: #3b3b3b; border-color: var(--accent); }
+        .coupon-item.redeemed { background: #e0e0e0; cursor: not-allowed; opacity: 0.7; }
+        .coupon-item.redeemed .coupon-title { text-decoration: line-through; }
+        body.dark-mode .coupon-item.redeemed { background: #2f2f2f; }
+        .coupon-title { font-weight: 700; font-size: 1.1em; color: var(--dark); }
+        body.dark-mode .coupon-title { color: var(--light); }
+        .coupon-desc { font-size: 0.9em; opacity: 0.8; margin-top: 5px; }
+        .btn-magic-secondary { background: #6c757d; }
+        .btn-magic-secondary:hover { background: #5a6268; }
+
+        /* --- NEW: Countdown Modal Styles --- */
+        .countdown-modal-content h3 { font-family: 'Great Vibes', cursive; color: var(--primary); font-size: clamp(2em, 6vw, 2.8em); margin-bottom: 15px;}
+        body.dark-mode .countdown-modal-content h3 { color: var(--accent); }
+        .countdown-modal-content p { text-align: center; font-size: clamp(1em, 3vw, 1.1em); opacity: 0.9; margin-bottom: 25px;}
+        #countdown-display { display: flex; justify-content: space-around; text-align: center; }
+        .countdown-unit { background: var(--light); padding: 10px; border-radius: 10px; width: 70px; box-shadow: 0 4px 10px var(--shadow-color); }
+        body.dark-mode .countdown-unit { background: #4f4f4f; }
+        .countdown-value { font-size: clamp(1.8em, 7vw, 2.5em); font-weight: 700; color: var(--primary); }
+        body.dark-mode .countdown-value { color: var(--accent); }
+        .countdown-label { font-size: 0.8em; opacity: 0.7; }
+
         /* Basic Reset & Body Styling */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            /* Improve performance on iOS */
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html {
-            /* Smooth scrolling */
-            scroll-behavior: smooth;
-        }
-
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
         body {
-            /* Use --vh for height potentially */
             min-height: calc(var(--vh, 1vh) * 100);
             background: linear-gradient(135deg, #ffdde1, var(--light));
             font-family: 'Changa', sans-serif;
@@ -47,8 +166,7 @@
             position: relative;
             color: var(--dark);
             transition: background-color 0.5s, color 0.5s;
-            touch-action: manipulation; /* Improve touch responsiveness */
-            /* Ensure text rendering is smooth */
+            touch-action: manipulation;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -66,49 +184,32 @@
         body.dark-mode .default-message,
         body.dark-mode .message-item,
         body.dark-mode .modal-content,
-        body.dark-mode .quiz-modal-content {
+        body.dark-mode .quiz-modal-content,
+        body.dark-mode .coupon-modal-content,
+        body.dark-mode .countdown-modal-content {
             background: #3b3b3b;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             color: var(--light);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode p, body.dark-mode label {
-            color: var(--light);
-        }
-        body.dark-mode .default-message h1 span:hover {
-            color: var(--accent);
-        }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode p, body.dark-mode label { color: var(--light); }
+        body.dark-mode .default-message h1 span:hover { color: var(--accent); }
         body.dark-mode .login-box input[type="password"],
         body.dark-mode .modal-content textarea,
         body.dark-mode .quiz-modal-content input[type="text"] {
             background-color: #4f4f4f;
             color: var(--light);
             border-color: var(--accent);
-             /* iOS input appearance */
-             -webkit-appearance: none;
-             appearance: none;
+             -webkit-appearance: none; appearance: none;
         }
-        body.dark-mode .btn-magic {
-            background: var(--accent);
-            color: #1e1e1e;
-        }
-        body.dark-mode .btn-magic:hover {
-            background: #3dbbb3;
-        }
-        body.dark-mode .message-counter {
-            background: #4f4f4f;
-            color: var(--light);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        body.dark-mode .star {
-            box-shadow: 0 0 8px gold;
-        }
-        body.dark-mode .balloon::after {
-            background: rgba(255,255,255,0.2);
-        }
-        body.dark-mode .cake-3d {
-            filter: brightness(0.9) drop-shadow(5px 15px 10px rgba(255,255,255,0.08));
-        }
+        body.dark-mode .btn-magic { background: var(--accent); color: #1e1e1e; }
+        body.dark-mode .btn-magic:hover { background: #3dbbb3; }
+        body.dark-mode .btn-magic-secondary { background: #4a545e; color: #fff; }
+        body.dark-mode .btn-magic-secondary:hover { background: #3d454d; }
+        body.dark-mode .message-counter { background: #4f4f4f; color: var(--light); border: 1px solid rgba(255, 255, 255, 0.1); }
+        body.dark-mode .star { box-shadow: 0 0 8px gold; }
+        body.dark-mode .balloon::after { background: rgba(255,255,255,0.2); }
+        body.dark-mode .cake-3d { filter: brightness(0.9) drop-shadow(5px 15px 10px rgba(255,255,255,0.08)); }
         body.dark-mode #hiddenMessage.final-reward-message {
              background: linear-gradient(135deg, var(--accent), #3dbbb3);
              color: #1e1e1e;
@@ -116,789 +217,181 @@
         }
 
         /* --- Login Modal --- */
-        .login-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(255, 255, 255, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            /* Safari backdrop-filter */
-            -webkit-backdrop-filter: blur(8px);
-            backdrop-filter: blur(8px);
-        }
-        body.dark-mode .login-modal {
-            background: rgba(10, 10, 10, 0.85);
-        }
-        .login-box {
-            background: white;
-            padding: clamp(30px, 5vw, 40px) clamp(35px, 6vw, 50px);
-            border-radius: 20px;
-            box-shadow: 0 15px 40px var(--shadow-color-darker);
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-            transform: scale(0.9) translateY(20px) translateZ(0); /* Start slightly smaller and lower + promote layer */
-            opacity: 0;
-            animation: popInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        @keyframes popInUp {
-             0% { transform: scale(0.9) translateY(20px) translateZ(0); opacity: 0; }
-             100% { transform: scale(1) translateY(0) translateZ(0); opacity: 1; }
-        }
-        @keyframes shake {
-             0%, 100% { transform: translateX(0); }
-             10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
-             20%, 40%, 60%, 80% { transform: translateX(8px); }
-        }
-        .login-box.shake-error {
-            animation: shake 0.5s ease-in-out;
-        }
-        .login-box h2 {
-            font-family: 'Great Vibes', cursive;
-            color: var(--primary);
-            font-size: clamp(1.8em, 5vw, 2.2em);
-            margin-bottom: 25px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-        }
-        .login-box input[type="password"] {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid var(--primary);
-            border-radius: 10px;
-            margin-bottom: 25px;
-            font-size: 1.1em;
-            font-family: 'Changa', sans-serif;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .login-box input[type="password"]:focus {
-             border-color: var(--accent);
-             box-shadow: 0 0 10px rgba(78, 205, 196, 0.6);
-             outline: none;
-        }
-        .login-box button {
-             margin-top: 10px;
-             width: 100%;
-             padding: 15px;
-        }
+        .login-modal { position: fixed; inset: 0; background: rgba(255, 255, 255, 0.9); display: flex; justify-content: center; align-items: center; z-index: 10000; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+        body.dark-mode .login-modal { background: rgba(10, 10, 10, 0.85); }
+        .login-box { background: white; padding: clamp(30px, 5vw, 40px) clamp(35px, 6vw, 50px); border-radius: 20px; box-shadow: 0 15px 40px var(--shadow-color-darker); text-align: center; width: 90%; max-width: 400px; transform: scale(0.9) translateY(20px) translateZ(0); opacity: 0; animation: popInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes popInUp { 0% { transform: scale(0.9) translateY(20px) translateZ(0); opacity: 0; } 100% { transform: scale(1) translateY(0) translateZ(0); opacity: 1; } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); } 20%, 40%, 60%, 80% { transform: translateX(8px); } }
+        .login-box.shake-error { animation: shake 0.5s ease-in-out; }
+        .login-box h2 { font-family: 'Great Vibes', cursive; color: var(--primary); font-size: clamp(1.8em, 5vw, 2.2em); margin-bottom: 25px; text-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
+        .login-box input[type="password"] { width: 100%; padding: 15px 20px; border: 2px solid var(--primary); border-radius: 10px; margin-bottom: 25px; font-size: 1.1em; font-family: 'Changa', sans-serif; transition: border-color 0.3s, box-shadow 0.3s; }
+        .login-box input[type="password"]:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(78, 205, 196, 0.6); outline: none; }
+        .login-box button { margin-top: 10px; width: 100%; padding: 15px; }
 
         /* --- Main Scene --- */
-        .scene {
-            position: relative;
-            perspective: 1500px;
-            /* Use --vh for min-height */
-            min-height: calc(var(--vh, 1vh) * 100);
-            overflow: hidden;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            display: none;
-             /* Helps with positioning fixed elements within on iOS */
-            transform: translateZ(0);
-        }
-        body:not(.dark-mode) .scene {
-            background: linear-gradient(135deg, #ffdde1, var(--light));
-        }
-        body.dark-mode .scene {
-            background: linear-gradient(135deg, #2c3e50, #1a1a1a);
-        }
+        .scene { position: relative; perspective: 1500px; min-height: calc(var(--vh, 1vh) * 100); overflow: hidden; opacity: 0; transition: opacity 1s ease-in-out; display: none; transform: translateZ(0); }
+        body:not(.dark-mode) .scene { background: linear-gradient(135deg, #ffdde1, var(--light)); }
+        body.dark-mode .scene { background: linear-gradient(135deg, #2c3e50, #1a1a1a); }
 
-        /* --- Balloons --- */
-        .balloon-group {
-            position: absolute;
-            animation: float 10s ease-in-out infinite alternate;
-            transform-style: preserve-3d;
-            z-index: 10;
-        }
-        .balloon {
-            width: clamp(80px, 10vw, 100px);
-            height: clamp(105px, 13vw, 130px);
-            background: radial-gradient(circle at 50% 120%, #ff9a9e, #fad0c4);
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            position: relative;
-            margin: 10px;
-            transform-origin: bottom center;
-            animation: sway 3.5s ease-in-out infinite alternate;
-            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.05), 0 10px 25px var(--shadow-color);
-            cursor: pointer;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: translateZ(0); /* Promote layer */
-        }
-        .balloon:hover {
-             transform: scale(1.15) translateZ(20px);
-         }
-        .balloon::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 50px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 0 0 2px 2px;
-         }
-
-        /* --- Cake --- */
-        .cake-3d {
-            position: absolute;
-            bottom: 5%;
-            left: 50%;
-            transform: rotateY(0deg) translateX(-50%); /* Explicit centering */
-            transform-style: preserve-3d;
-            animation: rotateCake 25s linear infinite;
-            z-index: 5;
-             width: clamp(150px, 20vw, 200px);
-             height: clamp(190px, 25vw, 250px);
-             /* Inline SVG for cake - smaller & less requests */
-             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120"><path fill="%23f8cdda" d="M10 40 Q 50 20 90 40 L 90 90 Q 50 110 10 90 Z" /><path fill="%23efb7c9" d="M10 40 Q 50 60 90 40 V 20 Q 50 0 10 20 Z" /><ellipse cx="50" cy="20" rx="40" ry="10" fill="%23f8cdda" /><text x="50" y="75" font-size="15" text-anchor="middle" fill="%23c13584">HBD</text><path fill="%23fce4ec" d="M50,5 L52,15 L60,15 L54,22 L56,30 L50,25 L44,30 L46,22 L40,15 L48,15 Z" /></svg>') center/contain no-repeat;
-             cursor: pointer;
-             transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
-             filter: drop-shadow(5px 15px 10px var(--shadow-color));
-             /* Ensure centering works well with rotations */
-             transform-origin: center bottom;
-        }
-         .cake-3d:hover {
-             /* Adjusted hover transform */
-             transform: translateX(-50%) rotateY(25deg) scale(1.1) translateZ(30px);
-             box-shadow: 0 20px 40px var(--shadow-color-darker);
-             filter: drop-shadow(8px 20px 15px var(--shadow-color-darker));
-         }
-        @keyframes rotateCake {
-             from { transform: translateX(-50%) rotateY(0deg); }
-             to { transform: translateX(-50%) rotateY(360deg); }
-         }
+        /* --- Balloons & Cake --- */
+        .balloon-group { position: absolute; animation: float 10s ease-in-out infinite alternate; transform-style: preserve-3d; z-index: 10; }
+        .balloon { width: clamp(80px, 10vw, 100px); height: clamp(105px, 13vw, 130px); background: radial-gradient(circle at 50% 120%, #ff9a9e, #fad0c4); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; position: relative; margin: 10px; transform-origin: bottom center; animation: sway 3.5s ease-in-out infinite alternate; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.05), 0 10px 25px var(--shadow-color); cursor: pointer; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateZ(0); }
+        .balloon:hover { transform: scale(1.15) translateZ(20px); }
+        .balloon::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 2px; height: 50px; background: rgba(0,0,0,0.2); border-radius: 0 0 2px 2px; }
+        .cake-3d { position: absolute; bottom: 5%; left: 50%; transform: rotateY(0deg) translateX(-50%); transform-style: preserve-3d; animation: rotateCake 25s linear infinite; z-index: 5; width: clamp(150px, 20vw, 200px); height: clamp(190px, 25vw, 250px); background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120"><path fill="%23f8cdda" d="M10 40 Q 50 20 90 40 L 90 90 Q 50 110 10 90 Z" /><path fill="%23efb7c9" d="M10 40 Q 50 60 90 40 V 20 Q 50 0 10 20 Z" /><ellipse cx="50" cy="20" rx="40" ry="10" fill="%23f8cdda" /><text x="50" y="75" font-size="15" text-anchor="middle" fill="%23c13584">HBD</text><path fill="%23fce4ec" d="M50,5 L52,15 L60,15 L54,22 L56,30 L50,25 L44,30 L46,22 L40,15 L48,15 Z" /></svg>') center/contain no-repeat; cursor: pointer; transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease; filter: drop-shadow(5px 15px 10px var(--shadow-color)); transform-origin: center bottom; }
+        .cake-3d:hover { transform: translateX(-50%) rotateY(25deg) scale(1.1) translateZ(30px); box-shadow: 0 20px 40px var(--shadow-color-darker); filter: drop-shadow(8px 20px 15px var(--shadow-color-darker)); }
+        @keyframes rotateCake { from { transform: translateX(-50%) rotateY(0deg); } to { transform: translateX(-50%) rotateY(360deg); } }
 
         /* --- Default Welcome Message --- */
-        .default-message {
-            position: absolute;
-            top: clamp(15%, 10vh, 20%);
-            left: 50%;
-            transform: translateX(-50%) translateZ(0); /* Center + promote layer */
-            background: rgba(255, 255, 255, 0.97);
-            padding: clamp(20px, 4vw, 30px) clamp(25px, 5vw, 40px);
-            border-radius: 15px;
-            box-shadow: 0 15px 35px var(--shadow-color-darker);
-            max-width: 600px;
-            width: 90%;
-            text-align: center;
-            animation: gentleFloat 7s ease-in-out infinite alternate;
-            z-index: 20;
-            /* Safari backdrop-filter */
-            -webkit-backdrop-filter: blur(2px);
-            backdrop-filter: blur(2px);
-        }
-        .default-message h1 {
-            font-family: 'Great Vibes', cursive;
-            color: var(--primary);
-            font-size: clamp(2.5em, 8vw, 3.5em);
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: color 0.3s ease;
-             letter-spacing: 2px;
-             /* Prevent text selection issues */
-             -webkit-user-select: none;
-             -moz-user-select: none;
-             -ms-user-select: none;
-             user-select: none;
-        }
-         .default-message h1 span {
-             display: inline-block;
-             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s, text-shadow 0.3s;
-             text-shadow: 1px 1px 0px rgba(0,0,0,0.1),
-                          2px 2px 0px rgba(0,0,0,0.08),
-                          3px 3px 0px rgba(0,0,0,0.06);
-         }
-         .default-message h1:hover span {
-             color: var(--accent);
-             transform: translateY(-3px) translateZ(10px) rotateX(10deg);
-             text-shadow: 1px 1px 0px rgba(0,0,0,0.2),
-                          2px 3px 0px rgba(0,0,0,0.15),
-                          3px 5px 0px rgba(0,0,0,0.1);
-         }
-         .default-message h1.clicked span {
-             animation: jump 0.5s ease-in-out;
-         }
-         @keyframes jump {
-             0%, 100% { transform: translateY(0) scale(1); }
-             50% { transform: translateY(-15px) scale(1.1) rotate(5deg); }
-         }
-        .default-message p {
-            font-size: clamp(1em, 2.5vw, 1.15em);
-            line-height: 1.8;
-            color: var(--dark);
-            margin-bottom: 20px;
-        }
-        .default-message strong {
-             color: var(--primary);
-             font-weight: 700;
-         }
+        .default-message { position: absolute; top: clamp(15%, 10vh, 20%); left: 50%; transform: translateX(-50%) translateZ(0); background: rgba(255, 255, 255, 0.97); padding: clamp(20px, 4vw, 30px) clamp(25px, 5vw, 40px); border-radius: 15px; box-shadow: 0 15px 35px var(--shadow-color-darker); max-width: 600px; width: 90%; text-align: center; animation: gentleFloat 7s ease-in-out infinite alternate, slideDownFadeInScale 1s ease-out forwards; z-index: 20; -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
+        .default-message h1 { font-family: 'Great Vibes', cursive; color: var(--primary); font-size: clamp(2.5em, 8vw, 3.5em); margin-bottom: 15px; cursor: pointer; transition: color 0.3s ease; letter-spacing: 2px; -webkit-user-select: none; user-select: none; }
+        .default-message h1 span { display: inline-block; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s, text-shadow 0.3s; text-shadow: 1px 1px 0px rgba(0,0,0,0.1), 2px 2px 0px rgba(0,0,0,0.08), 3px 3px 0px rgba(0,0,0,0.06); }
+        .default-message h1:hover span { color: var(--accent); transform: translateY(-3px) translateZ(10px) rotateX(10deg); text-shadow: 1px 1px 0px rgba(0,0,0,0.2), 2px 3px 0px rgba(0,0,0,0.15), 3px 5px 0px rgba(0,0,0,0.1); }
+        .default-message h1.clicked span { animation: jump 0.5s ease-in-out; }
+        @keyframes jump { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-15px) scale(1.1) rotate(5deg); } }
+        .default-message p { font-size: clamp(1em, 2.5vw, 1.15em); line-height: 1.8; color: var(--dark); margin-bottom: 20px; }
+        .default-message strong { color: var(--primary); font-weight: 700; }
 
         /* --- Message Wall --- */
-        .message-wall {
-            position: fixed;
-            right: 20px;
-            top: clamp(80px, 10vh, 100px);
-            width: clamp(300px, 80vw, 360px);
-            max-width: 90%;
-            background: rgba(255, 255, 255, 0.92);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px var(--shadow-color-darker);
-             /* Use --vh for max-height calculation */
-            max-height: calc( (var(--vh, 1vh) * 100) - 260px );
-            overflow-y: auto;
-            z-index: 50;
-             /* Safari backdrop-filter */
-             -webkit-backdrop-filter: blur(5px);
-             backdrop-filter: blur(5px);
-             scrollbar-width: thin;
-             scrollbar-color: var(--primary) rgba(0,0,0,0.05);
-              /* iOS momentum scrolling */
-             -webkit-overflow-scrolling: touch;
-        }
-         .message-wall::-webkit-scrollbar { width: 8px; }
-         .message-wall::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
-         .message-wall::-webkit-scrollbar-thumb { background-color: var(--primary); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
-         .message-wall::-webkit-scrollbar-thumb:hover { background-color: #ff4d4d; }
-         .message-wall h3 {
-             color: var(--primary);
-             text-align: center;
-             margin-bottom: 15px;
-             font-size: 1.4em;
-         }
-        .message-item {
-            background: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            box-shadow: 0 5px 15px var(--shadow-color-light);
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease;
-            animation: slideInRight 0.5s ease-out forwards;
-            opacity: 0;
-            word-wrap: break-word; /* Ensure long words break */
-            overflow-wrap: break-word; /* Modern property for word breaking */
-            transform-style: preserve-3d;
-            transform: translateZ(0); /* Promote layer */
-        }
-        .message-item:hover {
-            transform: translateX(-5px) scale(1.03) translateZ(15px);
-            box-shadow: 0 8px 25px var(--shadow-color);
-        }
-        .delete-btn {
-            position: absolute;
-            left: 10px; /* Changed from right to left for RTL */
-            top: 50%;
-            transform: translateY(-50%);
-            color: #ff6b6b;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.2em;
-            transition: color 0.3s, transform 0.3s;
-            padding: 5px;
-            z-index: 2;
-         }
-         .delete-btn:hover {
-             color: #e74c3c;
-             transform: translateY(-50%) rotate(180deg) scale(1.1);
-         }
-        @keyframes highlightNewMessage {
-             0% { background-color: rgba(78, 205, 196, 0.3); }
-             100% { background-color: white; }
-        }
-        @keyframes highlightNewMessageDark {
-             0% { background-color: rgba(78, 205, 196, 0.4); }
-             100% { background-color: #3b3b3b; }
-         }
-        .message-item.new-message-highlight {
-            animation: highlightNewMessage 1.5s ease-out forwards;
-        }
-        body.dark-mode .message-item.new-message-highlight {
-             background-color: #3b3b3b; /* Ensure base color is correct */
-             animation-name: highlightNewMessageDark;
-         }
+        .message-wall { position: fixed; right: 20px; top: clamp(80px, 10vh, 100px); width: clamp(300px, 80vw, 360px); max-width: 90%; background: rgba(255, 255, 255, 0.92); border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px var(--shadow-color-darker); max-height: calc( (var(--vh, 1vh) * 100) - 260px ); overflow-y: auto; z-index: 50; -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); scrollbar-width: thin; scrollbar-color: var(--primary) rgba(0,0,0,0.05); -webkit-overflow-scrolling: touch; animation: slideInRight 1s ease-out forwards; }
+        .message-wall::-webkit-scrollbar { width: 8px; }
+        .message-wall::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
+        .message-wall::-webkit-scrollbar-thumb { background-color: var(--primary); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
+        .message-wall::-webkit-scrollbar-thumb:hover { background-color: #ff4d4d; }
+        .message-wall h3 { color: var(--primary); text-align: center; margin-bottom: 15px; font-size: 1.4em; }
+        .message-item { background: white; padding: 15px 20px; border-radius: 10px; margin-bottom: 12px; box-shadow: 0 5px 15px var(--shadow-color-light); position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease; animation: slideInRight 0.5s ease-out forwards; opacity: 0; word-wrap: break-word; overflow-wrap: break-word; transform-style: preserve-3d; transform: translateZ(0); }
+        .message-item:hover { transform: translateX(-5px) scale(1.03) translateZ(15px); box-shadow: 0 8px 25px var(--shadow-color); }
+        .delete-btn { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #ff6b6b; cursor: pointer; font-weight: bold; font-size: 1.2em; transition: color 0.3s, transform 0.3s; padding: 5px; z-index: 2; }
+        .delete-btn:hover { color: #e74c3c; transform: translateY(-50%) rotate(180deg) scale(1.1); }
+        @keyframes highlightNewMessage { 0% { background-color: rgba(78, 205, 196, 0.3); } 100% { background-color: white; } }
+        @keyframes highlightNewMessageDark { 0% { background-color: rgba(78, 205, 196, 0.4); } 100% { background-color: #3b3b3b; } }
+        .message-item.new-message-highlight { animation: highlightNewMessage 1.5s ease-out forwards; }
+        body.dark-mode .message-item.new-message-highlight { background-color: #3b3b3b; animation-name: highlightNewMessageDark; }
 
         /* --- Control Panel & Buttons --- */
-        .control-panel {
-            position: fixed;
-            bottom: 0; /* Anchor to bottom for safe area inset */
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: clamp(10px, 2vw, 15px);
-            z-index: 100;
-            padding: 10px clamp(10px, 3vw, 15px);
-             background: rgba(255, 255, 255, 0.85);
-             border-radius: 50px 50px 0 0; /* Adjust radius if needed with safe area */
-             /* Safari backdrop-filter */
-             -webkit-backdrop-filter: blur(8px);
-             backdrop-filter: blur(8px);
-             box-shadow: 0 -5px 20px var(--shadow-color); /* Adjust shadow slightly */
-             width: max-content;
-             max-width: 100%; /* Allow full width if needed */
-             /* Add safe area padding for iOS bottom bar */
-             padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
-             box-sizing: border-box; /* Ensure padding is included in width */
-        }
-        body.dark-mode .control-panel {
-             background: rgba(50, 50, 50, 0.8);
-             box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
-        }
-        .btn-magic {
-            background: var(--primary);
-            border: none;
-            padding: clamp(10px, 2vw, 12px) clamp(18px, 4vw, 25px);
-            border-radius: 25px;
-            color: white;
-            font-weight: bold;
-            font-family: 'Changa', sans-serif;
-            font-size: clamp(0.85em, 2.2vw, 0.95em);
-            cursor: pointer;
-            transition: background 0.3s, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-             white-space: nowrap;
-             /* iOS button appearance */
-            -webkit-appearance: none;
-            appearance: none;
-        }
-        .btn-magic:hover {
-            background: #ff4d4d;
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 7px 18px rgba(0,0,0,0.18);
-        }
-         .btn-magic:active {
-             transform: translateY(-1px) scale(1);
-             box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-         }
-         body.dark-mode .btn-magic {
-             background: var(--accent);
-             color: #1e1e1e;
-         }
-         body.dark-mode .btn-magic:hover {
-             background: #3dbbb3;
-             box-shadow: 0 7px 18px rgba(255,255,255,0.1);
-         }
-        .btn-colors {
-             background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff6b6b);
-             background-size: 300% 300%;
-             animation: gradientShift 4s ease infinite;
-        }
-        @keyframes gradientShift {
-             0% {background-position: 0% 50%;}
-             50% {background-position: 100% 50%;}
-             100% {background-position: 0% 50%;}
-        }
+        .control-panel { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%); display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: clamp(8px, 1.5vw, 12px); z-index: 100; padding: 10px clamp(10px, 3vw, 15px); background: rgba(255, 255, 255, 0.85); border-radius: 50px 50px 0 0; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: 0 -5px 20px var(--shadow-color); width: max-content; max-width: 100%; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); box-sizing: border-box; animation: slideUp 0.8s 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes slideUp { to { transform: translateX(-50%) translateY(0); } }
+        body.dark-mode .control-panel { background: rgba(50, 50, 50, 0.8); box-shadow: 0 -5px 20px rgba(0,0,0,0.2); }
+        .btn-magic { background: var(--primary); border: none; padding: clamp(10px, 2vw, 12px) clamp(18px, 4vw, 25px); border-radius: 25px; color: white; font-weight: bold; font-family: 'Changa', sans-serif; font-size: clamp(0.9em, 2.5vw, 1.1em); cursor: pointer; transition: background 0.3s, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 8px; white-space: nowrap; -webkit-appearance: none; appearance: none; }
+        .btn-magic:hover { background: #ff4d4d; transform: translateY(-4px) scale(1.05); box-shadow: 0 7px 18px rgba(0,0,0,0.18); }
+        .btn-magic:active { transform: translateY(-1px) scale(1); box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+        .btn-magic[disabled] { cursor: not-allowed; opacity: 0.6; }
+        .music-controls { display: flex; align-items: center; gap: 5px; }
+        .music-controls .btn-magic { padding: 10px 12px; font-size: 1.2em; }
+        #trackName { font-size: 0.8em; font-weight: bold; max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color 0.5s; padding: 0 5px; }
+        body.dark-mode .btn-magic { background: var(--accent); color: #1e1e1e; }
+        body.dark-mode .btn-magic:hover { background: #3dbbb3; box-shadow: 0 7px 18px rgba(255,255,255,0.1); }
+        .btn-colors { background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff6b6b); background-size: 300% 300%; animation: gradientShift 4s ease infinite; }
+        @keyframes gradientShift { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
 
         /* --- Modals (General Styling) --- */
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.65);
-            display: none; /* Hidden by default */
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            /* Safari backdrop-filter */
-            -webkit-backdrop-filter: blur(6px);
-            backdrop-filter: blur(6px);
-            animation: fadeIn 0.4s ease-out forwards; /* Fade in background */
-        }
-        body.dark-mode .modal {
-            background: rgba(20, 20, 20, 0.75);
-        }
-        .modal-content, .quiz-modal-content {
-            background: white;
-            padding: clamp(25px, 5vw, 30px) clamp(30px, 6vw, 40px);
-            border-radius: 15px;
-            width: 90%;
-            max-width: 480px;
-            position: relative;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-            transform: translateY(-25px) scale(0.95) translateZ(0); /* Initial state for animation + promote */
-            opacity: 0;
-            animation: slideDownFadeInScale 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            transform-style: preserve-3d;
-        }
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 15px; /* Adjusted for RTL */
-            left: auto; /* Reset left */
-            cursor: pointer;
-            font-size: 1.8em;
-            color: #aaa;
-            transition: color 0.3s, transform 0.3s;
-            line-height: 1;
-            z-index: 10;
-        }
-        .close:hover {
-            color: var(--primary);
-            transform: rotate(90deg) scale(1.1);
-        }
-        body.dark-mode .close {
-            color: #ccc;
-        }
-         body.dark-mode .close:hover {
-             color: var(--accent);
-         }
+        .modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); display: none; justify-content: center; align-items: center; z-index: 9999; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); animation: fadeIn 0.4s ease-out forwards; }
+        body.dark-mode .modal { background: rgba(20, 20, 20, 0.75); }
+        .modal-content, .quiz-modal-content, .coupon-modal-content, .countdown-modal-content { background: white; padding: clamp(25px, 5vw, 30px) clamp(30px, 6vw, 40px); border-radius: 15px; width: 90%; max-width: 480px; position: relative; box-shadow: 0 15px 40px rgba(0,0,0,0.25); transform: translateY(-25px) scale(0.95) translateZ(0); opacity: 0; animation: slideDownFadeInScale 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; transform-style: preserve-3d; }
+        .close { position: absolute; top: 15px; right: 15px; left: auto; cursor: pointer; font-size: 1.8em; color: #aaa; transition: color 0.3s, transform 0.3s; line-height: 1; z-index: 10; }
+        .close:hover { color: var(--primary); transform: rotate(90deg) scale(1.1); }
+        body.dark-mode .close { color: #ccc; }
+        body.dark-mode .close:hover { color: var(--accent); }
 
         /* --- Message Modal Specifics --- */
-        #messageModal textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid var(--secondary);
-            border-radius: 10px;
-            margin: 20px 0;
-            font-family: 'Changa', sans-serif;
-            font-size: 1em;
-            min-height: 100px;
-             resize: vertical;
-             /* iOS input appearance */
-             -webkit-appearance: none;
-             appearance: none;
-        }
-         #messageModal textarea:focus {
-             border-color: var(--primary);
-             box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
-             outline: none;
-         }
-         #messageModal button {
-             width: 100%;
-             padding: 15px;
-         }
+        #messageModal textarea { width: 100%; padding: 15px; border: 2px solid var(--secondary); border-radius: 10px; margin: 20px 0; font-family: 'Changa', sans-serif; font-size: 1em; min-height: 100px; resize: vertical; -webkit-appearance: none; appearance: none; }
+        #messageModal textarea:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(255, 107, 107, 0.5); outline: none; }
+        #messageModal button { width: 100%; padding: 15px; }
 
         /* --- Quiz Modal Specifics --- */
-        .quiz-modal-content h3 {
-            color: var(--primary);
-            margin-bottom: 5px; /* Reduced margin */
-            text-align: center;
-            font-size: 1.5em;
-        }
-        #quizProgress {
-            text-align: center;
-            font-size: 0.9em;
-            opacity: 0.7;
-            margin-bottom: 15px;
-        }
-        .quiz-modal-content label {
-             display: block;
-             margin-bottom: 10px;
-             font-weight: bold;
-        }
-        .quiz-modal-content input[type="text"] {
-             width: 100%;
-             padding: 12px 15px;
-             border: 2px solid var(--secondary);
-             border-radius: 10px;
-             margin-bottom: 20px;
-             font-size: 1em;
-             font-family: 'Changa', sans-serif;
-              /* iOS input appearance */
-             -webkit-appearance: none;
-             appearance: none;
-        }
-         .quiz-modal-content input[type="text"]:focus {
-             border-color: var(--primary);
-             box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
-             outline: none;
-         }
-        .quiz-modal-content button {
-            width: 100%;
-            padding: 15px;
-        }
-        #quizFeedback {
-            margin-top: 15px;
-            text-align: center;
-            font-weight: bold;
-            min-height: 1.2em; /* Reserve space */
-        }
+        .quiz-modal-content h3 { color: var(--primary); margin-bottom: 5px; text-align: center; font-size: 1.5em; }
+        #quizProgress { text-align: center; font-size: 0.9em; opacity: 0.7; margin-bottom: 15px; }
+        .quiz-modal-content label { display: block; margin-bottom: 10px; font-weight: bold; }
+        .quiz-modal-content input[type="text"] { width: 100%; padding: 12px 15px; border: 2px solid var(--secondary); border-radius: 10px; margin-bottom: 20px; font-size: 1em; font-family: 'Changa', sans-serif; -webkit-appearance: none; appearance: none; }
+        .quiz-modal-content input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(255, 107, 107, 0.5); outline: none; }
+        .quiz-modal-content button { width: 100%; padding: 15px; }
+        #quizFeedback { margin-top: 15px; text-align: center; font-weight: bold; min-height: 1.2em; }
         #quizFeedback.success { color: #2ecc71; }
         #quizFeedback.error { color: #e74c3c; }
 
         /* --- Utility & Decorative Elements --- */
-        .message-counter {
-            position: fixed;
-            /* Position top-left respecting safe area for RTL */
-            top: calc(env(safe-area-inset-top, 0px) + 18px);
-            left: 15px;
-            right: auto; /* Reset right */
-            bottom: auto;
-            transform: none; /* Reset transform */
-            background: var(--primary);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.8em;
-            box-shadow: 0 4px 12px var(--shadow-color);
-            z-index: 90;
-            transition: background-color 0.5s, color 0.5s;
-        }
-        .star {
-            position: fixed;
-            width: 3px;
-            height: 3px;
-            background: gold;
-            border-radius: 50%;
-            box-shadow: 0 0 6px gold;
-            animation: twinkle 2s infinite ease-in-out;
-            pointer-events: none;
-            z-index: 1;
-             transition: transform 0.2s linear;
-             transform: translateZ(0); /* Promote layer */
-        }
-        /* Hidden Message Div */
-         #hiddenMessage {
-             position: fixed;
-             left: 50%;
-             background: rgba(0,0,0,0.75);
-             color: white;
-             padding: 20px 30px; /* Slightly larger padding */
-             border-radius: 15px;
-             z-index: 101; /* Above control panel */
-             opacity: 0; /* Start hidden */
-             pointer-events: none; /* Start non-interactive */
-             text-align: center;
-             font-size: 1.2em; /* Slightly larger font */
-             font-weight: bold;
-             bottom: calc(env(safe-area-inset-bottom, 0px) + 100px);
-             max-width: 90%; /* Ensure it fits on screen */
-             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-             /* Apply initial transform and transition for standard messages */
-             transform: translateX(-50%) scale(0) translateZ(0);
-             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s;
-             transform-style: preserve-3d;
-         }
-        /* --- Final Reward Message Style --- */
-         #hiddenMessage.final-reward-message {
-             background: linear-gradient(135deg, var(--primary), #ff8a8a);
-             font-size: 1.5em;
-             font-family: 'Great Vibes', cursive; /* Using elegant font */
-             padding: 30px 40px;
-             border-radius: 20px;
-             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-             /* Override initial transform and transition for the final message */
-             transform: translateX(-50%) scale(0) rotateX(-30deg) translateZ(0); /* Initial 3D state */
-             transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.7s;
-             /* transform-style is already on base #hiddenMessage */
-         }
-
-         /* --- REMOVED THE .show CLASS RULE --- */
-         /*
-         #hiddenMessage.final-reward-message.show { /* State when showing */
-            /* opacity: 1; */ /* Handled by JS */
-            /* transform: translateX(-50%) scale(1) rotateX(0deg) translateZ(0); */ /* Handled by JS */
-         /* }
-         */
-
-
+        .message-counter { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 18px); left: 15px; right: auto; bottom: auto; transform: none; background: var(--primary); color: white; padding: 6px 12px; border-radius: 20px; font-weight: bold; font-size: 0.8em; box-shadow: 0 4px 12px var(--shadow-color); z-index: 90; transition: background-color 0.5s, color 0.5s; }
+        .star { position: fixed; width: 3px; height: 3px; background: gold; border-radius: 50%; box-shadow: 0 0 6px gold; animation: twinkle 2s infinite ease-in-out; pointer-events: none; z-index: 1; transition: transform 0.2s linear; transform: translateZ(0); }
+        #hiddenMessage { position: fixed; left: 50%; background: rgba(0,0,0,0.75); color: white; padding: 20px 30px; border-radius: 15px; z-index: 101; opacity: 0; pointer-events: none; text-align: center; font-size: 1.2em; font-weight: bold; bottom: calc(env(safe-area-inset-bottom, 0px) + 100px); max-width: 90%; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transform: translateX(-50%) scale(0) translateZ(0); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s; transform-style: preserve-3d; }
+        #hiddenMessage.final-reward-message { background: linear-gradient(135deg, var(--primary), #ff8a8a); font-size: 1.5em; font-family: 'Great Vibes', cursive; padding: 30px 40px; border-radius: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); transform: translateX(-50%) scale(0) rotateX(-30deg) translateZ(0); transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.7s; }
+        
         /* --- Animations --- */
-        @keyframes float {
-            0% { transform: translateY(0px) translateZ(0); }
-            50% { transform: translateY(-25px) translateZ(0); }
-            100% { transform: translateY(0px) translateZ(0); }
-        }
-        @keyframes gentleFloat {
-            0% { transform: translateX(-50%) translateY(0px) translateZ(0); }
-            50% { transform: translateX(-50%) translateY(-12px) translateZ(0); }
-            100% { transform: translateX(-50%) translateY(0px) translateZ(0); }
-        }
-        @keyframes sway {
-            0% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-            100% { transform: rotate(-5deg); }
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.1; transform: scale(0.7); }
-            50% { opacity: 1; transform: scale(1.1); }
-        }
-        @keyframes slideInRight {
-             from { transform: translateX(120%) translateZ(0); opacity: 0; } /* Start from right for RTL */
-             to { transform: translateX(0) translateZ(0); opacity: 1; }
-         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideDownFadeInScale {
-             from { opacity: 0; transform: translateY(-25px) scale(0.95) translateZ(0); }
-             to { opacity: 1; transform: translateY(0) scale(1) translateZ(0); }
-         }
+        @keyframes float { 0% { transform: translateY(0px) translateZ(0); } 50% { transform: translateY(-25px) translateZ(0); } 100% { transform: translateY(0px) translateZ(0); } }
+        @keyframes gentleFloat { 0% { transform: translateX(-50%) translateY(0px) translateZ(0); } 50% { transform: translateX(-50%) translateY(-12px) translateZ(0); } 100% { transform: translateX(-50%) translateY(0px) translateZ(0); } }
+        @keyframes sway { 0% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } 100% { transform: rotate(-5deg); } }
+        @keyframes twinkle { 0%, 100% { opacity: 0.1; transform: scale(0.7); } 50% { opacity: 1; transform: scale(1.1); } }
+        @keyframes slideInRight { from { transform: translateX(120%) translateZ(0); opacity: 0; } to { transform: translateX(0) translateZ(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideDownFadeInScale { from { opacity: 0; transform: translateY(-25px) scale(0.95) translateZ(0); } to { opacity: 1; transform: translateY(0) scale(1) translateZ(0); } }
 
         /* --- Responsive Design Adjustments --- */
         @media (max-width: 768px) {
-             .message-wall {
-                  max-width: 90%;
-                  right: 5%; /* Center horizontally */
-                  left: 5%; /* Center horizontally */
-                  top: 15px; /* Move higher */
-                  max-height: 30vh; /* Keep relative height */
-                  padding: 15px;
-                   /* Respect safe area top */
-                  top: calc(env(safe-area-inset-top, 0px) + 15px);
-                  /* Adjust max-height considering top safe area */
-                  max-height: calc(30vh - env(safe-area-inset-top, 0px));
-             }
-              .message-wall h3 { font-size: 1.2em; margin-bottom: 10px;}
-              .message-item { padding: 10px 15px; margin-bottom: 10px; }
-              .delete-btn { font-size: 1.1em; left: 8px; }
-
-             .control-panel {
-                  width: 95%; /* Slightly wider on mobile */
-                  max-width: 95%;
-                  gap: 8px;
-                  padding: 8px 10px;
-                  /* Bottom already handles safe area */
-                  bottom: 0;
-                  border-radius: 30px 30px 0 0; /* Adjusted radius */
-                  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
-             }
-              .btn-magic {
-                  padding: 8px 15px;
-                  font-size: 0.85em;
-                  gap: 5px;
-              }
-             .default-message {
-                  width: 90%;
-                  padding: 15px 20px;
-                  top: auto; /* Remove fixed top */
-                  bottom: 45%; /* Position relative to bottom */
-                  transform: translate(-50%, 50%) translateZ(0); /* Center X, position Y */
-                  animation: none; /* Disable gentle float */
-                  max-width: 90%;
-             }
-              .default-message h1 { font-size: 2em; letter-spacing: 1px;}
-              .default-message p { font-size: 0.95em; line-height: 1.7;}
-
-              .message-counter {
-                  /* Position top-left respecting safe area for RTL */
-                   top: calc(env(safe-area-inset-top, 0px) + 15px);
-                  left: 10px;
-                  right: auto;
-                  font-size: 0.8em; padding: 6px 12px;
-              }
-
-              .login-box { padding: 30px 25px; }
-              .modal-content, .quiz-modal-content { padding: 20px 25px; max-width: 90%; }
-              .cake-3d {
-                  width: 140px; height: 180px; top: 55%; /* Adjust position */
-                  animation-duration: 35s;
-                  transform: translateX(-50%) rotateY(0deg); /* Reset transform for simpler positioning */
-              }
-               .cake-3d:hover {
-                  transform: translateX(-50%) rotateY(15deg) scale(1.05) translateZ(15px);
-               }
-
-              .balloon-group { transform: scale(0.9); }
-              .balloon { width: 80px; height: 105px; }
-              .star { width: 2px; height: 2px; }
-              #hiddenMessage {
-                  bottom: calc(env(safe-area-inset-bottom, 0px) + 90px); /* Adjust position */
-                  font-size: 1em;
-                  padding: 15px 20px;
-              }
-              #hiddenMessage.final-reward-message {
-                  font-size: 1.2em;
-                  padding: 20px 30px;
-              }
+            .message-wall { max-width: 90%; right: 5%; left: 5%; top: calc(env(safe-area-inset-top, 0px) + 15px); max-height: calc(30vh - env(safe-area-inset-top, 0px)); padding: 15px; }
+            .message-wall h3 { font-size: 1.2em; margin-bottom: 10px;}
+            .message-item { padding: 10px 15px; margin-bottom: 10px; }
+            .delete-btn { font-size: 1.1em; left: 8px; }
+            .control-panel { width: 100%; max-width: 100%; border-radius: 0; gap: 5px; justify-content: space-evenly; }
+            .btn-magic { padding: 8px 12px; font-size: 0.8em; gap: 5px; }
+            #trackName { display: none; } /* Hide track name on mobile to save space */
+            .default-message { width: 90%; padding: 15px 20px; top: auto; bottom: 45%; transform: translate(-50%, 50%) translateZ(0); animation: none; max-width: 90%; }
+            .default-message h1 { font-size: 2em; letter-spacing: 1px;}
+            .default-message p { font-size: 0.95em; line-height: 1.7;}
+            .message-counter { top: calc(env(safe-area-inset-top, 0px) + 15px); left: 10px; right: auto; font-size: 0.8em; padding: 6px 12px; }
+            .login-box { padding: 30px 25px; }
+            .modal-content, .quiz-modal-content, .memories-modal-content, .coupon-modal-content, .countdown-modal-content { padding: 20px 25px; max-width: 90%; }
+            .cake-3d { width: 140px; height: 180px; top: 55%; animation-duration: 35s; transform: translateX(-50%) rotateY(0deg); }
+            .cake-3d:hover { transform: translateX(-50%) rotateY(15deg) scale(1.05) translateZ(15px); }
+            .balloon-group { transform: scale(0.9); }
+            .balloon { width: 80px; height: 105px; }
+            .star { width: 2px; height: 2px; }
+            #hiddenMessage { bottom: calc(env(safe-area-inset-bottom, 0px) + 90px); font-size: 1em; padding: 15px 20px; }
+            #hiddenMessage.final-reward-message { font-size: 1.2em; padding: 20px 30px; }
         }
-         @media (max-width: 480px) {
-              .default-message h1 { font-size: 1.8em; }
-              .default-message p { font-size: 0.9em; line-height: 1.6;}
-              .control-panel { gap: 5px; border-radius: 25px 25px 0 0; }
-              .btn-magic { padding: 7px 12px; font-size: 0.8em; }
-              .cake-3d { width: 120px; height: 160px; top: 60%; }
-               .cake-3d:hover {
-                  transform: translateX(-50%) rotateY(10deg) scale(1.03) translateZ(10px);
-               }
-              .message-counter {
-                  font-size: 0.75em; padding: 5px 10px;
-                  top: calc(env(safe-area-inset-top, 0px) + 12px);
-                  left: 8px;
-              }
-              .message-wall { max-height: 25vh; }
-              #hiddenMessage {
-                  bottom: calc(env(safe-area-inset-bottom, 0px) + 80px);
-              }
-         }
-         /* Specific overrides for landscape on small heights (like iPhone SE landscape) */
-         @media (max-height: 450px) and (orientation: landscape) {
-             .default-message {
-                  position: relative; /* Change from absolute */
-                  top: auto;
-                  bottom: auto;
-                  transform: translateX(-50%); /* Only center horizontally */
-                  margin: 20px auto; /* Add some margin */
-                  width: 80%;
-                  padding: 10px 15px;
-                  animation: none; /* Disable float */
-              }
-               .default-message h1 { font-size: 1.5em; }
-               .default-message p { font-size: 0.8em; line-height: 1.5; margin-bottom: 10px;}
-
-              .cake-3d {
-                  position: relative; /* Change from absolute */
-                  margin: 0 auto 20px auto; /* Center and add margin */
-                  bottom: auto; top: auto; /* Reset positioning */
-                  left: auto; transform: none; /* Reset transform */
-                  width: 100px; height: 130px;
-                  animation: none; /* Stop rotation in small landscape */
-              }
-              .message-wall {
-                  position: relative; /* Change from fixed */
-                  width: 90%;
-                  max-width: 90%;
-                  margin: 10px auto;
-                  max-height: 150px; /* Fixed height */
-                  top: auto; right: auto; left: auto; /* Reset positioning */
-               }
-              .control-panel {
-                  position: relative; /* Change from fixed */
-                  bottom: auto; left: auto; transform: none; /* Reset positioning */
-                  width: 90%; max-width: 90%;
-                  margin: 10px auto;
-                  padding: 5px; padding-bottom: 5px; /* Reset padding */
-                  border-radius: 20px; /* Full radius */
-              }
-              .btn-magic { font-size: 0.75em; padding: 5px 10px; }
-              .message-counter { display: none; } /* Hide counter */
-              #hiddenMessage { display: none; } /* Hide popup message */
-         }
+        @media (max-width: 480px) {
+            .default-message h1 { font-size: 1.8em; }
+            .default-message p { font-size: 0.9em; line-height: 1.6;}
+            .control-panel { gap: 5px; border-radius: 25px 25px 0 0; }
+            .btn-magic { padding: 7px 10px; font-size: 1.2em; flex-grow: 1; justify-content: center; } /* Let buttons grow, adjust size */
+            .btn-magic > span:not(.music-controls) { display: none; } /* Hide text on small buttons, but not music controls */
+            .music-controls, .music-controls .btn-magic { padding: 5px; font-size: 1em; }
+            .cake-3d { width: 120px; height: 160px; top: 60%; }
+            .cake-3d:hover { transform: translateX(-50%) rotateY(10deg) scale(1.03) translateZ(10px); }
+            .message-counter { font-size: 0.75em; padding: 5px 10px; top: calc(env(safe-area-inset-top, 0px) + 12px); left: 8px; }
+            .message-wall { max-height: 25vh; }
+            #hiddenMessage { bottom: calc(env(safe-area-inset-bottom, 0px) + 80px); }
+            .countdown-unit { width: 60px; }
+            .countdown-value { font-size: 1.5em; }
+        }
+        @media (max-height: 450px) and (orientation: landscape) {
+             .default-message { display: none; }
+             .cake-3d { display: none; }
+             .message-wall { position: relative; width: 90%; max-width: 90%; margin: 10px auto; max-height: 150px; top: auto; right: auto; left: auto; }
+             .control-panel { position: relative; bottom: auto; left: auto; transform: none; width: 90%; max-width: 90%; margin: 10px auto; padding: 5px; padding-bottom: 5px; border-radius: 20px; flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start;}
+             .btn-magic { font-size: 0.75em; padding: 5px 10px; flex-shrink: 0;}
+             .message-counter, #hiddenMessage { display: none; }
+        }
 
     </style>
 </head>
 <body>
     <div class="login-modal" id="loginModal">
         <div class="login-box">
-            <h2 id="loginModalTitle">XXXX؟ 😉 (كلمة السر قريبة من اسمك)</h2>
+            <h2 id="loginModalTitle">مرحباً يا غالي، هل أنت حسن؟ 😉 (كلمة السر قريبة من اسمك)</h2>
             <input type="password" id="password" placeholder="اكتب كلمة السر (h)..." autocomplete="off" autofocus>
-            <button class="btn-magic" onclick="checkPassword()">🔑 دخول</button>
+            <button class="btn-magic" onclick="checkPassword()">🔑<span> دخول</span></button>
         </div>
     </div>
 
     <div class="scene" id="mainScene">
 
-        <div class="balloon-group" style="left: 8%; top: 5%;">
-            <div class="balloon" style="background: radial-gradient(circle at 50% 120%, #ff9a9e, #fad0c4);" onclick="popBalloon(this)"></div>
-            <div class="balloon" style="background: radial-gradient(circle at 50% 120%, #a8edea, #fed6e3); animation-delay: 1.2s;" onclick="popBalloon(this)"></div>
-        </div>
-        <div class="balloon-group" style="right: 8%; top: 12%; animation-duration: 12s;">
-            <div class="balloon" style="background: radial-gradient(circle at 50% 120%, #ffeaa7, #fdcb6e); animation-delay: 0.6s;" onclick="popBalloon(this)"></div>
-        </div>
-        <div class="balloon-group" style="left: 30%; top: 20%; animation-duration: 9s;">
-            <div class="balloon" style="background: radial-gradient(circle at 50% 120%, #55efc4, #a29bfe); animation-delay: 0.3s;" onclick="popBalloon(this)"></div>
-        </div>
+        <div class="balloon-group" style="left: 8%; top: 5%;"><div class="balloon" style="background: radial-gradient(circle at 50% 120%, #ff9a9e, #fad0c4);" onclick="popBalloon(this)"></div><div class="balloon" style="background: radial-gradient(circle at 50% 120%, #a8edea, #fed6e3); animation-delay: 1.2s;" onclick="popBalloon(this)"></div></div>
+        <div class="balloon-group" style="right: 8%; top: 12%; animation-duration: 12s;"><div class="balloon" style="background: radial-gradient(circle at 50% 120%, #ffeaa7, #fdcb6e); animation-delay: 0.6s;" onclick="popBalloon(this)"></div></div>
+        <div class="balloon-group" style="left: 30%; top: 20%; animation-duration: 9s;"><div class="balloon" style="background: radial-gradient(circle at 50% 120%, #55efc4, #a29bfe); animation-delay: 0.3s;" onclick="popBalloon(this)"></div></div>
 
         <div class="cake-3d" id="cakeElement" onclick="cakeSurprise()"></div>
 
         <div class="default-message">
-            <h1 id="mainTitle" onclick="titleSurprise(this)">كل عيد وانت بألف خير</h1>
+            <h1 id="mainTitle" onclick="titleSurprise(this)">كل عام وأنت بخير حسونتي</h1>
             <p>
                  🎉 في يومك المميز هذا 🌟<br>
                  أتمنى لك عاماً مليئاً بالضحكات التي لا تنتهي، والمفاجآت السعيدة، وكل الحب الذي يستحقه قلبك الطيب.<br>
@@ -911,127 +404,176 @@
 
         <div class="message-wall" id="messageWall">
             <h3>💌 ركن الرسائل السرية 💌</h3>
-            <div id="messagesContainer">
-                <p style="text-align:center; padding: 20px; opacity: 0.7;">جاري تحميل الرسائل...</p>
-            </div>
+            <div id="messagesContainer"><p style="text-align:center; padding: 20px; opacity: 0.7;">جاري تحميل الرسائل...</p></div>
         </div>
 
         <div class="control-panel">
-            <button class="btn-magic" onclick="toggleMusic()" id="musicBtn" title="تشغيل/كتم الموسيقى">🎵</button>
+            <div class="music-controls">
+                <button class="btn-magic" onclick="playPrevTrack()" title="الأغنية السابقة">⏪</button>
+                <button class="btn-magic" onclick="toggleMusic()" id="musicBtn" title="تشغيل/كتم الموسيقى">🎵</button>
+                <button class="btn-magic" onclick="playNextTrack()" title="الأغنية التالية">⏩</button>
+            </div>
+            <span id="trackName"></span>
+            <button class="btn-magic" onclick="toggleSfx()" id="sfxBtn" title="كتم المؤثرات">🔊</button>
             <button class="btn-magic" onclick="showMessageForm()" title="اكتب رسالة">✍️</button>
+            <button class="btn-magic" onclick="openMemoriesModal()" title="معرض الذكريات">🖼️</button>
+            <button class="btn-magic" onclick="showRandomReason()" title="لماذا أنت صديق رائع؟">💖</button>
+            <button class="btn-magic" onclick="showAffirmation()" title="رسالة إيجابية">✨</button>
+            <button class="btn-magic" onclick="showCouponBook()" title="كتاب الهدايا">🎟️</button>
+            <button class="btn-magic" onclick="showCountdown()" title="العد التنازلي">⏱️</button>
             <button class="btn-magic" onclick="launchConfetti()" title="احتفل!">🎉</button>
             <button class="btn-magic" onclick="startQuiz()" id="quizButton" title="تحدي الأسئلة!">🎁</button>
-            <button class="btn-magic btn-colors" onclick="changeBalloonColors()" title="غير ألوان البالونات">🎨</button>
+            <button class="btn-magic btn-colors" onclick="changeBalloonColors()" title="غير الألوان">🎨</button>
             <button class="btn-magic" onclick="showKnowledge()" id="knowledgeBtn" title="لمحة معرفة">💡</button>
-            <button class="btn-magic" onclick="toggleDarkMode()" id="darkModeToggle" title="الوضع الليلي/النهاري">🌙</button>
+            <button class="btn-magic" onclick="toggleDarkMode()" id="darkModeToggle" title="الوضع الليلي">🌙</button>
         </div>
 
-        <div class="modal" id="messageModal" role="dialog" aria-modal="true" aria-labelledby="messageModalTitle" aria-hidden="true">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal('messageModal')" aria-label="إغلاق">&times;</span>
-                <h3 id="messageModalTitle">اكتب رسالة لحسونتي</h3>
-                <textarea id="userMessage" placeholder="عبر عن مشاعرك هنا..." rows="5"></textarea>
-                <button class="btn-magic" onclick="saveMessage()">🚀 إرسال</button>
+        <!-- Message Modal -->
+        <div class="modal" id="messageModal" role="dialog" aria-modal="true" aria-labelledby="messageModalTitle"><div class="modal-content"><span class="close" onclick="closeModal('messageModal')" aria-label="إغلاق">×</span><h3 id="messageModalTitle">اكتب رسالة لحسونتي</h3><textarea id="userMessage" placeholder="عبر عن مشاعرك هنا..." rows="5"></textarea><button class="btn-magic" onclick="saveMessage()">🚀 إرسال</button></div></div>
+        
+        <!-- Quiz Modal -->
+        <div class="modal" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizModalTitle"><div class="quiz-modal-content"><span class="close" onclick="closeModal('quizModal')" aria-label="إغلاق">×</span><h3 id="quizModalTitle">🕵️‍♂️ انت تعرفني زين؟ خلينا نشوف 🕵️‍♂️</h3><div id="quizProgress"></div><label id="quizQuestionLabel" for="quizAnswer">السؤال:</label><p id="quizQuestionText" style="margin-bottom: 15px; font-weight:bold;"></p><input type="text" id="quizAnswer" placeholder="اكتب إجابتك هنا..."><button class="btn-magic" onclick="checkQuizAnswer()">التالي</button><div id="quizFeedback"></div></div></div>
+        
+        <!-- Memories Modal -->
+        <div class="modal" id="memoriesModal" role="dialog" aria-modal="true" aria-labelledby="memoriesModalTitle">
+            <div class="memories-modal-content">
+                <span class="close" onclick="closeModal('memoriesModal')" aria-label="إغلاق">×</span>
+                <h3 id="memoriesModalTitle">أجمل ذكرياتنا</h3>
+                <div class="memory-image-container">
+                    <img id="memoryImage" src="" alt="Memory Image">
+                    <button id="prevMemory" class="memory-nav" onclick="changeMemory(-1)">❮</button>
+                    <button id="nextMemory" class="memory-nav" onclick="changeMemory(1)">❯</button>
+                </div>
+                <p id="memoryCaption" class="memory-caption"></p>
             </div>
         </div>
+        
+        <!-- Final Surprise Modal -->
+        <div class="modal" id="finalSurpriseModal" role="dialog" aria-modal="true">
+             <div class="final-surprise-modal-content">
+                  <span class="close" onclick="closeModal('finalSurpriseModal')" aria-label="إغلاق">×</span>
+                  <h2>🎁 الجائزة الكبرى! 🎁</h2>
+                  <p>لأنك الأفضل، تستحق الأفضل! هذه هديتي المتواضعة لك. أتمنى أن تعجبك وأن تكون بداية لسنة جديدة مليئة بالإنجازات والسعادة.</p>
+                  <p style="font-size: 1.2em; color: gold; font-weight: bold;">(هنا يمكنك وضع رابط الهدية، فيديو خاص، أو أي مفاجأة أخرى)</p>
+             </div>
+        </div>
 
-        <div class="modal" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizModalTitle" aria-hidden="true">
-            <div class="quiz-modal-content">
-                <span class="close" onclick="closeModal('quizModal')" aria-label="إغلاق">&times;</span>
-                <h3 id="quizModalTitle">🕵️‍♂️ انت تعرفني زين؟خلينا نشوف 🕵️‍♂️</h3>
-                <div id="quizProgress"></div>
-                <label id="quizQuestionLabel" for="quizAnswer">السؤال:</label>
-                <p id="quizQuestionText" style="margin-bottom: 15px; font-weight:bold;"></p>
-                <input type="text" id="quizAnswer" placeholder="اكتب إجابتك هنا...">
-                <button class="btn-magic" onclick="checkQuizAnswer()">التالي</button>
-                <div id="quizFeedback"></div>
+        <!-- Coupon Book Modal -->
+        <div class="modal" id="couponModal" role="dialog" aria-modal="true" aria-labelledby="couponModalTitle">
+            <div class="coupon-modal-content">
+                <span class="close" onclick="closeModal('couponModal')" aria-label="إغلاق">×</span>
+                <h3 id="couponModalTitle">🎟️ دفتر هدايا خاص 🎟️</h3>
+                <div id="couponContainer"></div>
+                <button class="btn-magic btn-magic-secondary" onclick="resetCoupons()">إعادة تعيين الكوبونات</button>
+            </div>
+        </div>
+        
+        <!-- Countdown Modal -->
+        <div class="modal" id="countdownModal" role="dialog" aria-modal="true" aria-labelledby="countdownModalTitle">
+            <div class="countdown-modal-content">
+                <span class="close" onclick="closeModal('countdownModal')" aria-label="إغلاق">×</span>
+                <h3 id="countdownModalTitle">Next Level Up!</h3>
+                <p>الوقت المتبقي حتى عيد ميلادك القادم:</p>
+                <div id="countdown-display">
+                    <div class="countdown-unit"><div id="days" class="countdown-value">0</div><div class="countdown-label">أيام</div></div>
+                    <div class="countdown-unit"><div id="hours" class="countdown-value">0</div><div class="countdown-label">ساعات</div></div>
+                    <div class="countdown-unit"><div id="minutes" class="countdown-value">0</div><div class="countdown-label">دقائق</div></div>
+                    <div class="countdown-unit"><div id="seconds" class="countdown-value">0</div><div class="countdown-label">ثواني</div></div>
+                </div>
             </div>
         </div>
 
         <div class="message-counter" id="messageCounter">0 رسائل</div>
-
-        <div id="hiddenMessage" role="alert" aria-live="polite">
-             رسالة سرية! ✨
-        </div>
-
-    </div> <audio id="bg-music" loop>
-        <source src="https://cdn.jsdelivr.net/gh/store-rd/hsn@main/hbd.mp3" type="audio/mpeg">
-        عذراً، متصفحك لا يدعم تشغيل الصوت.
-    </audio>
+        <div id="hiddenMessage" role="alert" aria-live="polite">رسالة سرية! ✨</div>
+    </div>
+    
+    <!-- Audio Elements -->
+    <audio id="bg-music" onended="playNextTrack()"></audio> <!-- Removed loop, handled by JS -->
+    <audio id="pop-sound"><source src="https://cdn.jsdelivr.net/gh/store-rd/hsn@main/pop.mp3" type="audio/mpeg"></audio>
+    <audio id="success-sound"><source src="https://cdn.jsdelivr.net/gh/store-rd/hsn@main/success.mp3" type="audio/mpeg"></audio>
+    <audio id="send-sound"><source src="https://cdn.jsdelivr.net/gh/store-rd/hsn@main/send.mp3" type="audio/mpeg"></audio>
 
     <script>
         // --- Firebase Configuration ---
         const firebaseConfig = {
-            apiKey: "AIzaSyBia26tkTpn9nFZGJyP91VR06MRSlTqY40", // Keep secure using Firestore rules
+            apiKey: "AIzaSyBia26tkTpn9nFZGJyP91VR06MRSlTqY40",
             authDomain: "anord-9bc18.firebaseapp.com",
             projectId: "anord-9bc18",
-            storageBucket: "anord-9bc18.appspot.com", // Ensure this matches your Firebase Storage bucket name
+            storageBucket: "anord-9bc18.appspot.com",
             messagingSenderId: "937344759300",
             appId: "1:937344759300:web:161e1df9a09c36b94ce751"
         };
 
         // --- Initialize Firebase ---
         let db;
-        let messaging; // Declare messaging variable
         try {
              firebase.initializeApp(firebaseConfig);
-             db = firebase.firestore(); // Use compat firestore
+             db = firebase.firestore();
              console.log("Firebase Initialized Successfully (Compat Mode)");
-
-             // Initialize Firebase Messaging if supported
-             if (firebase.messaging.isSupported()) {
-                 messaging = firebase.messaging();
-                 console.log("Firebase Messaging Initialized.");
-                 // Listener for messages received while the app is in the foreground
-                 messaging.onMessage((payload) => {
-                    console.log('Foreground Message received. ', payload);
-                    // Display the notification using our existing function
-                    if (payload.notification) {
-                        showLocalNotification(payload.notification.title, payload.notification.body);
-                    } else {
-                        console.warn("Received FCM message without notification payload:", payload);
-                    }
-                 });
-             } else {
-                 console.warn("Firebase Messaging is not supported in this browser.");
-                 messaging = null; // Set to null if not supported
-             }
-
         } catch (error) {
              console.error("Firebase Initialization Error:", error);
-             const loginModalTitle = document.getElementById('loginModalTitle');
-             if (loginModalTitle) {
-                 loginModalTitle.innerHTML += '<br><small style="color:red;">خطأ بالاتصال بقاعدة البيانات!</small>';
-             } else {
-                 alert("حدث خطأ فادح في الاتصال بقاعدة البيانات. قد لا يعمل الموقع بشكل صحيح.");
-             }
+             document.getElementById('loginModalTitle').innerHTML += '<br><small style="color:red;">خطأ بالاتصال بقاعدة البيانات!</small>';
         }
 
         // --- Global Variables ---
         let messages = [];
         let darkMode = localStorage.getItem('darkMode') === 'true';
+        let sfxMuted = localStorage.getItem('sfxMuted') === 'true';
         const stars = [];
-        const parallaxFactor = 0.05;
         let quizIndex = 0;
         let shuffledQuizzes = [];
         let quizInProgress = false;
+        let quizCompleted = localStorage.getItem('quizCompleted') === 'true';
+        let memoryIndex = 0;
+        let countdownInterval;
 
-        // --- Quiz Questions (Original List) ---
+        // --- NEW & Existing Feature Data ---
+        // CORRECTED PLAYLIST with working links
+        const playlist = [
+            { name: "Mawlay Salli", src: "https://archive.org/download/maher-zain-mawlay-salli/Maher-Zain-Mawlay-Salli.mp3" },
+            { name: "Ya Nabi Salam", src: "https://archive.org/download/ya-nabi-salam-alayka/ya-nabi-salam-alayka.mp3"},
+            { name: "Birthday Song", src: "https://cdn.jsdelivr.net/gh/store-rd/hsn@main/hbd.mp3" } // Your original working song
+        ];
+        let currentTrackIndex = 0;
+
+        const coupons = [
+            { id: 'c1', title: 'كوبون ليلة سينمائية', desc: 'صالح لمشاهدة فيلم من اختيارك، الفشار علي!', redeemed: false },
+            { id: 'c2', title: 'كوبون أذن صاغية', desc: 'للتحدث عن أي شيء في أي وقت، بدون أحكام.', redeemed: false },
+            { id: 'c3', title: 'كوبون مساعدة برمجية', desc: 'صالح لجلسة واحدة لحل أي مشكلة برمجية تواجهك.', redeemed: false },
+            { id: 'c4', title: 'كوبون ضحكة مضمونة', desc: 'عند الحاجة، سأرسل لك أفضل نكتة عندي.', redeemed: false },
+            { id: 'c5', title: 'كوبون وجبة من صنع يدي', desc: 'دعوة على وجبة غداء أو عشاء أطبخها لك.', redeemed: false }
+        ];
+        let redeemedCoupons = JSON.parse(localStorage.getItem('redeemedCoupons')) || [];
+
+        const affirmations = [
+            "صداقتنا تجعل العالم مكاناً أفضل.", "أنت قادر على تحقيق أشياء عظيمة.", "طاقتك الإيجابية معدية وملهمة.", "كل يوم هو فرصة جديدة للنجاح.", "تذكر دائمًا كم أنت شخص رائع ومحبوب."
+        ];
+        
+        const memories = [
+            { image: "https://media.discordapp.net/attachments/902177491790204989/1357493942131626106/F9AAD199-3624-48E9-8A94-AD155CD8425F.png?ex=684e02c0&is=684cb140&hm=656170dce536979ee3e8a23bccc8961502860e246d8ae47f4397d02cdc734b5b&=&format=webp&quality=lossless&width=1376&height=917", caption: "راح يجي يوم تتغير صير واقعية !" },
+            { image: "https://media.discordapp.net/attachments/902177491790204989/1357493959605096549/F077FC29-0158-45F2-A270-7133286AE86F.png?ex=684e02c4&is=684cb144&hm=1bbdb9f2de33f96e8491f6a785e407ba6c7a15352bfaea096031be375b52075a&=&format=webp&quality=lossless&width=1376&height=917", caption: "عمو لا تباوع علي ترة اخجل :3." },
+            { image: "https://media.discordapp.net/attachments/902177491790204989/1357493984049500170/50BDFC76-2A45-4598-82F5-3FD40062B354.png?ex=684e02ca&is=684cb14a&hm=529ff5dd7b91d1d5b81a1e220b1407dfe180bd5e677c041a1b14b071aec5684d&=&format=webp&quality=lossless&width=978&height=978", caption: "اجمل يوم واجمل صورة !" },
+        ];
+        const reasons = [
+            "لأنك دائمًا موجود عندما أحتاجك.", "لأن حس كوميدا سوداء عندك تخبل!", "لأنك تجعل الأوقات الصعبة أسهل.",
+            "لأنك وفي ومخلص.", "لأننا نشارك نفس الأحلام والطموحات.", "لأنك تعرف كيف تجعلني أبتسم.",
+            "لأنك تشجعني دائمًا لأكون أفضل نسخة من نفسي."
+        ];
+        
         const originalQuizzes = [
-             { question: "XXXX", answer: "اسود", reward: "🖤 بالضبط!" },
-             { question: "XXXXX", answer: "ابريل", reward: "🎂 صحيح!" },
-             { question: "XXXXX", answer: "سي اس كو", reward: "🎮 ذكي!" },
-             { question: "XXXXXX ؟", answer: "حسونتي", reward: "💖 أكيد!" },
-             { question: "XXXXXا؟", answer: "كربلاء", reward: "🙏 جواب حلو!" }
+             { question: "ما هو لوني المفضل؟", answer: "اسود", reward: "🖤 بالضبط!" },
+             { question: "في أي شهر ولدت؟", answer: "ابريل", reward: "🎂 صحيح!" },
+             { question: "ما هي لعبتي المفضلة؟", answer: "سي اس كو", reward: "🎮 ذكي!" },
+             { question: "من هو أفضل صديق لي؟", answer: "حسونتي", reward: "💖 أكيد!" },
+             { question: "أين تقع اجمل مدينة مقدسة؟", answer: "كربلاء", reward: "🙏 جواب حلو!" }
         ];
 
         // --- DOM Element References ---
-        let loginModal, mainScene, passwordInput, messagesContainer, messageModal, quizModal,
-            userMessageInput, messageCounter, music, musicBtn, darkModeToggleBtn, quizModalTitle,
-            quizProgress, quizQuestionText, quizAnswerInput, quizFeedback, quizSubmitButton,
-            mainTitle, cakeElement, hiddenMessageDiv, loginBox;
+        let loginModal, mainScene, passwordInput, messagesContainer, messageModal, quizModal, memoriesModal, finalSurpriseModal, couponModal, countdownModal,
+            userMessageInput, messageCounter, music, musicBtn, sfxBtn, darkModeToggleBtn, quizModalTitle,
+            quizProgress, quizQuestionText, quizAnswerInput, quizFeedback, quizSubmitButton, mainTitle, 
+            cakeElement, hiddenMessageDiv, loginBox, popSound, successSound, sendSound, trackNameEl;
 
-        // Function to get references to DOM elements after DOM is loaded
         function initializeDOMReferences() {
             loginModal = document.getElementById('loginModal');
             mainScene = document.getElementById('mainScene');
@@ -1039,10 +581,15 @@
             messagesContainer = document.getElementById('messagesContainer');
             messageModal = document.getElementById('messageModal');
             quizModal = document.getElementById('quizModal');
+            memoriesModal = document.getElementById('memoriesModal');
+            finalSurpriseModal = document.getElementById('finalSurpriseModal');
+            couponModal = document.getElementById('couponModal');
+            countdownModal = document.getElementById('countdownModal');
             userMessageInput = document.getElementById('userMessage');
             messageCounter = document.getElementById('messageCounter');
             music = document.getElementById('bg-music');
             musicBtn = document.getElementById('musicBtn');
+            sfxBtn = document.getElementById('sfxBtn');
             darkModeToggleBtn = document.getElementById('darkModeToggle');
             quizModalTitle = document.getElementById('quizModalTitle');
             quizProgress = document.getElementById('quizProgress');
@@ -1054,35 +601,25 @@
             cakeElement = document.getElementById('cakeElement');
             hiddenMessageDiv = document.getElementById('hiddenMessage');
             loginBox = loginModal?.querySelector('.login-box');
-
-            // Simple check, add more specific checks if needed
-            if (!loginModal || !mainScene || !passwordInput || !hiddenMessageDiv) {
-                console.error("Critical DOM elements (login, scene, password, hiddenMessage) are missing!");
-            }
+            popSound = document.getElementById('pop-sound');
+            successSound = document.getElementById('success-sound');
+            sendSound = document.getElementById('send-sound');
+            trackNameEl = document.getElementById('trackName');
         }
 
-
         // --- Core Functions ---
-
         function checkPassword() {
-            if (!passwordInput || !loginModal || !mainScene || !loginBox) {
-                 console.error("Password check failed: Missing required elements.");
-                 return;
-            }
-
+            if (!passwordInput || !loginModal || !mainScene || !loginBox) return;
             const enteredPassword = passwordInput.value;
-            const correctPassword = "hsnhsn";
-
+            const correctPassword = "hsnhsn"; // The password
             if (enteredPassword === correctPassword) {
-                console.log("Password correct!");
                 loginModal.style.display = 'none';
                 mainScene.style.display = 'block';
                 requestAnimationFrame(() => {
-                    if (mainScene) mainScene.style.opacity = 1;
+                    mainScene.style.opacity = 1;
                     initializeScene();
                 });
             } else {
-                console.log("Password incorrect.");
                 alert('كلمة السر غلط! تأكد منها (تلميح: h) وحاول مرة ثانية 😉');
                 passwordInput.value = '';
                 passwordInput.focus();
@@ -1092,680 +629,210 @@
         }
 
         function initializeScene() {
-             if (db) {
-                 loadMessages();
-             } else {
-                 if(messagesContainer) messagesContainer.innerHTML = '<p style="color: orange; text-align:center;">لا يمكن تحميل الرسائل (خطأ في الاتصال بقاعدة البيانات).</p>';
-                 if(messageCounter) messageCounter.textContent = "0 رسائل";
-             }
+             if (db) { loadMessages(); }
+             else { messagesContainer.innerHTML = '<p style="color: orange; text-align:center;">لا يمكن تحميل الرسائل.</p>'; }
              createStars(60);
              setupParallax();
              splitTitleIntoSpans();
-             if (darkMode) {
-                 document.body.classList.add('dark-mode');
-                 updateDarkModeToggleText();
-             }
-             // Call the updated permission request function
-             setupNotifications();
+             if (darkMode) { document.body.classList.add('dark-mode'); }
+             updateDarkModeToggleText();
+             updateSfxButton();
+             updateQuizButtonState();
              setVhVariable();
+             updateTrackInfo();
              console.log("Scene initialized");
-         }
-
-        // --- Message Handling (Firestore - Using the robust version) ---
-        async function loadMessages() {
-            if (!db || !messagesContainer) {
-                console.error("Firestore DB or messagesContainer not available for loading messages.");
-                if(messagesContainer) messagesContainer.innerHTML = '<p style="color: red; text-align:center;">خطأ: لا يمكن تهيئة تحميل الرسائل.</p>';
-                updateMessageCounter();
-                return;
-            }
-            messagesContainer.innerHTML = '<p style="text-align:center; padding: 20px; opacity: 0.7;">⏳ جاري تحميل الرسائل...</p>';
-            try {
-                const snapshot = await db.collection('messages').orderBy('timestamp', 'desc').get();
-                messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                console.log(`Loaded ${messages.length} messages.`);
-                renderMessages();
-            } catch (error) {
-                console.error("Error loading messages from Firestore:", error);
-                 messagesContainer.innerHTML = `<p style="color: red; text-align:center;">فشل تحميل الرسائل. تحقق من الاتصال أو قواعد الأمان (${error.code || 'Unknown Error'}).</p>`;
-            } finally {
-                 updateMessageCounter();
-            }
         }
 
-        function renderMessages() {
-            if (!messagesContainer) return;
-             if (!messages || messages.length === 0) {
-                 messagesContainer.innerHTML = '<p style="text-align:center; padding: 20px; opacity: 0.7;">لا توجد رسائل بعد. كن أول من يكتب! ✨</p>';
-                 return;
-             }
-             const fragment = document.createDocumentFragment();
-             messages.forEach((msg, index) => {
-                 const div = document.createElement('div');
-                 div.className = 'message-item';
-                 div.style.animationDelay = `${index * 0.05}s`;
-                 const p = document.createElement('p');
-                 p.innerHTML = escapeHTML(msg.text);
-                 div.appendChild(p);
-                 if (msg.timestamp && typeof msg.timestamp.toDate === 'function') {
-                     const small = document.createElement('small');
-                     small.style.cssText = "opacity:0.6; font-size: 0.75em; display:block; margin-top: 5px; text-align: left;";
-                     try {
-                         small.textContent = new Date(msg.timestamp.toDate()).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short'});
-                     } catch (e) {
-                         console.warn("Error formatting date:", msg.timestamp, e);
-                         small.textContent = "تاريخ غير معروف";
-                     }
-                     div.appendChild(small);
-                 }
-                 const span = document.createElement('span');
-                 span.className = 'delete-btn';
-                 span.title = 'حذف الرسالة';
-                 span.textContent = '×';
-                 // IMPORTANT: Ensure msg.id is the actual Firestore document ID
-                 span.onclick = () => confirmDeleteMessage(msg.id);
-                 div.appendChild(span);
-                 fragment.appendChild(div);
-             });
-             messagesContainer.innerHTML = '';
-             messagesContainer.appendChild(fragment);
-             requestAnimationFrame(() => {
-                 messagesContainer.querySelectorAll('.message-item').forEach(item => {
-                     item.style.animation = 'none';
-                     void item.offsetHeight;
-                     item.style.animation = `slideInRight 0.5s ease-out ${item.style.animationDelay || '0s'} forwards`;
-                     item.style.opacity = '1';
-                 });
-             });
-         }
-
-        async function saveMessage() {
-             if (!db || !userMessageInput || !messageModal) {
-                 alert("خطأ: لا يمكن حفظ الرسالة (فشل تهيئة المكونات).");
-                 return;
-             }
-             const messageText = userMessageInput.value.trim();
-             if (!messageText) { alert("لا يمكنك إرسال رسالة فارغة!"); return; }
-             const sendButton = messageModal.querySelector('button.btn-magic');
-             if (sendButton) sendButton.disabled = true;
-
-             try {
-                 const docRef = await db.collection('messages').add({
-                     text: messageText,
-                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                 });
-                 console.log("Message saved with ID:", docRef.id);
-                 // Optimistic UI update (using Firestore ID implicitly via reload/realtime listener if implemented)
-                 // For simplicity here, we'll just reload messages after saving
-                 // (A more advanced approach would use Firestore real-time listeners)
-                 loadMessages(); // Reload messages to show the new one
-                 userMessageInput.value = '';
-                 closeModal('messageModal'); // Corrected: Pass modal ID
-                 launchConfetti(0.8, 0.9);
-                 showLocalNotification("💌 تم الإرسال!", `رسالتك في طريقها!`);
-             } catch (error) {
-                 console.error("Error saving message to Firestore:", error);
-                 alert(`حدث خطأ أثناء حفظ الرسالة: ${error.message || error.code}.`);
-             } finally {
-                 if (sendButton) sendButton.disabled = false;
-             }
-         }
-
-        function confirmDeleteMessage(id) {
-            if (!id) { console.error("Delete failed: No ID provided."); return; }
-            // Use the Firestore document ID provided by loadMessages
-            if (confirm("هل أنت متأكد أنك تريد حذف هذه الرسالة؟ هذا الإجراء لا يمكن التراجع عنه.")) {
-                deleteMessage(id);
+        // --- Music Playlist Handling ---
+        function playTrack(index) {
+            if (index < 0 || index >= playlist.length || !music) return;
+            currentTrackIndex = index;
+            music.src = playlist[currentTrackIndex].src;
+            updateTrackInfo();
+            const playPromise = music.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    musicBtn.innerHTML = "⏸️";
+                }).catch(error => {
+                    console.error("Music play failed, possibly due to user not interacting with the page yet.", error);
+                    musicBtn.innerHTML = "🎵"; // Set to play if it fails
+                });
             }
         }
-
-        async function deleteMessage(id) {
-            if (!db || !id) {
-                 alert("خطأ: لا يمكن حذف الرسالة (فشل الاتصال أو لا يوجد معرف).");
-                 return;
-            }
-             try {
-                 // Use the actual Firestore document ID
-                 await db.collection('messages').doc(id).delete();
-                 console.log("Message deleted:", id);
-                 // Update local state and UI
-                 messages = messages.filter(msg => msg.id !== id);
-                 renderMessages();
-                 updateMessageCounter();
-                 launchConfetti(0.5, Math.random() * 0.5 + 0.2, { particleCount: 50, spread: 70, colors: ['#e74c3c', '#c0392b'] });
-             } catch (error) {
-                 console.error("Error deleting message from Firestore:", error);
-                 alert(`حدث خطأ أثناء حذف الرسالة: ${error.message || error.code}.`);
-             }
-        }
-
-        function updateMessageCounter() {
-             if(messageCounter) {
-                 messageCounter.textContent = `${messages?.length ?? '...'} رسائل`;
-             }
-         }
-
-        // --- UI Interaction Functions ---
         function toggleMusic() {
             if (!music || !musicBtn) return;
-             try {
-                 if (music.paused) {
-                     music.play().catch(e => console.warn("Audio play failed:", e));
-                     musicBtn.innerHTML = "🔇";
-                     musicBtn.title = "كتم الموسيقى";
-                 } else {
-                     music.pause();
-                     musicBtn.innerHTML = "🎵";
-                     musicBtn.title = "تشغيل الموسيقى";
-                 }
-             } catch (e) { console.error("Error toggling music:", e); }
-        }
-
-        function showMessageForm() {
-            if (!messageModal || !userMessageInput) return;
-             messageModal.style.display = 'flex';
-             messageModal.setAttribute('aria-hidden', 'false');
-             setTimeout(() => userMessageInput.focus(), 100);
-        }
-
-        // Corrected: Added modalId parameter
-        function closeModal(modalId) {
-             const modalToClose = document.getElementById(modalId);
-             if(modalToClose) {
-                 modalToClose.style.display = 'none';
-                 modalToClose.setAttribute('aria-hidden', 'true');
-                 if (modalId === 'quizModal' && quizInProgress) {
-                     quizInProgress = false;
-                     quizIndex = 0;
-                     console.log("Quiz aborted manually.");
-                 }
-             } else {
-                 console.error(`Modal with ID "${modalId}" not found for closing.`);
-             }
-         }
-
-        function launchConfetti(x = 0.5, y = 0.5, options = {}) {
-             if (typeof confetti === 'function') {
-                 confetti({
-                     particleCount: options.particleCount || 180,
-                     spread: options.spread || 100,
-                     origin: { x: x, y: y },
-                     colors: options.colors || ['#ff6b6b', '#4ecdc4', '#ffeaa7', '#fd79a8', '#74b9ff', '#ffffff'],
-                     scalar: options.scalar || 1.1,
-                     angle: options.angle,
-                     gravity: options.gravity,
-                     disableForReducedMotion: true
-                 });
-             } else { console.warn("Confetti function not found."); }
-         }
-
-        function popBalloon(balloonElement) {
-            if (!balloonElement || balloonElement.style.opacity === '0') return;
-            const rect = balloonElement.getBoundingClientRect();
-             const originX = (rect.left + rect.width / 2) / window.innerWidth;
-             const originY = (rect.top + rect.height / 2) / window.innerHeight;
-             launchConfetti(originX, originY, { particleCount: 60, spread: 80, colors: ['#ffffff', '#f1f2f6', '#dfe4ea'] });
-             balloonElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-             balloonElement.style.transform = 'scale(0) rotate(30deg)';
-             balloonElement.style.opacity = '0';
-             setTimeout(() => {
-                 if (document.body.contains(balloonElement)) {
-                     balloonElement.style.transition = 'none';
-                     balloonElement.style.transform = 'scale(1) rotate(0deg)';
-                     balloonElement.style.opacity = '1';
-                 }
-             }, 2000 + Math.random() * 1000);
-         }
-
-        function changeBalloonColors() {
-            const colors = [
-                 ['#ff9a9e', '#fad0c4'], ['#a8edea', '#fed6e3'], ['#ffeaa7', '#fdcb6e'],
-                 ['#55efc4', '#a29bfe'], ['#ff7675', '#d63031'], ['#74b9ff', '#0984e3'],
-                 ['#fd79a8', '#e84393'], ['#e0c3fc', '#8ec5fc'], ['#f093fb', '#f5576c']
-            ];
-            document.querySelectorAll('.balloon').forEach(balloon => {
-                const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                balloon.style.background = `radial-gradient(circle at 50% 120%, ${randomColor[0]}, ${randomColor[1]})`;
-            });
-             launchConfetti();
-        }
-
-        // --- Dark Mode ---
-        function toggleDarkMode() {
-            if(!darkModeToggleBtn) return;
-            darkMode = !darkMode;
-            document.body.classList.toggle('dark-mode', darkMode);
-            localStorage.setItem('darkMode', darkMode);
-            updateDarkModeToggleText();
-            console.log("Dark Mode Toggled:", darkMode);
-        }
-        function updateDarkModeToggleText() {
-            if(!darkModeToggleBtn) return;
-            darkModeToggleBtn.innerHTML = darkMode ? '☀️' : '🌙';
-            darkModeToggleBtn.title = darkMode ? 'الوضع النهاري' : 'الوضع الليلي';
-        }
-
-        // --- Star Creation & Parallax ---
-        function createStars(numberOfStars = 60) {
-            stars.length = 0;
-             document.querySelectorAll('.star').forEach(star => star.remove());
-             const container = document.body;
-             for (let i = 0; i < numberOfStars; i++) {
-                 const star = document.createElement('div');
-                 star.className = 'star';
-                 const x = Math.random() * 100;
-                 const y = Math.random() * 100;
-                 star.style.left = `${x}vw`;
-                 star.style.top = `${y}vh`;
-                 star.dataset.depth = Math.random() * 0.5 + 0.5;
-                 star.dataset.startX = x;
-                 star.dataset.startY = y;
-                 star.style.animationDelay = Math.random() * 5 + 's';
-                 star.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
-                 star.style.transform = 'translateZ(0)';
-                 container.appendChild(star);
-                 stars.push(star);
-             }
-         }
-        function setupParallax() {
-             window.addEventListener('mousemove', handleMouseMove, { passive: true });
-             window.addEventListener('touchmove', handleTouchMove, { passive: true });
-         }
-        let parallaxRAFId = null;
-        function handleMouseMove(event) {
-             const { clientX, clientY } = event;
-             const centerX = window.innerWidth / 2;
-             const centerY = window.innerHeight / 2;
-             const offsetX = (clientX - centerX) / centerX;
-             const offsetY = (clientY - centerY) / centerY;
-             cancelAnimationFrame(parallaxRAFId);
-             parallaxRAFId = requestAnimationFrame(() => moveStars(offsetX, offsetY));
-         }
-        function handleTouchMove(event) {
-             if (event.touches.length === 0) return;
-             const { clientX, clientY } = event.touches[0];
-             const centerX = window.innerWidth / 2;
-             const centerY = window.innerHeight / 2;
-             const offsetX = ((clientX - centerX) / centerX) * 0.5;
-             const offsetY = ((clientY - centerY) / centerY) * 0.5;
-             cancelAnimationFrame(parallaxRAFId);
-             parallaxRAFId = requestAnimationFrame(() => moveStars(offsetX, offsetY));
-         }
-        function moveStars(offsetX, offsetY) {
-             stars.forEach(star => {
-                 if (!document.body.contains(star)) return;
-                 const depth = parseFloat(star.dataset.depth);
-                 const moveX = -(offsetX * depth * parallaxFactor * 100);
-                 const moveY = -(offsetY * depth * parallaxFactor * 100);
-                 star.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
-             });
-         }
-
-        // --- Sequential Quiz Functions ---
-        function startQuiz() {
-            if (quizInProgress) {
-                console.log("Quiz already in progress.");
-                showHiddenMessage("⏳ الاختبار قيد التقدم بالفعل!", null, 2000);
-                return;
-            }
-            if (!quizModal || !quizAnswerInput) {
-                alert("خطأ: لا يمكن بدء الاختبار (فشل تحميل العناصر).");
-                return;
-            }
-            console.log("Starting quiz..."); // DEBUG
-            quizInProgress = true;
-            quizIndex = 0;
-            shuffledQuizzes = [...originalQuizzes].sort(() => Math.random() - 0.5);
-            displayCurrentQuestion();
-            quizModal.style.display = 'flex';
-            quizModal.setAttribute('aria-hidden', 'false');
-            setTimeout(() => quizAnswerInput.focus(), 100);
-        }
-
-        function displayCurrentQuestion() {
-            if (!quizInProgress || !quizModalTitle || !quizProgress || !quizQuestionText || !quizAnswerInput || !quizSubmitButton) {
-                console.error("Quiz elements missing in displayCurrentQuestion.");
-                quizInProgress = false;
-                closeModal('quizModal');
-                return;
-            }
-            if (quizIndex < shuffledQuizzes.length) {
-                const currentQ = shuffledQuizzes[quizIndex];
-                console.log(`Displaying question ${quizIndex + 1}: ${currentQ.question}`); // DEBUG
-                quizModalTitle.textContent = `🕵️‍♂️ تحدي الأسئلة! 🕵️‍♂️`;
-                quizProgress.textContent = `السؤال ${quizIndex + 1} من ${shuffledQuizzes.length}`;
-                quizQuestionText.textContent = currentQ.question;
-                quizAnswerInput.value = '';
-                quizFeedback.textContent = '';
-                quizFeedback.className = '';
-                quizSubmitButton.textContent = (quizIndex === shuffledQuizzes.length - 1) ? 'التحقق النهائي ✨' : 'التالي 👈';
-                quizAnswerInput.disabled = false;
-                quizSubmitButton.disabled = false;
-                setTimeout(() => quizAnswerInput.focus(), 100);
-            } else {
-                console.warn("displayCurrentQuestion called unexpectedly after quiz finished.");
-                closeModal('quizModal');
-                quizInProgress = false;
-            }
-        }
-
-        function checkQuizAnswer() {
-            if (!quizInProgress || !quizAnswerInput || !quizFeedback || !quizSubmitButton) {
-                console.error("Quiz elements missing in checkQuizAnswer.");
-                return;
-            }
-            if (quizIndex >= shuffledQuizzes.length) {
-                console.warn("checkQuizAnswer called when quiz is already finished.");
-                return;
-            }
-
-            const currentQ = shuffledQuizzes[quizIndex];
-            const userAnswer = quizAnswerInput.value.trim().toLowerCase();
-            const correctAnswer = currentQ.answer.toLowerCase();
-            console.log(`Checking answer for question ${quizIndex + 1}. User: "${userAnswer}", Correct: "${correctAnswer}"`); // DEBUG
-
-            quizAnswerInput.disabled = true;
-            quizSubmitButton.disabled = true;
-
-            if (userAnswer === correctAnswer) {
-                console.log("Answer correct."); // DEBUG
-                quizFeedback.textContent = `✅ ${currentQ.reward || 'إجابة صحيحة!'}`;
-                quizFeedback.className = 'success';
-                quizIndex++;
-
-                setTimeout(() => {
-                    if (quizIndex < shuffledQuizzes.length) {
-                        console.log("Moving to next question."); // DEBUG
-                        displayCurrentQuestion();
-                    } else {
-                        // *** THIS IS WHERE THE FINAL REWARD IS TRIGGERED ***
-                        console.log("Quiz finished! Closing modal and calling showFinalQuizReward..."); // DEBUG
-                        closeModal('quizModal'); // Close the quiz modal first
-                        showFinalQuizReward();    // Then show the reward
-                    }
-                }, 1500);
-
-            } else {
-                console.log("Answer incorrect."); // DEBUG
-                quizFeedback.textContent = '❌ إجابة خاطئة. حاول مرة أخرى! 🤔';
-                quizFeedback.className = 'error';
-                const modalContent = quizModal.querySelector('.quiz-modal-content');
-                if (modalContent) {
-                    modalContent.style.animation = 'shake 0.4s ease-in-out';
-                    setTimeout(() => {
-                        modalContent.style.animation = '';
-                        quizAnswerInput.disabled = false;
-                        quizSubmitButton.disabled = false;
-                        quizAnswerInput.focus();
-                        quizAnswerInput.select();
-                    }, 400);
+            if (music.paused) {
+                if(!music.src) { // If no song is loaded, play the first one
+                   playTrack(currentTrackIndex);
                 } else {
-                    quizAnswerInput.disabled = false;
-                    quizSubmitButton.disabled = false;
-                    quizAnswerInput.focus();
-                    quizAnswerInput.select();
+                   music.play().catch(e => console.warn("Audio play failed:", e));
                 }
+                musicBtn.innerHTML = "⏸️"; musicBtn.title = "إيقاف مؤقت";
+            } else {
+                music.pause();
+                musicBtn.innerHTML = "🎵"; musicBtn.title = "تشغيل الموسيقى";
+            }
+        }
+        function playNextTrack() {
+            let nextIndex = (currentTrackIndex + 1) % playlist.length;
+            playTrack(nextIndex);
+        }
+        function playPrevTrack() {
+            let prevIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+            playTrack(prevIndex);
+        }
+        function updateTrackInfo() {
+            if(trackNameEl) {
+                trackNameEl.textContent = playlist[currentTrackIndex].name;
             }
         }
 
-        function showFinalQuizReward() {
-            console.log("Inside showFinalQuizReward()"); // DEBUG
-            const finalMessage = `بس لاا تبجي 4 ايام وافتحلك يا ! `;
-
-            // Ensure hiddenMessageDiv is available before calling
-            if (!hiddenMessageDiv) {
-                console.error("Cannot show final reward: hiddenMessageDiv element not found!");
-                return;
-            }
-
-            console.log("Calling showHiddenMessage for final reward."); // DEBUG
-            showHiddenMessage(finalMessage, 'final-reward-message', 6000);
-
-            console.log("Launching final confetti."); // DEBUG
-            launchConfetti(0.5, 0.3, { particleCount: 300, spread: 150, scalar: 1.3 });
-            setTimeout(() => launchConfetti(0.2, 0.5, { particleCount: 100, spread: 60, angle: 60, scalar: 1.1 }), 200);
-            setTimeout(() => launchConfetti(0.8, 0.5, { particleCount: 100, spread: 60, angle: 120, scalar: 1.1 }), 400);
-
-            quizInProgress = false; // Mark quiz as finished *after* showing reward
-            quizIndex = 0;
-            console.log("Quiz Completed Successfully! State reset.");
+        // --- Sound Handling ---
+        function playSound(sound) {
+            if (sfxMuted || !sound) return;
+            sound.currentTime = 0;
+            sound.play().catch(e => console.warn("SFX play failed:", e));
         }
-
-
-        // --- Hidden / Fun Features ---
-        function splitTitleIntoSpans() {
-            if (!mainTitle) return;
-             try {
-                 const text = mainTitle.innerText;
-                 mainTitle.innerHTML = '';
-                 text.split('').forEach(char => {
-                     const span = document.createElement('span');
-                     span.textContent = char === ' ' ? '\u00A0' : char;
-                     mainTitle.appendChild(span);
-                 });
-             } catch (e) {
-                 console.error("Error splitting title:", e);
-                 mainTitle.textContent = "كل عيد وانت بالف خير";
-             }
-         }
-        function titleSurprise(element) {
-            if (!element) return;
-            element.classList.add('clicked');
-            setTimeout(() => { element.classList.remove('clicked'); }, 500);
-            showHiddenMessage("يا كبدي انت اكيد مراح يكون هيج سهل");
+        function toggleSfx() {
+            sfxMuted = !sfxMuted;
+            localStorage.setItem('sfxMuted', sfxMuted);
+            updateSfxButton();
         }
-        function cakeSurprise() {
-            if (!cakeElement) return;
-             const rect = cakeElement.getBoundingClientRect();
-             const originX = (rect.left + rect.width / 2) / window.innerWidth;
-             const originY = (rect.top + rect.height / 2) / window.innerHeight;
-             launchConfetti(originX, originY, {
-                 particleCount: 200, spread: 80,
-                 colors: ['#f8cdda', '#efb7c9', '#ff6b6b', '#ffffff', '#ffeaa7'],
-                 angle: 90, gravity: 0.6, scalar: 1.3
-             });
-             showHiddenMessage("يمي! 🎂");
-         }
-        function showKnowledge() {
-            const facts = [
-                 "XXXX",
-                 "XXXXX",
-                 "XXXX!",
-                 "XXXX",
-                 "XXX",
-                 " XXXXX!",
-                 "XXXXXX! 😊"
-            ];
-            const randomFact = facts[Math.floor(Math.random() * facts.length)];
-            showHiddenMessage(`💡 معلومة سريعة: ${randomFact}`);
-            const knowledgeBtn = document.getElementById('knowledgeBtn');
-            if (knowledgeBtn) {
-                 const btnRect = knowledgeBtn.getBoundingClientRect();
-                 const originX = (btnRect.left + btnRect.width / 2) / window.innerWidth;
-                 const originY = (btnRect.top + btnRect.height / 2) / window.innerHeight;
-                 launchConfetti(originX, originY, { particleCount: 70, spread: 60 });
-            }
-         }
+        function updateSfxButton() {
+            if (!sfxBtn) return;
+            sfxBtn.innerHTML = sfxMuted ? '🔇' : '🔊';
+            sfxBtn.title = sfxMuted ? "تشغيل المؤثرات" : "كتم المؤثرات";
+        }
+        
+        // --- Message Handling ---
+        async function loadMessages() { if (!db || !messagesContainer) return; messagesContainer.innerHTML = '<p style="text-align:center; padding: 20px; opacity: 0.7;">⏳ جاري تحميل الرسائل...</p>'; try { const snapshot = await db.collection('messages').orderBy('timestamp', 'desc').get(); messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); renderMessages(); } catch (error) { console.error("Error loading messages:", error); messagesContainer.innerHTML = `<p style="color: red; text-align:center;">فشل تحميل الرسائل.</p>`; } finally { updateMessageCounter(); }}
+        async function saveMessage() { if (!db || !userMessageInput || !messageModal) { alert("خطأ في الإرسال."); return; } const messageText = userMessageInput.value.trim(); if (!messageText) { alert("لا يمكنك إرسال رسالة فارغة!"); return; } const sendButton = messageModal.querySelector('button.btn-magic'); sendButton.disabled = true; try { await db.collection('messages').add({ text: messageText, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); playSound(sendSound); loadMessages(); userMessageInput.value = ''; closeModal('messageModal'); launchConfetti(0.8, 0.9); showLocalNotification("💌 تم الإرسال!", `رسالتك في طريقها!`); } catch (error) { alert(`حدث خطأ أثناء حفظ الرسالة.`); } finally { sendButton.disabled = false; }}
+        function confirmDeleteMessage(id) { if (confirm("هل أنت متأكد من الحذف؟")) { deleteMessage(id); } }
+        async function deleteMessage(id) { if (!db || !id) return; try { await db.collection('messages').doc(id).delete(); messages = messages.filter(msg => msg.id !== id); renderMessages(); updateMessageCounter(); launchConfetti(0.5, 0.2, { particleCount: 50, colors: ['#e74c3c', '#c0392b'] }); } catch (error) { alert("خطأ في الحذف."); } }
+        function updateMessageCounter() { if(messageCounter) messageCounter.textContent = `${messages?.length ?? '...'} رسائل`; }
 
-        // --- MODIFIED showHiddenMessage Function ---
-        function showHiddenMessage(message, cssClass = null, duration = 90000) {
-            // ** Crucial Check ** Ensure the element exists before trying to use it
-            if (!hiddenMessageDiv) {
-                console.error("Cannot show hidden message: hiddenMessageDiv element not found!");
-                return;
-            }
-            console.log(`Showing hidden message: "${message}", Class: ${cssClass}, Duration: ${duration}`); // DEBUG
+        // --- UI Interaction & Modals ---
+        function showMessageForm() { openModal('messageModal'); if(userMessageInput) userMessageInput.focus(); }
+        function openModal(modalId) { const modal = document.getElementById(modalId); if(modal) modal.style.display = 'flex'; }
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if(modal) modal.style.display = 'none';
+            if (modalId === 'quizModal' && quizInProgress) { quizInProgress = false; }
+            if (modalId === 'countdownModal' && countdownInterval) { clearInterval(countdownInterval); }
+        }
+        function launchConfetti(x = 0.5, y = 0.5, options = {}) { if (typeof confetti === 'function') confetti({ particleCount: 180, spread: 100, origin: { x, y }, ...options }); }
+        
+        function popBalloon(balloonElement) { playSound(popSound); const rect = balloonElement.getBoundingClientRect(); launchConfetti((rect.left + rect.width / 2) / window.innerWidth, (rect.top + rect.height / 2) / window.innerHeight, { particleCount: 60 }); balloonElement.style.transition = 'transform 0.3s, opacity 0.3s'; balloonElement.style.transform = 'scale(0)'; balloonElement.style.opacity = '0'; setTimeout(() => { balloonElement.style.transform = 'scale(1)'; balloonElement.style.opacity = '1'; }, 2500); }
 
-            hiddenMessageDiv.innerHTML = message;
-            hiddenMessageDiv.className = ''; // Reset class first
-            hiddenMessageDiv.style.opacity = '0'; // Ensure opacity starts at 0
-            hiddenMessageDiv.style.pointerEvents = 'none'; // Ensure starts non-interactive
-
-            // Determine initial transform based on class
-            const initialTransform = (cssClass === 'final-reward-message')
-                ? 'translateX(-50%) scale(0) rotateX(-30deg) translateZ(0)' // Use 3D initial state
-                : 'translateX(-50%) scale(0) translateZ(0)'; // Standard initial state
-            hiddenMessageDiv.style.transform = initialTransform; // Apply initial transform
-
-            // Add the specific class if provided (for styling like background, font etc.)
-            if (cssClass) {
-                hiddenMessageDiv.classList.add(cssClass);
-            }
-
-            // Use requestAnimationFrame to apply final state styles for transition
-            requestAnimationFrame(() => {
-                if (!hiddenMessageDiv) return;
-                console.log("Applying 'show' state styles via requestAnimationFrame");
-                hiddenMessageDiv.style.opacity = '1'; // Make visible
-                hiddenMessageDiv.style.pointerEvents = 'auto'; // Make interactive
-
-                // Explicitly set the final transform, including the 0deg rotation for the final message
-                const finalTransform = 'translateX(-50%) scale(1) rotateX(0deg) translateZ(0)';
-                hiddenMessageDiv.style.transform = finalTransform; // Apply final transform directly
-
-                // Logging for debug
-                console.log("DEBUG showHiddenMessage: Opacity after set:", hiddenMessageDiv.style.opacity);
-                console.log("DEBUG showHiddenMessage: Transform after set:", hiddenMessageDiv.style.transform);
-                console.log("DEBUG showHiddenMessage: Class list after set:", hiddenMessageDiv.classList);
+        // --- Feature Logic ---
+        function openMemoriesModal() {
+            if (memories.length === 0) { showHiddenMessage("لم تتم إضافة أي ذكريات بعد!"); return; }
+            memoryIndex = 0; showMemory(memoryIndex); openModal('memoriesModal');
+        }
+        function showMemory(index) {
+            const el = document.getElementById('memoryImage'), cap = document.getElementById('memoryCaption');
+            if(el&&cap){ el.src=memories[index].image; cap.textContent=memories[index].caption;}
+        }
+        function changeMemory(dir) {
+            memoryIndex=(memoryIndex+dir+memories.length)%memories.length; showMemory(memoryIndex);
+        }
+        function showRandomReason() {
+            const randomReason=reasons[Math.floor(Math.random()*reasons.length)];
+            showHiddenMessage(`💖 ${randomReason}`,null,5000);
+        }
+        function showAffirmation() {
+             const randomAffirmation=affirmations[Math.floor(Math.random()*affirmations.length)];
+             showHiddenMessage(`✨ ${randomAffirmation}`,'final-reward-message',4000);
+        }
+        
+        // --- Coupon Book Logic ---
+        function showCouponBook() {
+            const container = document.getElementById('couponContainer'); if (!container) return;
+            container.innerHTML = '';
+            redeemedCoupons = JSON.parse(localStorage.getItem('redeemedCoupons')) || [];
+            coupons.forEach(coupon => {
+                const couponEl = document.createElement('div');
+                couponEl.className = 'coupon-item'; couponEl.dataset.id = coupon.id;
+                if (redeemedCoupons.includes(coupon.id)) { couponEl.classList.add('redeemed'); }
+                couponEl.innerHTML = `<div class="coupon-title">${coupon.title}</div><p class="coupon-desc">${coupon.desc}</p>`;
+                couponEl.addEventListener('click', () => redeemCoupon(coupon.id));
+                container.appendChild(couponEl);
             });
-
-            // Set timer to hide the message
-            setTimeout(() => {
-                if (!hiddenMessageDiv) return;
-                console.log("Hiding hidden message after duration");
-                hiddenMessageDiv.style.opacity = '0'; // Fade out
-                hiddenMessageDiv.style.pointerEvents = 'none'; // Disable interaction again
-
-                // Use a delay matching the CSS transition duration before resetting transform
-                // This allows the fade-out transition to complete smoothly
-                const transitionDuration = (cssClass === 'final-reward-message') ? 700 : 500; // Match CSS
-                setTimeout(() => {
-                    if (hiddenMessageDiv) {
-                        hiddenMessageDiv.style.transform = initialTransform; // Reset transform back to initial state
-                         // Optional: remove class if added, though not strictly necessary if base styles are correct
-                         if (cssClass) {
-                           // hiddenMessageDiv.classList.remove(cssClass); // Can remove if needed
-                         }
-                    }
-                }, transitionDuration);
-
-            }, duration);
+            openModal('couponModal');
         }
-
-        // --- Notifications (Combined Logic) ---
-        async function setupNotifications() {
-             if (!('Notification' in window)) {
-                 console.log("Browser does not support Notifications.");
-                 return;
-             }
-             try {
-                 const permission = await Notification.requestPermission();
-                 console.log('Notification permission status:', permission);
-                 if (permission === 'granted') {
-                     console.log("Notification permission granted.");
-                 } else {
-                     console.log("Notification permission denied.");
-                 }
-             } catch (error) {
-                 console.error('Error during notification setup:', error);
-             }
-         }
-
-        function showLocalNotification(title, body) {
-            if (!('Notification' in window) || Notification.permission !== 'granted') {
-                console.log("Cannot show local notification (Unsupported or permission denied).");
-                return;
+        function redeemCoupon(id) {
+            if(redeemedCoupons.includes(id)){showHiddenMessage("هذا الكوبون تم استخدامه بالفعل! 😉"); return;}
+            if(confirm(`هل تريد استخدام كوبون "${coupons.find(c=>c.id===id).title}"؟`)){
+                redeemedCoupons.push(id); localStorage.setItem('redeemedCoupons', JSON.stringify(redeemedCoupons));
+                document.querySelector(`.coupon-item[data-id="${id}"]`).classList.add('redeemed');
+                playSound(successSound); showHiddenMessage("🎉 تم الاستخدام بنجاح! سيتم التواصل معك للتنفيذ.");
             }
-            const options = {
-                 body: body,
-                 icon: 'data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🎉</text></svg>',
-                 tag: 'birthday-notification-' + Date.now() // More unique tag
-            };
-            try {
-                 navigator.serviceWorker?.ready.then(registration => {
-                     registration.showNotification(title, options);
-                 }).catch((err) => {
-                     console.warn("Service worker registration not ready, falling back to new Notification(). Error:", err);
-                     new Notification(title, options); // Fallback
-                 });
-            } catch (error) { console.error("Error showing local notification:", error); }
         }
+        // CORRECTED: Reset Coupons
+        function resetCoupons() {
+            if (confirm("هل أنت متأكد أنك تريد إعادة تعيين كل الكوبونات؟")) {
+                redeemedCoupons = []; localStorage.removeItem('redeemedCoupons');
+                showCouponBook(); // Re-render the coupon book view with fresh coupons
+                showHiddenMessage("✅ تم إعادة تعيين جميع الكوبونات بنجاح.");
+            }
+        }
+        
+        // --- Countdown Logic ---
+        function showCountdown() {
+            openModal('countdownModal');
+            const today = new Date();
+            const nextBirthday = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
+            function updateTimer() {
+                const now = new Date().getTime(), distance = nextBirthday - now;
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    if(document.getElementById('countdown-display')) document.getElementById('countdown-display').innerHTML = "<h2>🎉 Happy Birthday Again! 🎉</h2>"; return;
+                }
+                const D=document.getElementById('days'),H=document.getElementById('hours'),M=document.getElementById('minutes'),S=document.getElementById('seconds');
+                if(D)D.innerText=Math.floor(distance/(1e3*60*60*24));if(H)H.innerText=Math.floor((distance%(1e3*60*60*24))/(1e3*60*60));
+                if(M)M.innerText=Math.floor((distance%(1e3*60*60))/(1e3*60));if(S)S.innerText=Math.floor((distance%(1e3*60))/1e3);
+            }
+            if(countdownInterval) clearInterval(countdownInterval);
+            updateTimer(); countdownInterval = setInterval(updateTimer, 1000);
+        }
+
+
+        // --- Quiz & Final Reward Logic ---
+        function startQuiz() { if(quizCompleted){checkForFinalSurprise();return;}if(quizInProgress)return; quizInProgress=true; quizIndex=0; shuffledQuizzes=[...originalQuizzes].sort(()=>Math.random()-.5); displayCurrentQuestion(); openModal('quizModal');if(quizAnswerInput)quizAnswerInput.focus();}
+        function updateQuizButtonState() { const qb=document.getElementById('quizButton'); if(!qb) return; qb.innerHTML=quizCompleted?"🔑<span> الجائزة</span>":"🎁"; qb.title=quizCompleted?"افتح جائزتك الكبرى!":"تحدي الأسئلة!"; }
+        function displayCurrentQuestion() {if (!quizInProgress || quizIndex >= shuffledQuizzes.length) return; const currentQ=shuffledQuizzes[quizIndex];if(quizProgress)quizProgress.textContent=`السؤال ${quizIndex + 1} من ${shuffledQuizzes.length}`;if(quizQuestionText)quizQuestionText.textContent=currentQ.question;if(quizAnswerInput)quizAnswerInput.value='';if(quizFeedback){quizFeedback.textContent='';quizFeedback.className='';}if(quizSubmitButton){quizSubmitButton.textContent=(quizIndex===shuffledQuizzes.length-1)?'التحقق النهائي ✨':'التالي 👈';quizSubmitButton.disabled=false;}if(quizAnswerInput)quizAnswerInput.focus();}
+        function checkQuizAnswer() { if (!quizInProgress) return; const currentQ=shuffledQuizzes[quizIndex],userAnswer=quizAnswerInput.value.trim().toLowerCase(),correctAnswer=currentQ.answer.toLowerCase();if(quizSubmitButton)quizSubmitButton.disabled=true; if(userAnswer===correctAnswer){playSound(successSound);quizFeedback.textContent=`✅ ${currentQ.reward||'إجابة صحيحة!'}`;quizFeedback.className='success';quizIndex++;setTimeout(()=>{if(quizIndex<shuffledQuizzes.length){displayCurrentQuestion();}else{showFinalQuizReward();}},1500);}else{quizFeedback.textContent='❌ إجابة خاطئة. حاول مرة أخرى!';quizFeedback.className='error'; const mc=quizModal.querySelector('.quiz-modal-content');if(mc)mc.classList.add('shake-error'); setTimeout(()=>{if(mc)mc.classList.remove('shake-error'); if(quizSubmitButton)quizSubmitButton.disabled=false;if(quizAnswerInput)quizAnswerInput.focus();},500);}}
+        function showFinalQuizReward() {closeModal('quizModal'); quizCompleted=true; quizInProgress=false; localStorage.setItem('quizCompleted','true'); const uDate=new Date(); uDate.setDate(uDate.getDate()+4); localStorage.setItem('unlockDate',uDate.toISOString()); updateQuizButtonState(); const fDate=uDate.toLocaleDateString('ar-EG',{weekday:'long',year:'numeric',month:'long',day:'numeric'}); showHiddenMessage(`رائع! أكملت التحدي بنجاح! 🏆<br>الجائزة الكبرى مغلقة الآن...<br>بس لا تبجي، راح تنفتح يوم ${fDate}!`,'final-reward-message',10000); launchConfetti(.5,.3,{particleCount:300,spread:150,scalar:1.3});}
+        function checkForFinalSurprise() {const uDateStr=localStorage.getItem('unlockDate');if(!uDateStr){showHiddenMessage("يجب عليك إكمال تحدي الأسئلة أولاً!");return;} const uDate=new Date(uDateStr);if(new Date()>=uDate){openModal('finalSurpriseModal');launchConfetti(.5,.5,{particleCount:400,spread:360,scalar:1.5});}else{const fDate=uDate.toLocaleDateString('ar-EG',{weekday:'long',day:'numeric',month:'long'});showHiddenMessage(`صبراً جميلاً! صبرك قرب ينتهي! الجائزة ستكون متاحة يوم ${fDate}.`,null,6000);}}
 
         // --- Utility Functions ---
-        function escapeHTML(str) {
-            if (!str) return '';
-            const p = document.createElement('p');
-            p.textContent = str;
-            return p.innerHTML;
-        }
-
-        // --- iOS Viewport Height Fix ---
-        function setVhVariable() {
-            let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        }
-
+        function toggleDarkMode() { darkMode=!darkMode; document.body.classList.toggle('dark-mode', darkMode); localStorage.setItem('darkMode', darkMode); updateDarkModeToggleText(); }
+        function updateDarkModeToggleText() { if(darkModeToggleBtn) { darkModeToggleBtn.innerHTML=darkMode ? '☀️' : '🌙'; darkModeToggleBtn.title=darkMode ? 'الوضع النهاري' : 'الوضع الليلي'; } }
+        function showKnowledge() { const facts=["تم انشاء بيج مستر كوالتي", "تم انشاء مشروع اكس للعبة قادمة !", "تم انشاء هذا موقع وتحديثة", "تم انشاء وندوز 10 ار دي ", "تم انشاء الكثير من اشياء يجب ان تلفت انتابه !"]; showHiddenMessage(`💡 معلومة سريعة: ${facts[Math.floor(Math.random() * facts.length)]}`); }
+        function cakeSurprise() { launchConfetti(0.5, 0.8, { particleCount: 200, angle: 90, gravity: 0.6 }); showHiddenMessage("يمي! 🎂"); }
+        function titleSurprise(el) { el.classList.add('clicked'); setTimeout(() => { el.classList.remove('clicked'); }, 500); showHiddenMessage("يا كبدي انت اكيد مراح يكون هيج سهل"); }
+        function splitTitleIntoSpans() { if (!mainTitle) return; const text = mainTitle.innerText; mainTitle.innerHTML = ''; text.split('').forEach(char => { const span = document.createElement('span'); span.textContent = char === ' ' ? '\u00A0' : char; mainTitle.appendChild(span); });}
+        function createStars(n){for(let i=0;i<n;i++){const s=document.createElement('div');s.className='star';s.style.left=`${Math.random()*100}vw`;s.style.top=`${Math.random()*100}vh`;s.style.animationDelay=`${Math.random()*5}s`;document.body.appendChild(s);stars.push(s);}}
+        function setupParallax(){window.addEventListener('mousemove',e=>{const{clientX:cX,clientY:cY}=e;const oX=(cX-window.innerWidth/2)/(window.innerWidth/2);const oY=(cY-window.innerHeight/2)/(window.innerHeight/2);requestAnimationFrame(()=>moveStars(oX,oY))});}
+        function moveStars(oX,oY){stars.forEach(s=>{const d=parseFloat(s.dataset.depth||Math.random());const mX=-(oX*d*50);const mY=-(oY*d*50);s.style.transform=`translate3d(${mX}px,${mY}px,0)`})}
+        function showHiddenMessage(msg,cls,dur=4000){if(!hiddenMessageDiv)return;hiddenMessageDiv.innerHTML=msg;hiddenMessageDiv.className='';hiddenMessageDiv.classList.add('show-message');if(cls)hiddenMessageDiv.classList.add(cls);hiddenMessageDiv.style.opacity='1';hiddenMessageDiv.style.pointerEvents='auto';hiddenMessageDiv.style.transform='translateX(-50%) scale(1)';setTimeout(()=>{if(!hiddenMessageDiv)return;hiddenMessageDiv.style.opacity='0';hiddenMessageDiv.style.pointerEvents='none';hiddenMessageDiv.style.transform='translateX(-50%) scale(0)';},dur-500);}
+        function setVhVariable(){let vh=window.innerHeight*0.01;document.documentElement.style.setProperty('--vh',`${vh}px`);}
+        function changeBalloonColors(){const C=[['#ff9a9e','#fad0c4'],['#a8edea','#fed6e3'],['#ffeaa7','#fdcb6e'],['#55efc4','#a29bfe']];document.querySelectorAll('.balloon').forEach(b=>{const r=C[Math.floor(Math.random()*C.length)];b.style.background=`radial-gradient(circle at 50% 120%,${r[0]},${r[1]})`});launchConfetti();}
+        function renderMessages() { if(!messagesContainer)return; if(!messages||messages.length===0){messagesContainer.innerHTML='<p style="text-align:center;padding:20px;opacity:.7;">لا توجد رسائل بعد. كن أول من يكتب! ✨</p>';return;}const frag=document.createDocumentFragment();messages.forEach((msg,idx)=>{const div=document.createElement('div');div.className='message-item';div.style.animationDelay=`${idx*0.05}s`;const p=document.createElement('p');p.textContent=msg.text;div.appendChild(p);if(msg.timestamp){const sm=document.createElement('small');sm.style.cssText="opacity:.6;font-size:.75em;display:block;margin-top:5px;text-align:left;";sm.textContent=new Date(msg.timestamp.toDate()).toLocaleString('ar-EG');div.appendChild(sm);}const del=document.createElement('span');del.className='delete-btn';del.title='حذف الرسالة';del.textContent='×';del.onclick=()=>confirmDeleteMessage(msg.id);div.appendChild(del);frag.appendChild(div);});messagesContainer.innerHTML='';messagesContainer.appendChild(frag);}
+        
         // --- Initial Setup on Load ---
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("DOM Loaded. Initializing...");
-            initializeDOMReferences(); // Get references *after* DOM is ready
-
-            if (localStorage.getItem('darkMode') === 'true') {
-                darkMode = true;
-                document.body.classList.add('dark-mode');
-                updateDarkModeToggleText();
-            }
-
+            initializeDOMReferences();
+            if (localStorage.getItem('darkMode') === 'true') { document.body.classList.add('dark-mode'); updateDarkModeToggleText(); }
             if (passwordInput) {
-                passwordInput.addEventListener('keypress', function(event) {
-                    if (event.key === 'Enter') {
-                        event.preventDefault();
-                        checkPassword();
-                    }
-                });
-                 // Ensure focus on load if login modal is displayed
-                 if (loginModal && loginModal.style.display !== 'none') {
-                     passwordInput.focus();
-                 }
-            } else {
-                console.error("Password input not found on DOMContentLoaded.");
+                passwordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPassword(); });
+                passwordInput.focus();
             }
-
-             if (quizAnswerInput) {
-                 quizAnswerInput.addEventListener('keypress', function(event) {
-                     if (event.key === 'Enter') {
-                         event.preventDefault();
-                         if (quizModal && quizModal.style.display === 'flex' && quizInProgress) {
-                             checkQuizAnswer();
-                         }
-                     }
-                 });
-             } else {
-                  console.error("Quiz answer input not found on DOMContentLoaded.");
-             }
-
-             setVhVariable();
-             window.addEventListener('resize', setVhVariable);
-             window.addEventListener('orientationchange', setVhVariable);
-             setTimeout(setVhVariable, 100);
-
-             console.log("Initialization complete. Ready for login.");
+            if (quizAnswerInput) { quizAnswerInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && quizInProgress) checkQuizAnswer(); }); }
+            setVhVariable();
+            window.addEventListener('resize', setVhVariable);
         });
 
-        // --- Service Worker Registration ---
-         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                // Ensure the path is correct relative to your HTML file's location
-                navigator.serviceWorker.register('/firebase-messaging-sw.js') // Or './firebase-messaging-sw.js' if in the same folder
-                    .then(registration => {
-                        console.log('Service Worker registered:', registration.scope);
-                        // Optional: You might need to ensure messaging uses this registration
-                        // if (messaging) { messaging.useServiceWorker(registration); }
-                    })
-                    .catch(error => console.error('Service Worker registration failed:', error));
-            });
-         }
-
     </script>
-    </body>
+</body>
 </html>
