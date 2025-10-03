@@ -1,838 +1,206 @@
 <!DOCTYPE html>
-<html lang="ar" class="no-js" dir="rtl">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>عيد ميلاد سعيد يا حسن! 🎉</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎂</text></svg>">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Changa:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خطأ 404 - الصفحة غير موجودة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #ff6b6b; /* Romantic Red */
-            --secondary: #ffeaa7; /* Soft Yellow */
-            --accent: #4ecdc4;  /* Teal */
-            --dark: #2d3436;    /* Dark Grey */
-            --light: #fffaf0;   /* Floral White */
-            --shadow-color: rgba(0, 0, 0, 0.1);
-            --shadow-color-darker: rgba(0, 0, 0, 0.15);
-            --shadow-color-light: rgba(0, 0, 0, 0.05);
-            --vh: 1vh;
-        }
-
-        /* --- New Feature: Memories Modal Styles --- */
-        .memories-modal-content {
-            background: white;
-            padding: clamp(20px, 4vw, 25px);
-            border-radius: 20px;
-            width: 90%;
-            max-width: 600px;
-            position: relative;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-            text-align: center;
-            transform: translateY(-25px) scale(0.95) translateZ(0);
-            opacity: 0;
-            animation: slideDownFadeInScale 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            transform-style: preserve-3d;
-        }
-        body.dark-mode .memories-modal-content {
-            background: #3b3b3b;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .memories-modal-content h3 {
-            font-family: 'Great Vibes', cursive;
-            color: var(--primary);
-            font-size: clamp(1.8em, 5vw, 2.5em);
-            margin-bottom: 15px;
-        }
-        body.dark-mode .memories-modal-content h3 {
-            color: var(--accent);
-        }
-        .memory-image-container {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 15px;
-            box-shadow: 0 5px 20px var(--shadow-color);
-            background: #eee;
-        }
-        .memory-image-container img {
-            width: 100%;
-            height: auto;
-            max-height: 60vh;
-            object-fit: contain;
-            display: block;
-            border-radius: 15px;
-        }
-        .memory-caption {
-            font-size: clamp(1em, 2.5vw, 1.1em);
-            padding: 10px;
-            min-height: 40px;
-            color: var(--dark);
-        }
-        body.dark-mode .memory-caption {
-            color: var(--light);
-        }
-        .memory-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            border: none;
-            font-size: 1.8em;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.3s;
-            z-index: 10;
-        }
-        body.dark-mode .memory-nav {
-            background: rgba(30, 30, 30, 0.7);
-            color: white;
-        }
-        .memory-nav:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-50%) scale(1.1);
-        }
-        #prevMemory { left: 10px; }
-        #nextMemory { right: 10px; }
-
-        /* Final Surprise Modal */
-        .final-surprise-modal-content {
-            background: linear-gradient(135deg, #232526, #414345);
-            color: white;
-            text-align: center;
-            padding: clamp(30px, 6vw, 50px);
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
-            border: 2px solid gold;
-        }
-        .final-surprise-modal-content h2 {
-            font-family: 'Great Vibes', cursive;
-            font-size: clamp(2.5em, 7vw, 3.5em);
-            color: gold;
-            text-shadow: 0 0 15px gold;
-            margin-bottom: 20px;
-        }
-        .final-surprise-modal-content p {
-            font-size: clamp(1.1em, 3vw, 1.3em);
-            line-height: 1.7;
-            margin-bottom: 25px;
-        }
-
-        /* --- NEW: Coupon Book Modal Styles --- */
-        .coupon-modal-content h3 { color: var(--primary); margin-bottom: 20px; font-size: clamp(1.6em, 5vw, 2em); }
-        body.dark-mode .coupon-modal-content h3 { color: var(--accent); }
-        #couponContainer { display: grid; gap: 15px; max-height: 60vh; overflow-y: auto; padding-right: 10px; margin-bottom: 20px;}
-        .coupon-item { background: #fffcf2; border: 2px dashed var(--primary); border-radius: 10px; padding: 15px; text-align: center; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s, background 0.3s; position: relative; overflow: hidden; }
-        body.dark-mode .coupon-item { background: #4a4a4a; border-color: var(--accent); }
-        .coupon-item::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; background: var(--light); border-radius: 50%; border: 2px dashed var(--primary); margin-left: -12px; }
-        body.dark-mode .coupon-item::before { background: #3b3b3b; border-color: var(--accent); }
-        .coupon-item.redeemed { background: #e0e0e0; cursor: not-allowed; opacity: 0.7; }
-        .coupon-item.redeemed .coupon-title { text-decoration: line-through; }
-        body.dark-mode .coupon-item.redeemed { background: #2f2f2f; }
-        .coupon-title { font-weight: 700; font-size: 1.1em; color: var(--dark); }
-        body.dark-mode .coupon-title { color: var(--light); }
-        .coupon-desc { font-size: 0.9em; opacity: 0.8; margin-top: 5px; }
-        .btn-magic-secondary { background: #6c757d; }
-        .btn-magic-secondary:hover { background: #5a6268; }
-
-        /* --- NEW: Countdown Modal Styles --- */
-        .countdown-modal-content h3 { font-family: 'Great Vibes', cursive; color: var(--primary); font-size: clamp(2em, 6vw, 2.8em); margin-bottom: 15px;}
-        body.dark-mode .countdown-modal-content h3 { color: var(--accent); }
-        .countdown-modal-content p { text-align: center; font-size: clamp(1em, 3vw, 1.1em); opacity: 0.9; margin-bottom: 25px;}
-        #countdown-display { display: flex; justify-content: space-around; text-align: center; }
-        .countdown-unit { background: var(--light); padding: 10px; border-radius: 10px; width: 70px; box-shadow: 0 4px 10px var(--shadow-color); }
-        body.dark-mode .countdown-unit { background: #4f4f4f; }
-        .countdown-value { font-size: clamp(1.8em, 7vw, 2.5em); font-weight: 700; color: var(--primary); }
-        body.dark-mode .countdown-value { color: var(--accent); }
-        .countdown-label { font-size: 0.8em; opacity: 0.7; }
-
-        /* Basic Reset & Body Styling */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        html { scroll-behavior: smooth; }
         body {
-            min-height: calc(var(--vh, 1vh) * 100);
-            background: linear-gradient(135deg, #ffdde1, var(--light));
-            font-family: 'Changa', sans-serif;
-            overflow-x: hidden;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f2f5; /* خلفية بيضاء ناعمة */
+        }
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .content-overlay {
             position: relative;
-            color: var(--dark);
-            transition: background-color 0.5s, color 0.5s;
-            touch-action: manipulation;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            z-index: 1;
+            color: #333333; /* لون نص داكن للوضوح */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-
-        /* --- Dark Mode Styles --- */
-        body.dark-mode {
-            background: linear-gradient(135deg, #2c3e50, #1a1a1a);
-            color: var(--light);
-            --shadow-color: rgba(255, 255, 255, 0.08);
-            --shadow-color-darker: rgba(255, 255, 255, 0.12);
-            --shadow-color-light: rgba(255, 255, 255, 0.04);
-        }
-        body.dark-mode .login-box,
-        body.dark-mode .message-wall,
-        body.dark-mode .default-message,
-        body.dark-mode .message-item,
-        body.dark-mode .modal-content,
-        body.dark-mode .quiz-modal-content,
-        body.dark-mode .coupon-modal-content,
-        body.dark-mode .countdown-modal-content {
-            background: #3b3b3b;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            color: var(--light);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode p, body.dark-mode label { color: var(--light); }
-        body.dark-mode .default-message h1 span:hover { color: var(--accent); }
-        body.dark-mode .login-box input[type="password"],
-        body.dark-mode .modal-content textarea,
-        body.dark-mode .quiz-modal-content input[type="text"] {
-            background-color: #4f4f4f;
-            color: var(--light);
-            border-color: var(--accent);
-             -webkit-appearance: none; appearance: none;
-        }
-        body.dark-mode .btn-magic { background: var(--accent); color: #1e1e1e; }
-        body.dark-mode .btn-magic:hover { background: #3dbbb3; }
-        body.dark-mode .btn-magic-secondary { background: #4a545e; color: #fff; }
-        body.dark-mode .btn-magic-secondary:hover { background: #3d454d; }
-        body.dark-mode .message-counter { background: #4f4f4f; color: var(--light); border: 1px solid rgba(255, 255, 255, 0.1); }
-        body.dark-mode .star { box-shadow: 0 0 8px gold; }
-        body.dark-mode .balloon::after { background: rgba(255,255,255,0.2); }
-        body.dark-mode .cake-3d { filter: brightness(0.9) drop-shadow(5px 15px 10px rgba(255,255,255,0.08)); }
-        body.dark-mode #hiddenMessage.final-reward-message {
-             background: linear-gradient(135deg, var(--accent), #3dbbb3);
-             color: #1e1e1e;
-             text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.3);
-        }
-
-        /* --- Login Modal --- */
-        .login-modal { position: fixed; inset: 0; background: rgba(255, 255, 255, 0.9); display: flex; justify-content: center; align-items: center; z-index: 10000; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
-        body.dark-mode .login-modal { background: rgba(10, 10, 10, 0.85); }
-        .login-box { background: white; padding: clamp(30px, 5vw, 40px) clamp(35px, 6vw, 50px); border-radius: 20px; box-shadow: 0 15px 40px var(--shadow-color-darker); text-align: center; width: 90%; max-width: 400px; transform: scale(0.9) translateY(20px) translateZ(0); opacity: 0; animation: popInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        @keyframes popInUp { 0% { transform: scale(0.9) translateY(20px) translateZ(0); opacity: 0; } 100% { transform: scale(1) translateY(0) translateZ(0); opacity: 1; } }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); } 20%, 40%, 60%, 80% { transform: translateX(8px); } }
-        .login-box.shake-error { animation: shake 0.5s ease-in-out; }
-        .login-box h2 { font-family: 'Great Vibes', cursive; color: var(--primary); font-size: clamp(1.8em, 5vw, 2.2em); margin-bottom: 25px; text-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
-        .login-box input[type="password"] { width: 100%; padding: 15px 20px; border: 2px solid var(--primary); border-radius: 10px; margin-bottom: 25px; font-size: 1.1em; font-family: 'Changa', sans-serif; transition: border-color 0.3s, box-shadow 0.3s; }
-        .login-box input[type="password"]:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(78, 205, 196, 0.6); outline: none; }
-        .login-box button { margin-top: 10px; width: 100%; padding: 15px; }
-
-        /* --- Main Scene --- */
-        .scene { position: relative; perspective: 1500px; min-height: calc(var(--vh, 1vh) * 100); overflow: hidden; opacity: 0; transition: opacity 1s ease-in-out; display: none; transform: translateZ(0); }
-        body:not(.dark-mode) .scene { background: linear-gradient(135deg, #ffdde1, var(--light)); }
-        body.dark-mode .scene { background: linear-gradient(135deg, #2c3e50, #1a1a1a); }
-
-        /* --- Balloons & Cake --- */
-        .balloon-group { position: absolute; animation: float 10s ease-in-out infinite alternate; transform-style: preserve-3d; z-index: 10; }
-        .balloon { width: clamp(80px, 10vw, 100px); height: clamp(105px, 13vw, 130px); background: radial-gradient(circle at 50% 120%, #ff9a9e, #fad0c4); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; position: relative; margin: 10px; transform-origin: bottom center; animation: sway 3.5s ease-in-out infinite alternate; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.05), 0 10px 25px var(--shadow-color); cursor: pointer; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateZ(0); }
-        .balloon:hover { transform: scale(1.15) translateZ(20px); }
-        .balloon::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 2px; height: 50px; background: rgba(0,0,0,0.2); border-radius: 0 0 2px 2px; }
-        .cake-3d { position: absolute; bottom: 5%; left: 50%; transform: rotateY(0deg) translateX(-50%); transform-style: preserve-3d; animation: rotateCake 25s linear infinite; z-index: 5; width: clamp(150px, 20vw, 200px); height: clamp(190px, 25vw, 250px); background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120"><path fill="%23f8cdda" d="M10 40 Q 50 20 90 40 L 90 90 Q 50 110 10 90 Z" /><path fill="%23efb7c9" d="M10 40 Q 50 60 90 40 V 20 Q 50 0 10 20 Z" /><ellipse cx="50" cy="20" rx="40" ry="10" fill="%23f8cdda" /><text x="50" y="75" font-size="15" text-anchor="middle" fill="%23c13584">HBD</text><path fill="%23fce4ec" d="M50,5 L52,15 L60,15 L54,22 L56,30 L50,25 L44,30 L46,22 L40,15 L48,15 Z" /></svg>') center/contain no-repeat; cursor: pointer; transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease; filter: drop-shadow(5px 15px 10px var(--shadow-color)); transform-origin: center bottom; }
-        .cake-3d:hover { transform: translateX(-50%) rotateY(25deg) scale(1.1) translateZ(30px); box-shadow: 0 20px 40px var(--shadow-color-darker); filter: drop-shadow(8px 20px 15px var(--shadow-color-darker)); }
-        @keyframes rotateCake { from { transform: translateX(-50%) rotateY(0deg); } to { transform: translateX(-50%) rotateY(360deg); } }
-
-        /* --- Default Welcome Message --- */
-        .default-message { position: absolute; top: clamp(15%, 10vh, 20%); left: 50%; transform: translateX(-50%) translateZ(0); background: rgba(255, 255, 255, 0.97); padding: clamp(20px, 4vw, 30px) clamp(25px, 5vw, 40px); border-radius: 15px; box-shadow: 0 15px 35px var(--shadow-color-darker); max-width: 600px; width: 90%; text-align: center; animation: gentleFloat 7s ease-in-out infinite alternate, slideDownFadeInScale 1s ease-out forwards; z-index: 20; -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
-        .default-message h1 { font-family: 'Great Vibes', cursive; color: var(--primary); font-size: clamp(2.5em, 8vw, 3.5em); margin-bottom: 15px; cursor: pointer; transition: color 0.3s ease; letter-spacing: 2px; -webkit-user-select: none; user-select: none; }
-        .default-message h1 span { display: inline-block; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s, text-shadow 0.3s; text-shadow: 1px 1px 0px rgba(0,0,0,0.1), 2px 2px 0px rgba(0,0,0,0.08), 3px 3px 0px rgba(0,0,0,0.06); }
-        .default-message h1:hover span { color: var(--accent); transform: translateY(-3px) translateZ(10px) rotateX(10deg); text-shadow: 1px 1px 0px rgba(0,0,0,0.2), 2px 3px 0px rgba(0,0,0,0.15), 3px 5px 0px rgba(0,0,0,0.1); }
-        .default-message h1.clicked span { animation: jump 0.5s ease-in-out; }
-        @keyframes jump { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-15px) scale(1.1) rotate(5deg); } }
-        .default-message p { font-size: clamp(1em, 2.5vw, 1.15em); line-height: 1.8; color: var(--dark); margin-bottom: 20px; }
-        .default-message strong { color: var(--primary); font-weight: 700; }
-
-        /* --- Message Wall --- */
-        .message-wall { position: fixed; right: 20px; top: clamp(80px, 10vh, 100px); width: clamp(300px, 80vw, 360px); max-width: 90%; background: rgba(255, 255, 255, 0.92); border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px var(--shadow-color-darker); max-height: calc( (var(--vh, 1vh) * 100) - 260px ); overflow-y: auto; z-index: 50; -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); scrollbar-width: thin; scrollbar-color: var(--primary) rgba(0,0,0,0.05); -webkit-overflow-scrolling: touch; animation: slideInRight 1s ease-out forwards; }
-        .message-wall::-webkit-scrollbar { width: 8px; }
-        .message-wall::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
-        .message-wall::-webkit-scrollbar-thumb { background-color: var(--primary); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
-        .message-wall::-webkit-scrollbar-thumb:hover { background-color: #ff4d4d; }
-        .message-wall h3 { color: var(--primary); text-align: center; margin-bottom: 15px; font-size: 1.4em; }
-        .message-item { background: white; padding: 15px 20px; border-radius: 10px; margin-bottom: 12px; box-shadow: 0 5px 15px var(--shadow-color-light); position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease; animation: slideInRight 0.5s ease-out forwards; opacity: 0; word-wrap: break-word; overflow-wrap: break-word; transform-style: preserve-3d; transform: translateZ(0); }
-        .message-item:hover { transform: translateX(-5px) scale(1.03) translateZ(15px); box-shadow: 0 8px 25px var(--shadow-color); }
-        .delete-btn { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #ff6b6b; cursor: pointer; font-weight: bold; font-size: 1.2em; transition: color 0.3s, transform 0.3s; padding: 5px; z-index: 2; }
-        .delete-btn:hover { color: #e74c3c; transform: translateY(-50%) rotate(180deg) scale(1.1); }
-        @keyframes highlightNewMessage { 0% { background-color: rgba(78, 205, 196, 0.3); } 100% { background-color: white; } }
-        @keyframes highlightNewMessageDark { 0% { background-color: rgba(78, 205, 196, 0.4); } 100% { background-color: #3b3b3b; } }
-        .message-item.new-message-highlight { animation: highlightNewMessage 1.5s ease-out forwards; }
-        body.dark-mode .message-item.new-message-highlight { background-color: #3b3b3b; animation-name: highlightNewMessageDark; }
-
-        /* --- Control Panel & Buttons --- */
-        .control-panel { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%); display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: clamp(8px, 1.5vw, 12px); z-index: 100; padding: 10px clamp(10px, 3vw, 15px); background: rgba(255, 255, 255, 0.85); border-radius: 50px 50px 0 0; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: 0 -5px 20px var(--shadow-color); width: max-content; max-width: 100%; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); box-sizing: border-box; animation: slideUp 0.8s 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        @keyframes slideUp { to { transform: translateX(-50%) translateY(0); } }
-        body.dark-mode .control-panel { background: rgba(50, 50, 50, 0.8); box-shadow: 0 -5px 20px rgba(0,0,0,0.2); }
-        .btn-magic { background: var(--primary); border: none; padding: clamp(10px, 2vw, 12px) clamp(18px, 4vw, 25px); border-radius: 25px; color: white; font-weight: bold; font-family: 'Changa', sans-serif; font-size: clamp(0.9em, 2.5vw, 1.1em); cursor: pointer; transition: background 0.3s, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 8px; white-space: nowrap; -webkit-appearance: none; appearance: none; }
-        .btn-magic:hover { background: #ff4d4d; transform: translateY(-4px) scale(1.05); box-shadow: 0 7px 18px rgba(0,0,0,0.18); }
-        .btn-magic:active { transform: translateY(-1px) scale(1); box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
-        .btn-magic[disabled] { cursor: not-allowed; opacity: 0.6; }
-        .music-controls { display: flex; align-items: center; gap: 5px; }
-        .music-controls .btn-magic { padding: 10px 12px; font-size: 1.2em; }
-        #trackName { font-size: 0.8em; font-weight: bold; max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color 0.5s; padding: 0 5px; }
-        body.dark-mode .btn-magic { background: var(--accent); color: #1e1e1e; }
-        body.dark-mode .btn-magic:hover { background: #3dbbb3; box-shadow: 0 7px 18px rgba(255,255,255,0.1); }
-        .btn-colors { background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff6b6b); background-size: 300% 300%; animation: gradientShift 4s ease infinite; }
-        @keyframes gradientShift { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
-
-        /* --- Modals (General Styling) --- */
-        .modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); display: none; justify-content: center; align-items: center; z-index: 9999; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); animation: fadeIn 0.4s ease-out forwards; }
-        body.dark-mode .modal { background: rgba(20, 20, 20, 0.75); }
-        .modal-content, .quiz-modal-content, .coupon-modal-content, .countdown-modal-content { background: white; padding: clamp(25px, 5vw, 30px) clamp(30px, 6vw, 40px); border-radius: 15px; width: 90%; max-width: 480px; position: relative; box-shadow: 0 15px 40px rgba(0,0,0,0.25); transform: translateY(-25px) scale(0.95) translateZ(0); opacity: 0; animation: slideDownFadeInScale 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; transform-style: preserve-3d; }
-        .close { position: absolute; top: 15px; right: 15px; left: auto; cursor: pointer; font-size: 1.8em; color: #aaa; transition: color 0.3s, transform 0.3s; line-height: 1; z-index: 10; }
-        .close:hover { color: var(--primary); transform: rotate(90deg) scale(1.1); }
-        body.dark-mode .close { color: #ccc; }
-        body.dark-mode .close:hover { color: var(--accent); }
-
-        /* --- Message Modal Specifics --- */
-        #messageModal textarea { width: 100%; padding: 15px; border: 2px solid var(--secondary); border-radius: 10px; margin: 20px 0; font-family: 'Changa', sans-serif; font-size: 1em; min-height: 100px; resize: vertical; -webkit-appearance: none; appearance: none; }
-        #messageModal textarea:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(255, 107, 107, 0.5); outline: none; }
-        #messageModal button { width: 100%; padding: 15px; }
-
-        /* --- Quiz Modal Specifics --- */
-        .quiz-modal-content h3 { color: var(--primary); margin-bottom: 5px; text-align: center; font-size: 1.5em; }
-        #quizProgress { text-align: center; font-size: 0.9em; opacity: 0.7; margin-bottom: 15px; }
-        .quiz-modal-content label { display: block; margin-bottom: 10px; font-weight: bold; }
-        .quiz-modal-content input[type="text"] { width: 100%; padding: 12px 15px; border: 2px solid var(--secondary); border-radius: 10px; margin-bottom: 20px; font-size: 1em; font-family: 'Changa', sans-serif; -webkit-appearance: none; appearance: none; }
-        .quiz-modal-content input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(255, 107, 107, 0.5); outline: none; }
-        .quiz-modal-content button { width: 100%; padding: 15px; }
-        #quizFeedback { margin-top: 15px; text-align: center; font-weight: bold; min-height: 1.2em; }
-        #quizFeedback.success { color: #2ecc71; }
-        #quizFeedback.error { color: #e74c3c; }
-
-        /* --- Utility & Decorative Elements --- */
-        .message-counter { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 18px); left: 15px; right: auto; bottom: auto; transform: none; background: var(--primary); color: white; padding: 6px 12px; border-radius: 20px; font-weight: bold; font-size: 0.8em; box-shadow: 0 4px 12px var(--shadow-color); z-index: 90; transition: background-color 0.5s, color 0.5s; }
-        .star { position: fixed; width: 3px; height: 3px; background: gold; border-radius: 50%; box-shadow: 0 0 6px gold; animation: twinkle 2s infinite ease-in-out; pointer-events: none; z-index: 1; transition: transform 0.2s linear; transform: translateZ(0); }
-        #hiddenMessage { position: fixed; left: 50%; background: rgba(0,0,0,0.75); color: white; padding: 20px 30px; border-radius: 15px; z-index: 101; opacity: 0; pointer-events: none; text-align: center; font-size: 1.2em; font-weight: bold; bottom: calc(env(safe-area-inset-bottom, 0px) + 100px); max-width: 90%; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transform: translateX(-50%) scale(0) translateZ(0); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s; transform-style: preserve-3d; }
-        #hiddenMessage.final-reward-message { background: linear-gradient(135deg, var(--primary), #ff8a8a); font-size: 1.5em; font-family: 'Great Vibes', cursive; padding: 30px 40px; border-radius: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); transform: translateX(-50%) scale(0) rotateX(-30deg) translateZ(0); transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.7s; }
-        
-        /* --- Animations --- */
-        @keyframes float { 0% { transform: translateY(0px) translateZ(0); } 50% { transform: translateY(-25px) translateZ(0); } 100% { transform: translateY(0px) translateZ(0); } }
-        @keyframes gentleFloat { 0% { transform: translateX(-50%) translateY(0px) translateZ(0); } 50% { transform: translateX(-50%) translateY(-12px) translateZ(0); } 100% { transform: translateX(-50%) translateY(0px) translateZ(0); } }
-        @keyframes sway { 0% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } 100% { transform: rotate(-5deg); } }
-        @keyframes twinkle { 0%, 100% { opacity: 0.1; transform: scale(0.7); } 50% { opacity: 1; transform: scale(1.1); } }
-        @keyframes slideInRight { from { transform: translateX(120%) translateZ(0); opacity: 0; } to { transform: translateX(0) translateZ(0); opacity: 1; } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideDownFadeInScale { from { opacity: 0; transform: translateY(-25px) scale(0.95) translateZ(0); } to { opacity: 1; transform: translateY(0) scale(1) translateZ(0); } }
-
-        /* --- Responsive Design Adjustments --- */
-        @media (max-width: 768px) {
-            .message-wall { max-width: 90%; right: 5%; left: 5%; top: calc(env(safe-area-inset-top, 0px) + 15px); max-height: calc(30vh - env(safe-area-inset-top, 0px)); padding: 15px; }
-            .message-wall h3 { font-size: 1.2em; margin-bottom: 10px;}
-            .message-item { padding: 10px 15px; margin-bottom: 10px; }
-            .delete-btn { font-size: 1.1em; left: 8px; }
-            .control-panel { width: 100%; max-width: 100%; border-radius: 0; gap: 5px; justify-content: space-evenly; }
-            .btn-magic { padding: 8px 12px; font-size: 0.8em; gap: 5px; }
-            #trackName { display: none; } /* Hide track name on mobile to save space */
-            .default-message { width: 90%; padding: 15px 20px; top: auto; bottom: 45%; transform: translate(-50%, 50%) translateZ(0); animation: none; max-width: 90%; }
-            .default-message h1 { font-size: 2em; letter-spacing: 1px;}
-            .default-message p { font-size: 0.95em; line-height: 1.7;}
-            .message-counter { top: calc(env(safe-area-inset-top, 0px) + 15px); left: 10px; right: auto; font-size: 0.8em; padding: 6px 12px; }
-            .login-box { padding: 30px 25px; }
-            .modal-content, .quiz-modal-content, .memories-modal-content, .coupon-modal-content, .countdown-modal-content { padding: 20px 25px; max-width: 90%; }
-            .cake-3d { width: 140px; height: 180px; top: 55%; animation-duration: 35s; transform: translateX(-50%) rotateY(0deg); }
-            .cake-3d:hover { transform: translateX(-50%) rotateY(15deg) scale(1.05) translateZ(15px); }
-            .balloon-group { transform: scale(0.9); }
-            .balloon { width: 80px; height: 105px; }
-            .star { width: 2px; height: 2px; }
-            #hiddenMessage { bottom: calc(env(safe-area-inset-bottom, 0px) + 90px); font-size: 1em; padding: 15px 20px; }
-            #hiddenMessage.final-reward-message { font-size: 1.2em; padding: 20px 30px; }
-        }
-        @media (max-width: 480px) {
-            .default-message h1 { font-size: 1.8em; }
-            .default-message p { font-size: 0.9em; line-height: 1.6;}
-            .control-panel { gap: 5px; border-radius: 25px 25px 0 0; }
-            .btn-magic { padding: 7px 10px; font-size: 1.2em; flex-grow: 1; justify-content: center; } /* Let buttons grow, adjust size */
-            .btn-magic > span:not(.music-controls) { display: none; } /* Hide text on small buttons, but not music controls */
-            .music-controls, .music-controls .btn-magic { padding: 5px; font-size: 1em; }
-            .cake-3d { width: 120px; height: 160px; top: 60%; }
-            .cake-3d:hover { transform: translateX(-50%) rotateY(10deg) scale(1.03) translateZ(10px); }
-            .message-counter { font-size: 0.75em; padding: 5px 10px; top: calc(env(safe-area-inset-top, 0px) + 12px); left: 8px; }
-            .message-wall { max-height: 25vh; }
-            #hiddenMessage { bottom: calc(env(safe-area-inset-bottom, 0px) + 80px); }
-            .countdown-unit { width: 60px; }
-            .countdown-value { font-size: 1.5em; }
-        }
-        @media (max-height: 450px) and (orientation: landscape) {
-             .default-message { display: none; }
-             .cake-3d { display: none; }
-             .message-wall { position: relative; width: 90%; max-width: 90%; margin: 10px auto; max-height: 150px; top: auto; right: auto; left: auto; }
-             .control-panel { position: relative; bottom: auto; left: auto; transform: none; width: 90%; max-width: 90%; margin: 10px auto; padding: 5px; padding-bottom: 5px; border-radius: 20px; flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start;}
-             .btn-magic { font-size: 0.75em; padding: 5px 10px; flex-shrink: 0;}
-             .message-counter, #hiddenMessage { display: none; }
-        }
-
     </style>
 </head>
 <body>
-    <div class="login-modal" id="loginModal">
-        <div class="login-box">
-            <h2 id="loginModalTitle">مرحباً يا غالي، هل أنت حسن؟ 😉 (كلمة السر قريبة من اسمك)</h2>
-            <input type="password" id="password" placeholder="اكتب كلمة السر (h)..." autocomplete="off" autofocus>
-            <button class="btn-magic" onclick="checkPassword()">🔑<span> دخول</span></button>
-        </div>
+
+    <!-- حاوية المشهد ثلاثي الأبعاد -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- محتوى الصفحة -->
+    <div class="content-overlay">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 tracking-wider">عفوًا! الصفحة غير موجودة</h1>
+        <p class="text-lg md:text-xl mb-8 max-w-md px-4">يبدو أنك سلكت طريقًا خاطئًا في الفضاء الرقمي. الصفحة التي تبحث عنها قد تكون حُذفت أو نُقلت.</p>
     </div>
 
-    <div class="scene" id="mainScene">
-
-        <div class="balloon-group" style="left: 8%; top: 5%;"><div class="balloon" style="background: radial-gradient(circle at 50% 120%, #ff9a9e, #fad0c4);" onclick="popBalloon(this)"></div><div class="balloon" style="background: radial-gradient(circle at 50% 120%, #a8edea, #fed6e3); animation-delay: 1.2s;" onclick="popBalloon(this)"></div></div>
-        <div class="balloon-group" style="right: 8%; top: 12%; animation-duration: 12s;"><div class="balloon" style="background: radial-gradient(circle at 50% 120%, #ffeaa7, #fdcb6e); animation-delay: 0.6s;" onclick="popBalloon(this)"></div></div>
-        <div class="balloon-group" style="left: 30%; top: 20%; animation-duration: 9s;"><div class="balloon" style="background: radial-gradient(circle at 50% 120%, #55efc4, #a29bfe); animation-delay: 0.3s;" onclick="popBalloon(this)"></div></div>
-
-        <div class="cake-3d" id="cakeElement" onclick="cakeSurprise()"></div>
-
-        <div class="default-message">
-            <h1 id="mainTitle" onclick="titleSurprise(this)">كل عام وأنت بخير حسونتي</h1>
-            <p>
-                 🎉 في يومك المميز هذا 🌟<br>
-                 أتمنى لك عاماً مليئاً بالضحكات التي لا تنتهي، والمفاجآت السعيدة، وكل الحب الذي يستحقه قلبك الطيب.<br>
-                 أنت لست فقط صديقي، أنت نجم يضيء حياتي ✨<br><br>
-                 كل لحظة معك هي ذكرى ثمينة.<br>
-                 كل عام وأنت الأجمل والأقرب إلى قلبي 💖<br><br>
-                 <strong style="font-size: 1.1em;">بحبك infinito! 🥳</strong>
-            </p>
-        </div>
-
-        <div class="message-wall" id="messageWall">
-            <h3>💌 ركن الرسائل السرية 💌</h3>
-            <div id="messagesContainer"><p style="text-align:center; padding: 20px; opacity: 0.7;">جاري تحميل الرسائل...</p></div>
-        </div>
-
-        <div class="control-panel">
-            <div class="music-controls">
-                <button class="btn-magic" onclick="playPrevTrack()" title="الأغنية السابقة">⏪</button>
-                <button class="btn-magic" onclick="toggleMusic()" id="musicBtn" title="تشغيل/كتم الموسيقى">🎵</button>
-                <button class="btn-magic" onclick="playNextTrack()" title="الأغنية التالية">⏩</button>
-            </div>
-            <span id="trackName"></span>
-            <button class="btn-magic" onclick="toggleSfx()" id="sfxBtn" title="كتم المؤثرات">🔊</button>
-            <button class="btn-magic" onclick="showMessageForm()" title="اكتب رسالة">✍️</button>
-            <button class="btn-magic" onclick="openMemoriesModal()" title="معرض الذكريات">🖼️</button>
-            <button class="btn-magic" onclick="showRandomReason()" title="لماذا أنت صديق رائع؟">💖</button>
-            <button class="btn-magic" onclick="showAffirmation()" title="رسالة إيجابية">✨</button>
-            <button class="btn-magic" onclick="showCouponBook()" title="كتاب الهدايا">🎟️</button>
-            <button class="btn-magic" onclick="showCountdown()" title="العد التنازلي">⏱️</button>
-            <button class="btn-magic" onclick="launchConfetti()" title="احتفل!">🎉</button>
-            <button class="btn-magic" onclick="startQuiz()" id="quizButton" title="تحدي الأسئلة!">🎁</button>
-            <button class="btn-magic btn-colors" onclick="changeBalloonColors()" title="غير الألوان">🎨</button>
-            <button class="btn-magic" onclick="showKnowledge()" id="knowledgeBtn" title="لمحة معرفة">💡</button>
-            <button class="btn-magic" onclick="toggleDarkMode()" id="darkModeToggle" title="الوضع الليلي">🌙</button>
-        </div>
-
-        <!-- Message Modal -->
-        <div class="modal" id="messageModal" role="dialog" aria-modal="true" aria-labelledby="messageModalTitle"><div class="modal-content"><span class="close" onclick="closeModal('messageModal')" aria-label="إغلاق">×</span><h3 id="messageModalTitle">اكتب رسالة لحسونتي</h3><textarea id="userMessage" placeholder="عبر عن مشاعرك هنا..." rows="5"></textarea><button class="btn-magic" onclick="saveMessage()">🚀 إرسال</button></div></div>
-        
-        <!-- Quiz Modal -->
-        <div class="modal" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizModalTitle"><div class="quiz-modal-content"><span class="close" onclick="closeModal('quizModal')" aria-label="إغلاق">×</span><h3 id="quizModalTitle">🕵️‍♂️ انت تعرفني زين؟ خلينا نشوف 🕵️‍♂️</h3><div id="quizProgress"></div><label id="quizQuestionLabel" for="quizAnswer">السؤال:</label><p id="quizQuestionText" style="margin-bottom: 15px; font-weight:bold;"></p><input type="text" id="quizAnswer" placeholder="اكتب إجابتك هنا..."><button class="btn-magic" onclick="checkQuizAnswer()">التالي</button><div id="quizFeedback"></div></div></div>
-        
-        <!-- Memories Modal -->
-        <div class="modal" id="memoriesModal" role="dialog" aria-modal="true" aria-labelledby="memoriesModalTitle">
-            <div class="memories-modal-content">
-                <span class="close" onclick="closeModal('memoriesModal')" aria-label="إغلاق">×</span>
-                <h3 id="memoriesModalTitle">أجمل ذكرياتنا</h3>
-                <div class="memory-image-container">
-                    <img id="memoryImage" src="" alt="Memory Image">
-                    <button id="prevMemory" class="memory-nav" onclick="changeMemory(-1)">❮</button>
-                    <button id="nextMemory" class="memory-nav" onclick="changeMemory(1)">❯</button>
-                </div>
-                <p id="memoryCaption" class="memory-caption"></p>
-            </div>
-        </div>
-        
-        <!-- Final Surprise Modal -->
-        <div class="modal" id="finalSurpriseModal" role="dialog" aria-modal="true">
-             <div class="final-surprise-modal-content">
-                  <span class="close" onclick="closeModal('finalSurpriseModal')" aria-label="إغلاق">×</span>
-                  <h2>🎁 الجائزة الكبرى! 🎁</h2>
-                  <p>لأنك الأفضل، تستحق الأفضل! هذه هديتي المتواضعة لك. أتمنى أن تعجبك وأن تكون بداية لسنة جديدة مليئة بالإنجازات والسعادة.</p>
-                  <p style="font-size: 1.2em; color: gold; font-weight: bold;">(هنا يمكنك وضع رابط الهدية، فيديو خاص، أو أي مفاجأة أخرى)</p>
-             </div>
-        </div>
-
-        <!-- Coupon Book Modal -->
-        <div class="modal" id="couponModal" role="dialog" aria-modal="true" aria-labelledby="couponModalTitle">
-            <div class="coupon-modal-content">
-                <span class="close" onclick="closeModal('couponModal')" aria-label="إغلاق">×</span>
-                <h3 id="couponModalTitle">🎟️ دفتر هدايا خاص 🎟️</h3>
-                <div id="couponContainer"></div>
-                <button class="btn-magic btn-magic-secondary" onclick="resetCoupons()">إعادة تعيين الكوبونات</button>
-            </div>
-        </div>
-        
-        <!-- Countdown Modal -->
-        <div class="modal" id="countdownModal" role="dialog" aria-modal="true" aria-labelledby="countdownModalTitle">
-            <div class="countdown-modal-content">
-                <span class="close" onclick="closeModal('countdownModal')" aria-label="إغلاق">×</span>
-                <h3 id="countdownModalTitle">Next Level Up!</h3>
-                <p>الوقت المتبقي حتى عيد ميلادك القادم:</p>
-                <div id="countdown-display">
-                    <div class="countdown-unit"><div id="days" class="countdown-value">0</div><div class="countdown-label">أيام</div></div>
-                    <div class="countdown-unit"><div id="hours" class="countdown-value">0</div><div class="countdown-label">ساعات</div></div>
-                    <div class="countdown-unit"><div id="minutes" class="countdown-value">0</div><div class="countdown-label">دقائق</div></div>
-                    <div class="countdown-unit"><div id="seconds" class="countdown-value">0</div><div class="countdown-label">ثواني</div></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="message-counter" id="messageCounter">0 رسائل</div>
-        <div id="hiddenMessage" role="alert" aria-live="polite">رسالة سرية! ✨</div>
-    </div>
-    
-    <!-- Audio Elements -->
-    <audio id="bg-music" onended="playNextTrack()"></audio> <!-- Removed loop, handled by JS -->
-    <audio id="pop-sound"><source src="https://cdn.jsdelivr.net/gh/store-rd/hsn@main/pop.mp3" type="audio/mpeg"></audio>
-    <audio id="success-sound"><source src="https://cdn.jsdelivr.net/gh/store-rd/hsn@main/success.mp3" type="audio/mpeg"></audio>
-    <audio id="send-sound"><source src="https://cdn.jsdelivr.net/gh/store-rd/hsn@main/send.mp3" type="audio/mpeg"></audio>
-
-    <script>
-        // --- Firebase Configuration ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyBia26tkTpn9nFZGJyP91VR06MRSlTqY40",
-            authDomain: "anord-9bc18.firebaseapp.com",
-            projectId: "anord-9bc18",
-            storageBucket: "anord-9bc18.appspot.com",
-            messagingSenderId: "937344759300",
-            appId: "1:937344759300:web:161e1df9a09c36b94ce751"
-        };
-
-        // --- Initialize Firebase ---
-        let db;
-        try {
-             firebase.initializeApp(firebaseConfig);
-             db = firebase.firestore();
-             console.log("Firebase Initialized Successfully (Compat Mode)");
-        } catch (error) {
-             console.error("Firebase Initialization Error:", error);
-             document.getElementById('loginModalTitle').innerHTML += '<br><small style="color:red;">خطأ بالاتصال بقاعدة البيانات!</small>';
+    <!-- مكتبة Three.js -->
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.156.1/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.156.1/examples/jsm/"
+            }
         }
+    </script>
 
-        // --- Global Variables ---
-        let messages = [];
-        let darkMode = localStorage.getItem('darkMode') === 'true';
-        let sfxMuted = localStorage.getItem('sfxMuted') === 'true';
-        const stars = [];
-        let quizIndex = 0;
-        let shuffledQuizzes = [];
-        let quizInProgress = false;
-        let quizCompleted = localStorage.getItem('quizCompleted') === 'true';
-        let memoryIndex = 0;
-        let countdownInterval;
+    <script type="module">
+        import * as THREE from 'three';
+        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
-        // --- NEW & Existing Feature Data ---
-        // CORRECTED PLAYLIST with working links
-        const playlist = [
-            { name: "Mawlay Salli", src: "https://archive.org/download/maher-zain-mawlay-salli/Maher-Zain-Mawlay-Salli.mp3" },
-            { name: "Ya Nabi Salam", src: "https://archive.org/download/ya-nabi-salam-alayka/ya-nabi-salam-alayka.mp3"},
-            { name: "Birthday Song", src: "https://cdn.jsdelivr.net/gh/store-rd/hsn@main/hbd.mp3" } // Your original working song
-        ];
-        let currentTrackIndex = 0;
+        let scene, camera, renderer, textMesh, particles;
 
-        const coupons = [
-            { id: 'c1', title: 'كوبون ليلة سينمائية', desc: 'صالح لمشاهدة فيلم من اختيارك، الفشار علي!', redeemed: false },
-            { id: 'c2', title: 'كوبون أذن صاغية', desc: 'للتحدث عن أي شيء في أي وقت، بدون أحكام.', redeemed: false },
-            { id: 'c3', title: 'كوبون مساعدة برمجية', desc: 'صالح لجلسة واحدة لحل أي مشكلة برمجية تواجهك.', redeemed: false },
-            { id: 'c4', title: 'كوبون ضحكة مضمونة', desc: 'عند الحاجة، سأرسل لك أفضل نكتة عندي.', redeemed: false },
-            { id: 'c5', title: 'كوبون وجبة من صنع يدي', desc: 'دعوة على وجبة غداء أو عشاء أطبخها لك.', redeemed: false }
-        ];
-        let redeemedCoupons = JSON.parse(localStorage.getItem('redeemedCoupons')) || [];
+        function init() {
+            // المشهد
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0xf0f2f5, 0.0015);
 
-        const affirmations = [
-            "صداقتنا تجعل العالم مكاناً أفضل.", "أنت قادر على تحقيق أشياء عظيمة.", "طاقتك الإيجابية معدية وملهمة.", "كل يوم هو فرصة جديدة للنجاح.", "تذكر دائمًا كم أنت شخص رائع ومحبوب."
-        ];
-        
-        const memories = [
-            { image: "https://media.discordapp.net/attachments/902177491790204989/1357493942131626106/F9AAD199-3624-48E9-8A94-AD155CD8425F.png?ex=684e02c0&is=684cb140&hm=656170dce536979ee3e8a23bccc8961502860e246d8ae47f4397d02cdc734b5b&=&format=webp&quality=lossless&width=1376&height=917", caption: "راح يجي يوم تتغير صير واقعية !" },
-            { image: "https://media.discordapp.net/attachments/902177491790204989/1357493959605096549/F077FC29-0158-45F2-A270-7133286AE86F.png?ex=684e02c4&is=684cb144&hm=1bbdb9f2de33f96e8491f6a785e407ba6c7a15352bfaea096031be375b52075a&=&format=webp&quality=lossless&width=1376&height=917", caption: "عمو لا تباوع علي ترة اخجل :3." },
-            { image: "https://media.discordapp.net/attachments/902177491790204989/1357493984049500170/50BDFC76-2A45-4598-82F5-3FD40062B354.png?ex=684e02ca&is=684cb14a&hm=529ff5dd7b91d1d5b81a1e220b1407dfe180bd5e677c041a1b14b071aec5684d&=&format=webp&quality=lossless&width=978&height=978", caption: "اجمل يوم واجمل صورة !" },
-        ];
-        const reasons = [
-            "لأنك دائمًا موجود عندما أحتاجك.", "لأن حس كوميدا سوداء عندك تخبل!", "لأنك تجعل الأوقات الصعبة أسهل.",
-            "لأنك وفي ومخلص.", "لأننا نشارك نفس الأحلام والطموحات.", "لأنك تعرف كيف تجعلني أبتسم.",
-            "لأنك تشجعني دائمًا لأكون أفضل نسخة من نفسي."
-        ];
-        
-        const originalQuizzes = [
-             { question: "ما هو لوني المفضل؟", answer: "اسود", reward: "🖤 بالضبط!" },
-             { question: "في أي شهر ولدت؟", answer: "ابريل", reward: "🎂 صحيح!" },
-             { question: "ما هي لعبتي المفضلة؟", answer: "سي اس كو", reward: "🎮 ذكي!" },
-             { question: "من هو أفضل صديق لي؟", answer: "حسونتي", reward: "💖 أكيد!" },
-             { question: "أين تقع اجمل مدينة مقدسة؟", answer: "كربلاء", reward: "🙏 جواب حلو!" }
-        ];
+            // الكاميرا
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 150;
 
-        // --- DOM Element References ---
-        let loginModal, mainScene, passwordInput, messagesContainer, messageModal, quizModal, memoriesModal, finalSurpriseModal, couponModal, countdownModal,
-            userMessageInput, messageCounter, music, musicBtn, sfxBtn, darkModeToggleBtn, quizModalTitle,
-            quizProgress, quizQuestionText, quizAnswerInput, quizFeedback, quizSubmitButton, mainTitle, 
-            cakeElement, hiddenMessageDiv, loginBox, popSound, successSound, sendSound, trackNameEl;
+            // العارض
+            const canvas = document.getElementById('bg-canvas');
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            // تفعيل الظلال
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-        function initializeDOMReferences() {
-            loginModal = document.getElementById('loginModal');
-            mainScene = document.getElementById('mainScene');
-            passwordInput = document.getElementById('password');
-            messagesContainer = document.getElementById('messagesContainer');
-            messageModal = document.getElementById('messageModal');
-            quizModal = document.getElementById('quizModal');
-            memoriesModal = document.getElementById('memoriesModal');
-            finalSurpriseModal = document.getElementById('finalSurpriseModal');
-            couponModal = document.getElementById('couponModal');
-            countdownModal = document.getElementById('countdownModal');
-            userMessageInput = document.getElementById('userMessage');
-            messageCounter = document.getElementById('messageCounter');
-            music = document.getElementById('bg-music');
-            musicBtn = document.getElementById('musicBtn');
-            sfxBtn = document.getElementById('sfxBtn');
-            darkModeToggleBtn = document.getElementById('darkModeToggle');
-            quizModalTitle = document.getElementById('quizModalTitle');
-            quizProgress = document.getElementById('quizProgress');
-            quizQuestionText = document.getElementById('quizQuestionText');
-            quizAnswerInput = document.getElementById('quizAnswer');
-            quizFeedback = document.getElementById('quizFeedback');
-            quizSubmitButton = quizModal?.querySelector('button.btn-magic');
-            mainTitle = document.getElementById('mainTitle');
-            cakeElement = document.getElementById('cakeElement');
-            hiddenMessageDiv = document.getElementById('hiddenMessage');
-            loginBox = loginModal?.querySelector('.login-box');
-            popSound = document.getElementById('pop-sound');
-            successSound = document.getElementById('success-sound');
-            sendSound = document.getElementById('send-sound');
-            trackNameEl = document.getElementById('trackName');
-        }
+            // الإضاءة
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            
+            const pointLight = new THREE.PointLight(0xff69b4, 2.5, 800); // ضوء وردي ساطع
+            pointLight.position.set(50, 50, 100);
+            pointLight.castShadow = true;
+            scene.add(pointLight);
 
-        // --- Core Functions ---
-        function checkPassword() {
-            if (!passwordInput || !loginModal || !mainScene || !loginBox) return;
-            const enteredPassword = passwordInput.value;
-            const correctPassword = "hsnhsn"; // The password
-            if (enteredPassword === correctPassword) {
-                loginModal.style.display = 'none';
-                mainScene.style.display = 'block';
-                requestAnimationFrame(() => {
-                    mainScene.style.opacity = 1;
-                    initializeScene();
+            const pointLight2 = new THREE.PointLight(0x87ceeb, 2.5, 800); // ضوء سماوي مكمل
+            pointLight2.position.set(-100, -50, 50);
+            pointLight2.castShadow = true;
+            scene.add(pointLight2);
+            
+            // إضافة سطح لاستقبال الظلال
+            const planeGeometry = new THREE.PlaneGeometry(2000, 2000);
+            const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.1 });
+            const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+            plane.position.z = 10;
+            plane.receiveShadow = true;
+            scene.add(plane);
+
+
+            // تحميل الخط وإنشاء النص ثلاثي الأبعاد
+            const fontLoader = new FontLoader();
+            fontLoader.load('https://cdn.jsdelivr.net/npm/three@0.156.1/examples/fonts/helvetiker_bold.typeface.json', function (font) {
+                const textGeometry = new TextGeometry('404', {
+                    font: font,
+                    size: 80,
+                    height: 15,
+                    curveSegments: 12,
+                    bevelEnabled: true,
+                    bevelThickness: 2,
+                    bevelSize: 1.5,
+                    bevelOffset: 0,
+                    bevelSegments: 5
                 });
-            } else {
-                alert('كلمة السر غلط! تأكد منها (تلميح: h) وحاول مرة ثانية 😉');
-                passwordInput.value = '';
-                passwordInput.focus();
-                loginBox.classList.add('shake-error');
-                setTimeout(() => { loginBox.classList.remove('shake-error'); }, 500);
-            }
-        }
 
-        function initializeScene() {
-             if (db) { loadMessages(); }
-             else { messagesContainer.innerHTML = '<p style="color: orange; text-align:center;">لا يمكن تحميل الرسائل.</p>'; }
-             createStars(60);
-             setupParallax();
-             splitTitleIntoSpans();
-             if (darkMode) { document.body.classList.add('dark-mode'); }
-             updateDarkModeToggleText();
-             updateSfxButton();
-             updateQuizButtonState();
-             setVhVariable();
-             updateTrackInfo();
-             console.log("Scene initialized");
-        }
+                textGeometry.center();
 
-        // --- Music Playlist Handling ---
-        function playTrack(index) {
-            if (index < 0 || index >= playlist.length || !music) return;
-            currentTrackIndex = index;
-            music.src = playlist[currentTrackIndex].src;
-            updateTrackInfo();
-            const playPromise = music.play();
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    musicBtn.innerHTML = "⏸️";
-                }).catch(error => {
-                    console.error("Music play failed, possibly due to user not interacting with the page yet.", error);
-                    musicBtn.innerHTML = "🎵"; // Set to play if it fails
+                const textMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x555555, // لون رمادي داكن
+                    metalness: 0.8,
+                    roughness: 0.2
                 });
-            }
-        }
-        function toggleMusic() {
-            if (!music || !musicBtn) return;
-            if (music.paused) {
-                if(!music.src) { // If no song is loaded, play the first one
-                   playTrack(currentTrackIndex);
-                } else {
-                   music.play().catch(e => console.warn("Audio play failed:", e));
-                }
-                musicBtn.innerHTML = "⏸️"; musicBtn.title = "إيقاف مؤقت";
-            } else {
-                music.pause();
-                musicBtn.innerHTML = "🎵"; musicBtn.title = "تشغيل الموسيقى";
-            }
-        }
-        function playNextTrack() {
-            let nextIndex = (currentTrackIndex + 1) % playlist.length;
-            playTrack(nextIndex);
-        }
-        function playPrevTrack() {
-            let prevIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-            playTrack(prevIndex);
-        }
-        function updateTrackInfo() {
-            if(trackNameEl) {
-                trackNameEl.textContent = playlist[currentTrackIndex].name;
-            }
-        }
-
-        // --- Sound Handling ---
-        function playSound(sound) {
-            if (sfxMuted || !sound) return;
-            sound.currentTime = 0;
-            sound.play().catch(e => console.warn("SFX play failed:", e));
-        }
-        function toggleSfx() {
-            sfxMuted = !sfxMuted;
-            localStorage.setItem('sfxMuted', sfxMuted);
-            updateSfxButton();
-        }
-        function updateSfxButton() {
-            if (!sfxBtn) return;
-            sfxBtn.innerHTML = sfxMuted ? '🔇' : '🔊';
-            sfxBtn.title = sfxMuted ? "تشغيل المؤثرات" : "كتم المؤثرات";
-        }
-        
-        // --- Message Handling ---
-        async function loadMessages() { if (!db || !messagesContainer) return; messagesContainer.innerHTML = '<p style="text-align:center; padding: 20px; opacity: 0.7;">⏳ جاري تحميل الرسائل...</p>'; try { const snapshot = await db.collection('messages').orderBy('timestamp', 'desc').get(); messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); renderMessages(); } catch (error) { console.error("Error loading messages:", error); messagesContainer.innerHTML = `<p style="color: red; text-align:center;">فشل تحميل الرسائل.</p>`; } finally { updateMessageCounter(); }}
-        async function saveMessage() { if (!db || !userMessageInput || !messageModal) { alert("خطأ في الإرسال."); return; } const messageText = userMessageInput.value.trim(); if (!messageText) { alert("لا يمكنك إرسال رسالة فارغة!"); return; } const sendButton = messageModal.querySelector('button.btn-magic'); sendButton.disabled = true; try { await db.collection('messages').add({ text: messageText, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); playSound(sendSound); loadMessages(); userMessageInput.value = ''; closeModal('messageModal'); launchConfetti(0.8, 0.9); showLocalNotification("💌 تم الإرسال!", `رسالتك في طريقها!`); } catch (error) { alert(`حدث خطأ أثناء حفظ الرسالة.`); } finally { sendButton.disabled = false; }}
-        function confirmDeleteMessage(id) { if (confirm("هل أنت متأكد من الحذف؟")) { deleteMessage(id); } }
-        async function deleteMessage(id) { if (!db || !id) return; try { await db.collection('messages').doc(id).delete(); messages = messages.filter(msg => msg.id !== id); renderMessages(); updateMessageCounter(); launchConfetti(0.5, 0.2, { particleCount: 50, colors: ['#e74c3c', '#c0392b'] }); } catch (error) { alert("خطأ في الحذف."); } }
-        function updateMessageCounter() { if(messageCounter) messageCounter.textContent = `${messages?.length ?? '...'} رسائل`; }
-
-        // --- UI Interaction & Modals ---
-        function showMessageForm() { openModal('messageModal'); if(userMessageInput) userMessageInput.focus(); }
-        function openModal(modalId) { const modal = document.getElementById(modalId); if(modal) modal.style.display = 'flex'; }
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if(modal) modal.style.display = 'none';
-            if (modalId === 'quizModal' && quizInProgress) { quizInProgress = false; }
-            if (modalId === 'countdownModal' && countdownInterval) { clearInterval(countdownInterval); }
-        }
-        function launchConfetti(x = 0.5, y = 0.5, options = {}) { if (typeof confetti === 'function') confetti({ particleCount: 180, spread: 100, origin: { x, y }, ...options }); }
-        
-        function popBalloon(balloonElement) { playSound(popSound); const rect = balloonElement.getBoundingClientRect(); launchConfetti((rect.left + rect.width / 2) / window.innerWidth, (rect.top + rect.height / 2) / window.innerHeight, { particleCount: 60 }); balloonElement.style.transition = 'transform 0.3s, opacity 0.3s'; balloonElement.style.transform = 'scale(0)'; balloonElement.style.opacity = '0'; setTimeout(() => { balloonElement.style.transform = 'scale(1)'; balloonElement.style.opacity = '1'; }, 2500); }
-
-        // --- Feature Logic ---
-        function openMemoriesModal() {
-            if (memories.length === 0) { showHiddenMessage("لم تتم إضافة أي ذكريات بعد!"); return; }
-            memoryIndex = 0; showMemory(memoryIndex); openModal('memoriesModal');
-        }
-        function showMemory(index) {
-            const el = document.getElementById('memoryImage'), cap = document.getElementById('memoryCaption');
-            if(el&&cap){ el.src=memories[index].image; cap.textContent=memories[index].caption;}
-        }
-        function changeMemory(dir) {
-            memoryIndex=(memoryIndex+dir+memories.length)%memories.length; showMemory(memoryIndex);
-        }
-        function showRandomReason() {
-            const randomReason=reasons[Math.floor(Math.random()*reasons.length)];
-            showHiddenMessage(`💖 ${randomReason}`,null,5000);
-        }
-        function showAffirmation() {
-             const randomAffirmation=affirmations[Math.floor(Math.random()*affirmations.length)];
-             showHiddenMessage(`✨ ${randomAffirmation}`,'final-reward-message',4000);
-        }
-        
-        // --- Coupon Book Logic ---
-        function showCouponBook() {
-            const container = document.getElementById('couponContainer'); if (!container) return;
-            container.innerHTML = '';
-            redeemedCoupons = JSON.parse(localStorage.getItem('redeemedCoupons')) || [];
-            coupons.forEach(coupon => {
-                const couponEl = document.createElement('div');
-                couponEl.className = 'coupon-item'; couponEl.dataset.id = coupon.id;
-                if (redeemedCoupons.includes(coupon.id)) { couponEl.classList.add('redeemed'); }
-                couponEl.innerHTML = `<div class="coupon-title">${coupon.title}</div><p class="coupon-desc">${coupon.desc}</p>`;
-                couponEl.addEventListener('click', () => redeemCoupon(coupon.id));
-                container.appendChild(couponEl);
+                textMesh = new THREE.Mesh(textGeometry, textMaterial);
+                textMesh.castShadow = true; // النص يلقي بظلال
+                scene.add(textMesh);
             });
-            openModal('couponModal');
-        }
-        function redeemCoupon(id) {
-            if(redeemedCoupons.includes(id)){showHiddenMessage("هذا الكوبون تم استخدامه بالفعل! 😉"); return;}
-            if(confirm(`هل تريد استخدام كوبون "${coupons.find(c=>c.id===id).title}"؟`)){
-                redeemedCoupons.push(id); localStorage.setItem('redeemedCoupons', JSON.stringify(redeemedCoupons));
-                document.querySelector(`.coupon-item[data-id="${id}"]`).classList.add('redeemed');
-                playSound(successSound); showHiddenMessage("🎉 تم الاستخدام بنجاح! سيتم التواصل معك للتنفيذ.");
+            
+            // إنشاء نظام الجسيمات (النجوم)
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCnt = 5000;
+            const posArray = new Float32Array(particlesCnt * 3);
+
+            for(let i = 0; i < particlesCnt * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 1000;
             }
-        }
-        // CORRECTED: Reset Coupons
-        function resetCoupons() {
-            if (confirm("هل أنت متأكد أنك تريد إعادة تعيين كل الكوبونات؟")) {
-                redeemedCoupons = []; localStorage.removeItem('redeemedCoupons');
-                showCouponBook(); // Re-render the coupon book view with fresh coupons
-                showHiddenMessage("✅ تم إعادة تعيين جميع الكوبونات بنجاح.");
-            }
-        }
-        
-        // --- Countdown Logic ---
-        function showCountdown() {
-            openModal('countdownModal');
-            const today = new Date();
-            const nextBirthday = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
-            function updateTimer() {
-                const now = new Date().getTime(), distance = nextBirthday - now;
-                if (distance < 0) {
-                    clearInterval(countdownInterval);
-                    if(document.getElementById('countdown-display')) document.getElementById('countdown-display').innerHTML = "<h2>🎉 Happy Birthday Again! 🎉</h2>"; return;
-                }
-                const D=document.getElementById('days'),H=document.getElementById('hours'),M=document.getElementById('minutes'),S=document.getElementById('seconds');
-                if(D)D.innerText=Math.floor(distance/(1e3*60*60*24));if(H)H.innerText=Math.floor((distance%(1e3*60*60*24))/(1e3*60*60));
-                if(M)M.innerText=Math.floor((distance%(1e3*60*60))/(1e3*60));if(S)S.innerText=Math.floor((distance%(1e3*60))/1e3);
-            }
-            if(countdownInterval) clearInterval(countdownInterval);
-            updateTimer(); countdownInterval = setInterval(updateTimer, 1000);
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.7,
+                color: 0x87ceeb, // لون الجسيمات يتناسب مع الإضاءة
+                transparent: true,
+                blending: THREE.AdditiveBlending
+            });
+
+            particles = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particles);
+
+            // الاستجابة لتغيير حجم النافذة
+            window.addEventListener('resize', onWindowResize, false);
+            document.addEventListener('mousemove', onMouseMove, false);
+            
+            animate();
         }
 
+        let mouseX = 0;
+        let mouseY = 0;
 
-        // --- Quiz & Final Reward Logic ---
-        function startQuiz() { if(quizCompleted){checkForFinalSurprise();return;}if(quizInProgress)return; quizInProgress=true; quizIndex=0; shuffledQuizzes=[...originalQuizzes].sort(()=>Math.random()-.5); displayCurrentQuestion(); openModal('quizModal');if(quizAnswerInput)quizAnswerInput.focus();}
-        function updateQuizButtonState() { const qb=document.getElementById('quizButton'); if(!qb) return; qb.innerHTML=quizCompleted?"🔑<span> الجائزة</span>":"🎁"; qb.title=quizCompleted?"افتح جائزتك الكبرى!":"تحدي الأسئلة!"; }
-        function displayCurrentQuestion() {if (!quizInProgress || quizIndex >= shuffledQuizzes.length) return; const currentQ=shuffledQuizzes[quizIndex];if(quizProgress)quizProgress.textContent=`السؤال ${quizIndex + 1} من ${shuffledQuizzes.length}`;if(quizQuestionText)quizQuestionText.textContent=currentQ.question;if(quizAnswerInput)quizAnswerInput.value='';if(quizFeedback){quizFeedback.textContent='';quizFeedback.className='';}if(quizSubmitButton){quizSubmitButton.textContent=(quizIndex===shuffledQuizzes.length-1)?'التحقق النهائي ✨':'التالي 👈';quizSubmitButton.disabled=false;}if(quizAnswerInput)quizAnswerInput.focus();}
-        function checkQuizAnswer() { if (!quizInProgress) return; const currentQ=shuffledQuizzes[quizIndex],userAnswer=quizAnswerInput.value.trim().toLowerCase(),correctAnswer=currentQ.answer.toLowerCase();if(quizSubmitButton)quizSubmitButton.disabled=true; if(userAnswer===correctAnswer){playSound(successSound);quizFeedback.textContent=`✅ ${currentQ.reward||'إجابة صحيحة!'}`;quizFeedback.className='success';quizIndex++;setTimeout(()=>{if(quizIndex<shuffledQuizzes.length){displayCurrentQuestion();}else{showFinalQuizReward();}},1500);}else{quizFeedback.textContent='❌ إجابة خاطئة. حاول مرة أخرى!';quizFeedback.className='error'; const mc=quizModal.querySelector('.quiz-modal-content');if(mc)mc.classList.add('shake-error'); setTimeout(()=>{if(mc)mc.classList.remove('shake-error'); if(quizSubmitButton)quizSubmitButton.disabled=false;if(quizAnswerInput)quizAnswerInput.focus();},500);}}
-        function showFinalQuizReward() {closeModal('quizModal'); quizCompleted=true; quizInProgress=false; localStorage.setItem('quizCompleted','true'); const uDate=new Date(); uDate.setDate(uDate.getDate()+4); localStorage.setItem('unlockDate',uDate.toISOString()); updateQuizButtonState(); const fDate=uDate.toLocaleDateString('ar-EG',{weekday:'long',year:'numeric',month:'long',day:'numeric'}); showHiddenMessage(`رائع! أكملت التحدي بنجاح! 🏆<br>الجائزة الكبرى مغلقة الآن...<br>بس لا تبجي، راح تنفتح يوم ${fDate}!`,'final-reward-message',10000); launchConfetti(.5,.3,{particleCount:300,spread:150,scalar:1.3});}
-        function checkForFinalSurprise() {const uDateStr=localStorage.getItem('unlockDate');if(!uDateStr){showHiddenMessage("يجب عليك إكمال تحدي الأسئلة أولاً!");return;} const uDate=new Date(uDateStr);if(new Date()>=uDate){openModal('finalSurpriseModal');launchConfetti(.5,.5,{particleCount:400,spread:360,scalar:1.5});}else{const fDate=uDate.toLocaleDateString('ar-EG',{weekday:'long',day:'numeric',month:'long'});showHiddenMessage(`صبراً جميلاً! صبرك قرب ينتهي! الجائزة ستكون متاحة يوم ${fDate}.`,null,6000);}}
+        function onMouseMove(event) {
+            mouseX = (event.clientX - window.innerWidth / 2) / 100;
+            mouseY = (event.clientY - window.innerHeight / 2) / 100;
+        }
 
-        // --- Utility Functions ---
-        function toggleDarkMode() { darkMode=!darkMode; document.body.classList.toggle('dark-mode', darkMode); localStorage.setItem('darkMode', darkMode); updateDarkModeToggleText(); }
-        function updateDarkModeToggleText() { if(darkModeToggleBtn) { darkModeToggleBtn.innerHTML=darkMode ? '☀️' : '🌙'; darkModeToggleBtn.title=darkMode ? 'الوضع النهاري' : 'الوضع الليلي'; } }
-        function showKnowledge() { const facts=["تم انشاء بيج مستر كوالتي", "تم انشاء مشروع اكس للعبة قادمة !", "تم انشاء هذا موقع وتحديثة", "تم انشاء وندوز 10 ار دي ", "تم انشاء الكثير من اشياء يجب ان تلفت انتابه !"]; showHiddenMessage(`💡 معلومة سريعة: ${facts[Math.floor(Math.random() * facts.length)]}`); }
-        function cakeSurprise() { launchConfetti(0.5, 0.8, { particleCount: 200, angle: 90, gravity: 0.6 }); showHiddenMessage("يمي! 🎂"); }
-        function titleSurprise(el) { el.classList.add('clicked'); setTimeout(() => { el.classList.remove('clicked'); }, 500); showHiddenMessage("يا كبدي انت اكيد مراح يكون هيج سهل"); }
-        function splitTitleIntoSpans() { if (!mainTitle) return; const text = mainTitle.innerText; mainTitle.innerHTML = ''; text.split('').forEach(char => { const span = document.createElement('span'); span.textContent = char === ' ' ? '\u00A0' : char; mainTitle.appendChild(span); });}
-        function createStars(n){for(let i=0;i<n;i++){const s=document.createElement('div');s.className='star';s.style.left=`${Math.random()*100}vw`;s.style.top=`${Math.random()*100}vh`;s.style.animationDelay=`${Math.random()*5}s`;document.body.appendChild(s);stars.push(s);}}
-        function setupParallax(){window.addEventListener('mousemove',e=>{const{clientX:cX,clientY:cY}=e;const oX=(cX-window.innerWidth/2)/(window.innerWidth/2);const oY=(cY-window.innerHeight/2)/(window.innerHeight/2);requestAnimationFrame(()=>moveStars(oX,oY))});}
-        function moveStars(oX,oY){stars.forEach(s=>{const d=parseFloat(s.dataset.depth||Math.random());const mX=-(oX*d*50);const mY=-(oY*d*50);s.style.transform=`translate3d(${mX}px,${mY}px,0)`})}
-        function showHiddenMessage(msg,cls,dur=4000){if(!hiddenMessageDiv)return;hiddenMessageDiv.innerHTML=msg;hiddenMessageDiv.className='';hiddenMessageDiv.classList.add('show-message');if(cls)hiddenMessageDiv.classList.add(cls);hiddenMessageDiv.style.opacity='1';hiddenMessageDiv.style.pointerEvents='auto';hiddenMessageDiv.style.transform='translateX(-50%) scale(1)';setTimeout(()=>{if(!hiddenMessageDiv)return;hiddenMessageDiv.style.opacity='0';hiddenMessageDiv.style.pointerEvents='none';hiddenMessageDiv.style.transform='translateX(-50%) scale(0)';},dur-500);}
-        function setVhVariable(){let vh=window.innerHeight*0.01;document.documentElement.style.setProperty('--vh',`${vh}px`);}
-        function changeBalloonColors(){const C=[['#ff9a9e','#fad0c4'],['#a8edea','#fed6e3'],['#ffeaa7','#fdcb6e'],['#55efc4','#a29bfe']];document.querySelectorAll('.balloon').forEach(b=>{const r=C[Math.floor(Math.random()*C.length)];b.style.background=`radial-gradient(circle at 50% 120%,${r[0]},${r[1]})`});launchConfetti();}
-        function renderMessages() { if(!messagesContainer)return; if(!messages||messages.length===0){messagesContainer.innerHTML='<p style="text-align:center;padding:20px;opacity:.7;">لا توجد رسائل بعد. كن أول من يكتب! ✨</p>';return;}const frag=document.createDocumentFragment();messages.forEach((msg,idx)=>{const div=document.createElement('div');div.className='message-item';div.style.animationDelay=`${idx*0.05}s`;const p=document.createElement('p');p.textContent=msg.text;div.appendChild(p);if(msg.timestamp){const sm=document.createElement('small');sm.style.cssText="opacity:.6;font-size:.75em;display:block;margin-top:5px;text-align:left;";sm.textContent=new Date(msg.timestamp.toDate()).toLocaleString('ar-EG');div.appendChild(sm);}const del=document.createElement('span');del.className='delete-btn';del.title='حذف الرسالة';del.textContent='×';del.onclick=()=>confirmDeleteMessage(msg.id);div.appendChild(del);frag.appendChild(div);});messagesContainer.innerHTML='';messagesContainer.appendChild(frag);}
-        
-        // --- Initial Setup on Load ---
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeDOMReferences();
-            if (localStorage.getItem('darkMode') === 'true') { document.body.classList.add('dark-mode'); updateDarkModeToggleText(); }
-            if (passwordInput) {
-                passwordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPassword(); });
-                passwordInput.focus();
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (textMesh) {
+                textMesh.rotation.y += 0.001;
+                textMesh.rotation.x += 0.0005;
+                
+                // حركة النص بناءً على حركة الماوس
+                textMesh.rotation.y += (mouseX - textMesh.rotation.y) * 0.01;
+                textMesh.rotation.x += (-mouseY - textMesh.rotation.x) * 0.01;
             }
-            if (quizAnswerInput) { quizAnswerInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && quizInProgress) checkQuizAnswer(); }); }
-            setVhVariable();
-            window.addEventListener('resize', setVhVariable);
-        });
+            
+            if (particles) {
+                particles.rotation.y += 0.0002;
+            }
+            
+            // حركة الكاميرا بناء على حركة الماوس
+            camera.position.x += (mouseX / 2 - camera.position.x) * 0.02;
+            camera.position.y += (-mouseY / 2 - camera.position.y) * 0.02;
+            camera.lookAt(scene.position);
 
+
+            renderer.render(scene, camera);
+        }
+
+        init();
     </script>
 </body>
 </html>
+
